@@ -150,31 +150,7 @@ if($_SESSION['user_id']!="")
 										</div>
 								</form>
 						</div>
-						<div class="md-card-content large-padding" id="register_form" style="display: none">
-								<button type="button" class="uk-position-top-right uk-close uk-margin-right uk-margin-top back_to_login"></button>
-								<h2 class="heading_a uk-margin-medium-bottom">Create an account</h2>
-								<form>
-										<div class="uk-form-row">
-												<label for="register_username">Username</label>
-												<input class="md-input" type="text" id="register_username" name="register_username" />
-										</div>
-										<div class="uk-form-row">
-												<label for="register_password">Password</label>
-												<input class="md-input" type="password" id="register_password" name="register_password" />
-										</div>
-										<div class="uk-form-row">
-												<label for="register_password_repeat">Repeat Password</label>
-												<input class="md-input" type="password" id="register_password_repeat" name="register_password_repeat" />
-										</div>
-										<div class="uk-form-row">
-												<label for="register_email">E-mail</label>
-												<input class="md-input" type="text" id="register_email" name="register_email" />
-										</div>
-										<div class="uk-margin-medium-top">
-												<a href="index.html" class="md-btn md-btn-primary md-btn-block md-btn-large btns">Sign Up</a>
-										</div>
-								</form>
-						</div>
+						
 				</div>
 				
 		</div>

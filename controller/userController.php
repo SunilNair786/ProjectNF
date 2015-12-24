@@ -103,7 +103,17 @@ class userController
 		$fetchAll = $this->userClsObj->fetchAllNotes();
 		return $fetchAll;
 	}
-
+	
+	public function deleteNote($noteId){
+		$deleteNote = $this->userClsObj->deleteNote($noteId);
+	}
+	
+	public function fetchCountNotes($userId){
+		//echo $userId; exit;
+		$fetchCount  = $this->userClsObj->fetchCountNotes($userId);
+		
+		return $fetchCount;
+	}
 }
 
 ?>

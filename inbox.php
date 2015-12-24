@@ -29,7 +29,7 @@
 		foreach ( $_FILES['file']['name'] AS $key => $value ){  
 			
 		}*/
-		
+		header("location:inbox.php");
 	}	
 ?>
 
@@ -48,14 +48,22 @@
                         <div class="md-card-list-header heading_list">Today</div>
                         <div class="md-card-list-header md-card-list-header-combined heading_list" style="display: none">All Messages</div>
                         <ul class="hierarchical_slide">
+                            <?php
+                            $collection = $db->nf_user_fax; 
+                            $allfaxs = $collection->find();                               
+                            foreach ($allfaxs as $all_faxs) {                                
+                                // User Details
+                                $collection = $db->nf_user; 
+                                $userDetails = $collection->findOne(array('_id' => new MongoId($all_faxs['from_id'])));
+                                ?>           
                             <li>
-                            <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <ul class="options">
+                                    <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
+                                    <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-tags"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-trash"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-star"></i> </a></li>
+                                </ul>
                                 <div class="md-card-list-item-menu">
                                 </div>
                                 <span class="md-card-list-item-date">13 Nov</span>
@@ -66,7 +74,18 @@
                                     <span class="md-card-list-item-avatar md-bg-grey">hp</span>
                                 </div>
                                 <div class="md-card-list-item-sender">
-                                    <span>sophia70@danielnicolas.info</span>
+                                    <span><?php 
+                                    $sessId = "'".$_SESSION["user_id"]."'"; 
+                                    $to_ids = "'".$all_faxs['to_id']."'";
+                                    echo $pos = strstr($to_ids,$sessId);
+                                    if ($pos !== false) {
+                                        echo 'I found Waldo!';
+                                    }
+                                    else
+                                    {
+                                        echo "founded";
+                                    }
+                                    ?></span>
                                 </div>
                                 <div class="md-card-list-item-subject">
                                     <div class="md-card-list-item-sender-small">
@@ -76,14 +95,16 @@
                                 </div>
                                 <div class="md-card-list-item-content-wrapper">
                                     <div class="md-card-list-item-content">
-                                        Autem et in qui natus repudiandae molestiae doloribus necessitatibus aut ea repudiandae voluptas voluptas molestiae odit assumenda et rem corrupti quia sunt in ut qui ipsam maiores officiis sapiente iusto et dolor consequatur et eius fugit possimus dignissimos sapiente deserunt perferendis voluptatem molestiae architecto eum accusamus omnis.                                    </div>
+                                        <?php echo $all_faxs['message_body']; ?>
+                                    </div>
                                     <form class="md-card-list-item-reply">
-                                        <label for="mailbox_reply_1895">Reply to <span>sophia70@danielnicolas.info</span></label>
+                                        <label for="mailbox_reply_1895">Reply to <span><?php echo $userDetails['email_id']; ?></span></label>
                                         <textarea class="md-input md-input-full" name="mailbox_reply_1895" id="mailbox_reply_1895" cols="30" rows="4"></textarea>
                                         <button class="md-btn md-btn-flat md-btn-flat-primary">Send</button>
                                     </form>
                                 </div>
                             </li>
+                            <?php } ?>
                             <li>
                                 <ul class="options">
                             <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
@@ -2224,9 +2245,19 @@
             $autoComp = $collection->find();
             foreach ($autoComp as $keys) {?>
                 {
-                    value: "<?php echo $keys['email'];?>",
-                    label: "<?php echo $keys['contact_name'];?>"
+                    value: "<?php echo $keys['_id'];?>",
+                    label: "<?php echo $keys['contact_name'];?> (<?php echo $keys['email'];?>)"
                 },                
+            <?php } ?>
+        // Showing Users
+        <?php             
+            $collection = $db->nf_user;
+            $usersAutoComp = $collection->find();
+            foreach ($usersAutoComp as $users_AutoComp) {?>
+                {
+                    value: "<?php echo $users_AutoComp['_id'];?>",
+                    label: "<?php echo $users_AutoComp['first_name'];?> <?php echo $users_AutoComp['last_name'];?> (<?php echo $users_AutoComp['email_id'];?>)"
+                },
             <?php } ?>
         ];
              
@@ -2282,9 +2313,7 @@
             });
         });     
 	</script>
-    <style>
-#header_main{background:#1976d2 !important;}
-</style>
+   
 	
 </body>
 </html>

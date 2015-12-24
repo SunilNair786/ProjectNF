@@ -151,16 +151,32 @@ class users{
 		
 		$collection->update(array("_id" => new MongoId($arrVal['note_id'])),array('$set' => $updateNotes));	
 	}
-	
+	//Fetch All Notes
 	public function fetchAllNotes(){
 		
 		$collection = $this->db->nf_user_notes;
 		
 		$resultC = $collection->find(array("user_id" => $_SESSION['user_id']))->sort(array("created_date" => 1));
 
+		return $resultC;		
+	}
+	
+	//Delete Notes
+	public function deleteNote($deleteNote){
+		
+		$collection = $this->db->nf_user_notes;
+		
+		$collection->remove(array('_id' => new MongoId($deleteNote)));
+	}
+	
+	//Fetch Count Notes
+	public function fetchCountNotes($userId){
+		
+		$collection = $this->db->nf_user_notes;
+		
+		$resultC = $collection->find(array("user_id" => $userId))->count();	
+		
 		return $resultC;
-		
-		
 	}
 }
 ?>

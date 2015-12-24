@@ -1123,8 +1123,6 @@
 
         });
     </script>
-    <style>
-#header_main{background:#0f9d58 !important; }
-</style>
+   
 </body>
 </html>

@@ -75,6 +75,15 @@ $cUrl = basename($_SERVER['REQUEST_URI']);
                     <span class="menu_title">Notes</span>
                 </a>
             </li>
+            
+            <li title="User Management">
+                <a href="usermanagement.php" <?php if($cUrl == "usermanagement.php"){ ?> class="active"<?php } ?>>
+                    <span class="menu_icon"><!-- <i class="material-icons">&#xE158;</i> -->
+                        <i class="fa fa-user-plus fa-2x"></i>
+                    </span>
+                    <span class="menu_title">User Management </span>
+                </a>
+            </li>
             <li title="Contact Lists">
                 <a href="contact.php" <?php if($cUrl == "contact.php"){ ?> class="active"<?php } ?>>
                     <span class="menu_icon"><!-- <i class="material-icons">&#xE158;</i> -->

@@ -10124,7 +10124,7 @@ body:after {
 	background: #e9ecff;
 }
 .app_theme_b{
-	background: #f0e9fd;
+	background: #ede7dd;
 }
 .app_theme_c{
 	background: #f5ece9;
@@ -10145,9 +10145,9 @@ body:after {
 
 .app_theme_a #sidebar_main .menu_section > ul > li > a:hover { background:#d2d5ea !important;}
 
-.app_theme_b .active{background:#d3c8e6 !important;}
+.app_theme_b .active{background:#d6d0c9 !important;}
 
-.app_theme_b #sidebar_main .menu_section > ul > li > a:hover { background:#d3c8e6 !important;}
+.app_theme_b #sidebar_main .menu_section > ul > li > a:hover { background:#d6d0c9 !important;}
 
 .app_theme_c .active{background:#e1d3ce !important;}
 
@@ -10393,7 +10393,7 @@ body:after {
 	border-left-color: #673ab7
 }
 .app_theme_b #header_main {
-	background: #673ab7
+	background: #ef6c00
 }
 .app_theme_b.header_double_height #page_content:after {
 	background: #673ab7
@@ -11241,7 +11241,7 @@ body:after {
 	background: #ff4081
 }
 #style_switcher .switcher_app_themes li.switcher_theme_b .app_color_main {
-	background: #673ab7
+	background: #ef6c00
 }
 #style_switcher .switcher_app_themes li.switcher_theme_b .app_color_accent {
 	background: #00bcd4
@@ -11271,7 +11271,7 @@ body:after {
 	background: #7cb342
 }
 #style_switcher .switcher_app_themes li.switcher_theme_g .app_color_main {
-	background: #8e24aa
+	background: #3f51b5 
 }
 #style_switcher .switcher_app_themes li.switcher_theme_g .app_color_accent {
 	background: #4caf50

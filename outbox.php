@@ -2302,8 +2302,6 @@
 
         });
     </script>
-    <style>
-#header_main{background:#ef6c00 !important;}
-</style>
+   
 </body>
 </html>

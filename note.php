@@ -6,31 +6,38 @@
 
 <!-- main sidebar end -->
 <?php
-	if(isset($_POST['note_title'])){
+
+	if(isset($_POST['note_title']) && !empty($_POST['note_title'])){		
 		$noteInfo = array();
 		$noteInfo['note_title'] = $_POST['note_title'];
 		$noteInfo['note_content'] = $_POST['note_content'];	
 		
-		if(isset($_POST['note_id']) && !empty($_POST['note_id'])){	
-
+		if(isset($_POST['default_action']) && $_POST['default_action'] == 'update' ){		
+		
 			$noteInfo['note_id'] = 	$_POST['note_id'];
 			$userContObj->updateNote($noteInfo);
-		}else{	
-
+		}else{				
 			$userContObj->insertNote($noteInfo);
 		}
 		header("location:note.php");	
-	}
-	
+	}	
 	$arrAllNotes = $userContObj->fetchAllNotes();
+	$countAllNotes = $userContObj->fetchCountNotes($_SESSION['user_id']);
 	
-?>
-<style>
-	.note_content_hid_class{
-		
+	if(isset($_GET['delFlag'])){
+		$noteId = $_GET['noteId'];
+		$userContObj->deleteNote($noteId);	
+		header("location:note.php");			
 	}
-</style>
-
+?>
+ 
+ <style>
+ .md-list md-list-outside notes_list li{position:relative;}
+ .activedelete{position: absolute;
+    right: -39px;
+    top: 12px;
+    width: 20%;}
+ </style>
 <div id="page_content">
         <div id="page_content_inner">
 
@@ -43,7 +50,9 @@
             
                                 <li class="heading_list uk-text-danger">Notes</li>
                                 <?php
-									if(isset($arrAllNotes) && is_object($arrAllNotes)){
+									
+									if($countAllNotes > 0){
+										
 										$inti = 0;
 										foreach($arrAllNotes as $key=>$value){	
 										
@@ -55,10 +64,21 @@
 										<input type='hidden' id='note_id_hid_class' name='note_content_hidden' class='note_id_hid_class' value="<?php echo $value["_id"];?>"/>
                                         <span class="uk-text-small uk-text-muted"><?php $dates=strtotime($value['created_date']); echo date("j M Y",$dates); ?></span>
                                     </a>
+<div class="md-card-dropdown activedelete" >                                          
+                                            <i class="md-icon material-icons "  onclick='javscript:deleteNote("<?php echo $value["_id"];?>");'>&#xE872;</i> 
+                                        </div>
                                 </li>
+								                                        
 								<?php 	
 											$inti++;
 										}
+									}else{
+								?>		
+										<li>
+											<span class="md-list-heading uk-text-truncate" style="padding-left:100px;">No notes found.</span>
+										</li>
+										
+								<?php
 									}
 								?>
                             </ul>
@@ -67,12 +87,11 @@
                     <div class="uk-width-large-7-10">
                         <div class="md-card md-card-single">
                             <form name='noteFrm' action="note.php" method='post'>
+							<input type='hidden' name='default_action' id='default_action' value = 'update' />
                                 <div class="md-card-toolbar hidden-print">
                                     <div class="md-card-toolbar-actions">
                                         <i class="md-icon material-icons" onclick='javscript:saveNote();'>&#xE161;</i>
-                                        <div class="md-card-dropdown" data-uk-dropdown="{pos:'bottom-right'}">                                          
-                                            <i class="md-icon material-icons" onclick='javscript:deleteNote();'>&#xE872;</i> 
-                                        </div>
+
                                     </div>
                                     <input name="note_title" id="note_title" class="md-card-toolbar-input" type="text" value="" placeholder="Add title" />
 									<span style='color:red;' id='error_title'></span>
@@ -303,6 +322,15 @@
 			document.getElementById("error_content").innerHTML = '';
 			var note_title = document.getElementById('note_title').value;
 			var note_content = trimAll(document.getElementById('note_content').value);
+			var note_id = document.getElementById('note_id').value;
+			
+			if(note_id !=''){
+				document.getElementById('default_action').value = 'update';
+			}else{
+				document.getElementById('default_action').value = 'add';
+			}
+			
+			
 			if(note_title ==''){				
 				document.getElementById("error_title").innerHTML = 'Please enter message title.';
 				return false;
@@ -325,12 +353,18 @@
 			}
 			return sString;
 		}
-		function deleteNote(){
-			var noteId = document.getElementById('note_id').value;
-			frm = document.noteFrm;
-			frm.action = 'note.php';
-			frm.submit();
+		function deleteNote(noteId){						
+			if(confirm('Do you want delete the notes?')){				
+				document.getElementById('default_action').value = 'delete';
+				frm = document.noteFrm;
+				frm.action = 'note.php?delFlag=1&noteId='+noteId;
+				frm.submit();
+			}else{
+				return false;
+			}	
 		}
     </script>
+	
+	 
 </body>
 </html>
