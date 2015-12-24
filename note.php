@@ -3,7 +3,7 @@
 <!-- main header end -->
 <!-- main sidebar -->
 <?php include_once('includes/sidemenu.php')?>
-<?php include_once('')?>
+
 <!-- main sidebar end -->
 <?php
 	if(isset($_POST['note_title'])){
@@ -45,12 +45,13 @@
                                 <?php
 									if(isset($arrAllNotes) && is_object($arrAllNotes)){
 										$inti = 0;
-										foreach($arrAllNotes as $key=>$value){									
+										foreach($arrAllNotes as $key=>$value){	
+										
 								?>
 								<li>
                                     <a href="#" class="md-list-content note_link" data-note-id="<?php echo $inti; ?>">
-                                        <span class="md-list-heading uk-text-truncate"><?php echo $value[note_title];?></span>
-										<input type='hidden' id='note_content_hidden' name='note_content_hidden' class='note_content_hid_class' value="<?php echo $value[note_content];?>"/>
+                                        <span class="md-list-heading uk-text-truncate"><?php echo $value['note_title'];?></span>
+										<input type='hidden' id='note_content_hidden' name='note_content_hidden' class='note_content_hid_class' value="<?php echo $value['note_content'	];?>"/>
 										<input type='hidden' id='note_id_hid_class' name='note_content_hidden' class='note_id_hid_class' value="<?php echo $value["_id"];?>"/>
                                         <span class="uk-text-small uk-text-muted"><?php $dates=strtotime($value['created_date']); echo date("j M Y",$dates); ?></span>
                                     </a>
@@ -70,7 +71,7 @@
                                     <div class="md-card-toolbar-actions">
                                         <i class="md-icon material-icons" onclick='javscript:saveNote();'>&#xE161;</i>
                                         <div class="md-card-dropdown" data-uk-dropdown="{pos:'bottom-right'}">                                          
-                                            <i class="md-icon material-icons">&#xE872;</i> 
+                                            <i class="md-icon material-icons" onclick='javscript:deleteNote();'>&#xE872;</i> 
                                         </div>
                                     </div>
                                     <input name="note_title" id="note_title" class="md-card-toolbar-input" type="text" value="" placeholder="Add title" />
@@ -323,6 +324,12 @@
 				sString = sString.substring(0,sString.length-1);
 			}
 			return sString;
+		}
+		function deleteNote(){
+			var noteId = document.getElementById('note_id').value;
+			frm = document.noteFrm;
+			frm.action = 'note.php';
+			frm.submit();
 		}
     </script>
 </body>
