@@ -178,5 +178,14 @@ class users{
 		
 		return $resultC;
 	}
+	
+	public function insertUser($arr){
+		
+		$collection = $this->db->nf_user;
+		
+		$insUser = array("user_id" => $_SESSION['user_id'],"company_id" => "1" ,"first_name" => $arr['first_name'],"last_name" => $arr['first_name'],"email" => $arr['email'],"password" => md5($arr['password']),"descripton" => $arr['descripton'],"phone" => $arr['phone'],"fax" => $arr['fax'],"user_type" => 'EU',"user_type" => 'A',"created_date" => $this->cfObj->createDate(),"modified_date" => "");
+		
+		$collection->insert($insUser);	
+	}
 }
 ?>

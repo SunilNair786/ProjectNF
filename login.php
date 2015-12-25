@@ -153,11 +153,7 @@ if($_SESSION['user_id']!="")
 						
 				</div>
 				
-		</div>
-        <div class="uk-margin-top uk-text-center">
-            <a id="signup_form_show" href="#" style="color: #1e88e5;text-decoration:none;">Create an account</a>
-        </div>
-
+		</div>       
 		<!-- common functions -->
 		<script src="assets/js/common.min.js"></script>
 		<!-- altair core functions -->

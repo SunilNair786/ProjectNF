@@ -4,26 +4,19 @@
 <?php include_once('includes/sidemenu.php'); ?>
 <!-- main sidebar end -->
 <?php
-if($_POST['submit'] == "Save")
-{
-    $cntVal = $userContObj->insertgroup($_POST);    
-    header("location:groups.php"); 
-    exit;
-}
-
-// edit Process
-if($_POST['submit'] == "Update")
-{
-    $editGrps = $userContObj->updategroup($_POST);    
-    header("location:groups.php"); 
-    exit;
-}
-// Delete Process
-if($_REQUEST['action'] == "delete")
-{
-    $DelGrps = $userContObj->deletegroup($_GET['id']);   
-    header("location:groups.php"); 
-    exit;
+echo "<pre>";
+print_r($_REQUEST);
+if(isset($_REQUEST['btnSubmit'])){
+	$arrUser['first_name'] = $_POST['first_name'];
+	$arrUser['last_name'] = $_POST['last_name'];
+	$arrUser['email'] = $_POST['email'];
+	$arrUser['passsword'] = $_POST['password'];
+	$arrUser['phone'] = $_POST['phone'];
+	$arrUser['fax'] = $_POST['fax'];
+	echo "<pre>";
+		print_r($arr); exit;
+	$userContObj->insertUser($arrUser);
+	
 }
 ?>
 <div id="page_content">
@@ -84,8 +77,7 @@ if($_REQUEST['action'] == "delete")
 										</div>
 										 
 								
-									                <div class="uk-modal-footer">       
-									                	           
+									                <div class="uk-modal-footer">  								                	           
 									                    <input type="submit" class="uk-float-right md-btn md-btn-flat md-btn-flat-primary" name="submit" value="Update" />
 									                </div>
 									            </form>
@@ -110,25 +102,40 @@ if($_REQUEST['action'] == "delete")
 	    <div class="uk-modal" id="Groups_new">
 	        <div class="uk-modal-dialog">
 	        <button class="uk-modal-close uk-close" type="button"></button>
-	             <form>
+	             <form name='userReg' method='post' action='usermanagement.php' >
 										<div class="uk-form-row">
-												<label for="register_username">Username</label>
-												<input class="md-input" type="text" id="register_username" name="register_username" />
+												<label for="register_username">First Name</label>
+												<input class="md-input" type="text" id="first_name" name="first_name" required//>
 										</div>
 										<div class="uk-form-row">
-												<label for="register_password">Password</label>
-												<input class="md-input" type="password" id="register_password" name="register_password" />
-										</div>
-										<div class="uk-form-row">
-												<label for="register_password_repeat">Repeat Password</label>
-												<input class="md-input" type="password" id="register_password_repeat" name="register_password_repeat" />
+												<label for="register_username">Last Name</label>
+												<input class="md-input" type="text" id="last_name" name="last_name" required />
 										</div>
 										<div class="uk-form-row">
 												<label for="register_email">E-mail</label>
-												<input class="md-input" type="text" id="register_email" name="register_email" />
+												<input class="md-input" type="text" id="email" name="email" required />
 										</div>
+										<div class="uk-form-row">
+												<label for="register_password">Password</label>
+												<input class="md-input" type="password" id="password" name="password" required />
+										</div>
+										<div class="uk-form-row">
+												<label for="register_email">Phone Number</label>
+												<input class="md-input" type="text" id="phone" name="phone" required />
+										</div>
+										<div class="uk-form-row">
+												<label for="register_email">Fax</label>
+												<input class="md-input" type="text" id="fax" name="fax"  required/>
+										</div>
+										<div class="uk-form-row">
+												<label for="register_email">User Description</label>
+												<textarea class="md-input" type="text" id="descrption" name="descrption"  required/></textarea>
+												<span style='color:red;' id='error_content'></span>												
+										</div>
+										
 										<div class="uk-margin-medium-top">
-												<a href="index.html" class="md-btn md-btn-primary md-btn-block md-btn-large btns">Sign Up</a>
+										 <input type="button" class="md-btn md-btn-primary md-btn-block md-btn-large btns" name="btnSubmit" value="Sign Up"  onclick='javascript:formSubmit();' />
+											
 										</div>
 								</form>
 	        </div>
@@ -235,202 +242,10 @@ if($_REQUEST['action'] == "delete")
 		</div>
 	</div>
 
-	<script>
-		$(function() {
-			var $switcher = $('#style_switcher'),
-				$switcher_toggle = $('#style_switcher_toggle'),
-				$theme_switcher = $('#theme_switcher'),
-				$mini_sidebar_toggle = $('#style_sidebar_mini'),
-				$boxed_layout_toggle = $('#style_layout_boxed'),
-				$body = $('body');
-
-
-			$switcher_toggle.click(function(e) {
-				e.preventDefault();
-				$switcher.toggleClass('switcher_active');
-			});
-
-			$theme_switcher.children('li').click(function(e) {
-				e.preventDefault();
-				var $this = $(this),
-					this_theme = $this.attr('data-app-theme');
-
-				$theme_switcher.children('li').removeClass('active_theme');
-				$(this).addClass('active_theme');
-				$body
-					.removeClass('app_theme_a app_theme_b app_theme_c app_theme_d app_theme_e app_theme_f app_theme_g')
-					.addClass(this_theme);
-
-				if(this_theme == '') {
-					localStorage.removeItem('altair_theme');
-				} else {
-					localStorage.setItem("altair_theme", this_theme);
-				}
-
-			});
-
-			// hide style switcher
-			$document.on('click keyup', function(e) {
-				if( $switcher.hasClass('switcher_active') ) {
-					if (
-						( !$(e.target).closest($switcher).length )
-						|| ( e.keyCode == 27 )
-					) {
-						$switcher.removeClass('switcher_active');
-					}
-				}
-			});
-
-			// get theme from local storage
-			if(localStorage.getItem("altair_theme") !== null) {
-				$theme_switcher.children('li[data-app-theme='+localStorage.getItem("altair_theme")+']').click();
-			}
-
-
-		// toggle mini sidebar
-
-			// change input's state to checked if mini sidebar is active
-			if((localStorage.getItem("altair_sidebar_mini") !== null && localStorage.getItem("altair_sidebar_mini") == '1') || $body.hasClass('sidebar_mini')) {
-				$mini_sidebar_toggle.iCheck('check');
-			}
-
-			$mini_sidebar_toggle
-				.on('ifChecked', function(event){
-					$switcher.removeClass('switcher_active');
-					localStorage.setItem("altair_sidebar_mini", '1');
-					location.reload(true);
-				})
-				.on('ifUnchecked', function(event){
-					$switcher.removeClass('switcher_active');
-					localStorage.removeItem('altair_sidebar_mini');
-					location.reload(true);
-				});
-
-
-		// toggle boxed layout
-
-			// change input's state to checked if mini sidebar is active
-			if((localStorage.getItem("altair_layout") !== null && localStorage.getItem("altair_layout") == 'boxed') || $body.hasClass('boxed_layout')) {
-				$boxed_layout_toggle.iCheck('check');
-				$body.addClass('boxed_layout');
-				$(window).resize();
-			}
-
-			// toggle mini sidebar
-			$boxed_layout_toggle
-				.on('ifChecked', function(event){
-					$switcher.removeClass('switcher_active');
-					localStorage.setItem("altair_layout", 'boxed');
-					location.reload(true);
-				})
-				.on('ifUnchecked', function(event){
-					$switcher.removeClass('switcher_active');
-					localStorage.removeItem('altair_layout');
-					location.reload(true);
-				});
-
-
-		});
-	</script>
+	
 	 <!--  forms advanced functions -->
     <script src="assets/js/pages/forms_advanced.min.js"></script>
-    <script>
-        $(function() {
-            var $switcher = $('#style_switcher'),
-                $switcher_toggle = $('#style_switcher_toggle'),
-                $theme_switcher = $('#theme_switcher'),
-                $mini_sidebar_toggle = $('#style_sidebar_mini'),
-                $boxed_layout_toggle = $('#style_layout_boxed'),
-                $body = $('body');
-
-
-            $switcher_toggle.click(function(e) {
-                e.preventDefault();
-                $switcher.toggleClass('switcher_active');
-            });
-
-            $theme_switcher.children('li').click(function(e) {
-                e.preventDefault();
-                var $this = $(this),
-                    this_theme = $this.attr('data-app-theme');
-
-                $theme_switcher.children('li').removeClass('active_theme');
-                $(this).addClass('active_theme');
-                $body
-                    .removeClass('app_theme_a app_theme_b app_theme_c app_theme_d app_theme_e app_theme_f app_theme_g')
-                    .addClass(this_theme);
-
-                if(this_theme == '') {
-                    localStorage.removeItem('altair_theme');
-                } else {
-                    localStorage.setItem("altair_theme", this_theme);
-                }
-
-            });
-
-            // hide style switcher
-            $document.on('click keyup', function(e) {
-                if( $switcher.hasClass('switcher_active') ) {
-                    if (
-                        ( !$(e.target).closest($switcher).length )
-                        || ( e.keyCode == 27 )
-                    ) {
-                        $switcher.removeClass('switcher_active');
-                    }
-                }
-            });
-
-            // get theme from local storage
-            if(localStorage.getItem("altair_theme") !== null) {
-                $theme_switcher.children('li[data-app-theme='+localStorage.getItem("altair_theme")+']').click();
-            }
-
-
-        // toggle mini sidebar
-
-            // change input's state to checked if mini sidebar is active
-            if((localStorage.getItem("altair_sidebar_mini") !== null && localStorage.getItem("altair_sidebar_mini") == '1') || $body.hasClass('sidebar_mini')) {
-                $mini_sidebar_toggle.iCheck('check');
-            }
-
-            $mini_sidebar_toggle
-                .on('ifChecked', function(event){
-                    $switcher.removeClass('switcher_active');
-                    localStorage.setItem("altair_sidebar_mini", '1');
-                    location.reload(true);
-                })
-                .on('ifUnchecked', function(event){
-                    $switcher.removeClass('switcher_active');
-                    localStorage.removeItem('altair_sidebar_mini');
-                    location.reload(true);
-                });
-
-
-        // toggle boxed layout
-
-            // change input's state to checked if mini sidebar is active
-            if((localStorage.getItem("altair_layout") !== null && localStorage.getItem("altair_layout") == 'boxed') || $body.hasClass('boxed_layout')) {
-                $boxed_layout_toggle.iCheck('check');
-                $body.addClass('boxed_layout');
-                $(window).resize();
-            }
-
-            // toggle mini sidebar
-            $boxed_layout_toggle
-                .on('ifChecked', function(event){
-                    $switcher.removeClass('switcher_active');
-                    localStorage.setItem("altair_layout", 'boxed');
-                    location.reload(true);
-                })
-                .on('ifUnchecked', function(event){
-                    $switcher.removeClass('switcher_active');
-                    localStorage.removeItem('altair_layout');
-                    location.reload(true);
-                });
-
-
-        });
-    </script> <!-- ionrangeslider -->
+  
     <script src="bower_components/ion.rangeslider/js/ion.rangeSlider.min.js"></script>
     <!-- htmleditor (codeMirror) -->
     <script src="assets/js/uikit_htmleditor_custom.min.js"></script>
@@ -439,5 +254,36 @@ if($_REQUEST['action'] == "delete")
 
     <!--  forms advanced functions -->
     <script src="assets/js/pages/forms_advanced.min.js"></script>
+	<script src="assets/js/common_nf.js"></script>
+	<script>
+		
+	function formSubmit(){
+		document.getElementById("error_content").innerHTML = '';
+		var email = document.getElementById('email').value;
+		var phone = document.getElementById('phone').value;
+		if(!ValidateEmail(email)){
+			return false;
+		}
+		if(!isNormalInteger(phone)){
+			alert("Please enter proper phone number.")
+			return false;
+		}else{
+			if( phone.length > 10){
+				alert("Phone length should not greather than 10 digits")
+				return false;
+			}
+		}
+		var descrption = trimAll(document.getElementById('descrption').value);
+		if(descrption ==''){				
+			document.getElementById("error_content").innerHTML = 'Please enter description.';
+			return false;
+		}
+		//document.userReg.submit();
+		var frm = document.userReg;
+		frm.action = 'usermanagement.php';
+		frm.submit();		
+	}
+
+</script>
 </body>
 </html>

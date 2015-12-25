@@ -6,7 +6,8 @@
 <!-- main sidebar end -->
 
 	<?php
-	if(isset($_REQUEST['submit'])){	        
+	if(isset($_REQUEST['submit'])){	   
+        print_r($_POST); exit;
 		$faxObjCon = new faxController();
 		$faxObjCon->copyFiles($_POST,$_FILES);
 		//define where the files will be uploaded
@@ -76,8 +77,8 @@
                                 </div>
                                 <div class="md-card-list-item-sender">
                                     <span><?php 
-                                    $sessId = "'".$_SESSION["user_id"]."'"; 
-                                    $to_ids = "'".$all_faxs['to_id']."'";
+                                    echo $sessId = "'".$_SESSION["user_id"]."'"; 
+                                    echo $to_ids = "'".$all_faxs['to_id']."'";
                                     echo $pos = strstr($to_ids,$sessId);
                                     if ($pos !== false) {
                                         echo 'I found Waldo!';
@@ -2297,6 +2298,7 @@
                     
                     var labels = $('#labels').val();
                     var values = $('#values').val();
+                    var all_vals = $('#mail_new_to').val();                    
                     
                     if(labels == "")
                     {
@@ -2308,11 +2310,14 @@
                         $('#labels').val(labels+","+selected_label);
                         $('#values').val(values+","+selected_value);
                     }   
+                    alert(all_vals); alert(values);
                     
                 return false;
                 }
             });
-        });     
+        });   
+
+
 	</script>
    
 	

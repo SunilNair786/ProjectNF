@@ -93,11 +93,11 @@
                                         <i class="md-icon material-icons" onclick='javscript:saveNote();'>&#xE161;</i>
 
                                     </div>
-                                    <input name="note_title" id="note_title" class="md-card-toolbar-input" type="text" value="" placeholder="Add title" />
+                                    <input name="note_title" id="note_title" class="md-card-toolbar-input" type="text" value="" placeholder="Add title" required />
 									<span style='color:red;' id='error_title'></span>
                                 </div>
                                 <div class="md-card-content">
-                                    <textarea    name="note_content" id="note_content" class="textarea_autosize md-input autosize_init" cols="30" rows="12" placeholder="Add content" style="overflow-x: hidden; word-wrap: break-word; height: 308.909px; overflow-y: visible;" ></textarea>
+                                    <textarea  required   name="note_content" id="note_content" class="textarea_autosize md-input autosize_init" cols="30" rows="12" placeholder="Add content" style="overflow-x: hidden; word-wrap: break-word; height: 308.909px; overflow-y: visible;" ></textarea>
 									<input type='hidden' name='note_id' id='note_id' value="" />
 									<span style='color:red;' id='error_content'></span>
                                 </div>
@@ -220,7 +220,7 @@
             </p>
         </div>
     </div>
-
+	<script src="assets/js/common_nf.js"></script>
     <script>
         $(function() {
             var $switcher = $('#style_switcher'),
@@ -344,15 +344,7 @@
 			frm.submit();
 		}
 		
-		function trimAll(sString){
-			while (sString.substring(0,1) == ' '){
-				sString = sString.substring(1, sString.length);
-			}
-			while (sString.substring(sString.length-1, sString.length) == ' '){
-				sString = sString.substring(0,sString.length-1);
-			}
-			return sString;
-		}
+		
 		function deleteNote(noteId){						
 			if(confirm('Do you want delete the notes?')){				
 				document.getElementById('default_action').value = 'delete';

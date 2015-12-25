@@ -108,11 +108,17 @@ class userController
 		$deleteNote = $this->userClsObj->deleteNote($noteId);
 	}
 	
-	public function fetchCountNotes($userId){
-		//echo $userId; exit;
-		$fetchCount  = $this->userClsObj->fetchCountNotes($userId);
-		
+	public function fetchCountNotes($userId){		
+		$fetchCount  = $this->userClsObj->fetchCountNotes($userId);		
 		return $fetchCount;
+	}
+	
+	// Inser new User 
+	public function insertUser($arr){
+		echo "<pre>";
+		print_r($arr); exit;
+		$newUser  = $this->userClsObj->insertUser($arr);		
+		return $newUser;
 	}
 }
 

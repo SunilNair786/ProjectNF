@@ -75,7 +75,9 @@ $cUrl = basename($_SERVER['REQUEST_URI']);
                     <span class="menu_title">Notes</span>
                 </a>
             </li>
-            
+            <?php 
+			 if($_SESSION['userType'] == 'AU'){
+			?>
             <li title="User Management">
                 <a href="usermanagement.php" <?php if($cUrl == "usermanagement.php"){ ?> class="active"<?php } ?>>
                     <span class="menu_icon"><!-- <i class="material-icons">&#xE158;</i> -->
@@ -84,6 +86,7 @@ $cUrl = basename($_SERVER['REQUEST_URI']);
                     <span class="menu_title">User Management </span>
                 </a>
             </li>
+			 <?php } ?>
             <li title="Contact Lists">
                 <a href="contact.php" <?php if($cUrl == "contact.php"){ ?> class="active"<?php } ?>>
                     <span class="menu_icon"><!-- <i class="material-icons">&#xE158;</i> -->
