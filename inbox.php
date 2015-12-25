@@ -34,6 +34,7 @@
 ?>
 
 <style>
+/*for autocomplete css*/
 .ui-widget-content
 {
     z-index: 9999 !important;
@@ -61,7 +62,7 @@
                                     <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
                                     <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
                                     <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-trash"></i></a></li>
+                                    <li><a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&id=<?php echo $indGroup['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a></li>
                                     <li><a href="#"><i class="fa fa-star"></i> </a></li>
                                 </ul>
                                 <div class="md-card-list-item-menu">

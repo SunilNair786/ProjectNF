@@ -10121,10 +10121,10 @@ body:after {
 }
 
 .app_theme_a{
-	background: #e9ecff;
+	background: #e5eae5;
 }
 .app_theme_b{
-	background: #ede7dd;
+	background: #e9e6e1;
 }
 .app_theme_c{
 	background: #f5ece9;
@@ -10139,11 +10139,11 @@ body:after {
 	background: #dedede;
 }
 .app_theme_g{
-	background: #f7f0f9;
+	background: #e9ecff;
 }
-.app_theme_a .active{background:#d2d5ea !important;}
+.app_theme_a .active{background:#cdd0cd !important;}
 
-.app_theme_a #sidebar_main .menu_section > ul > li > a:hover { background:#d2d5ea !important;}
+.app_theme_a #sidebar_main .menu_section > ul > li > a:hover { background:#cdd0cd !important;}
 
 .app_theme_b .active{background:#d6d0c9 !important;}
 
@@ -10167,9 +10167,9 @@ body:after {
 
 .app_theme_f #sidebar_main .menu_section > ul > li > a:hover { background:#cbcaca !important;}
 
-.app_theme_g .active{background:#e5dae8 !important;}
+.app_theme_g .active{background:#d2d5ea  !important;}
 
-.app_theme_g #sidebar_main .menu_section > ul > li > a:hover { background:#e5dae8 !important;}
+.app_theme_g #sidebar_main .menu_section > ul > li > a:hover { background:#d2d5ea  !important;}
 
 
 
@@ -10252,7 +10252,7 @@ body:after {
 	border-left-color: #3f51b5
 }
 .app_theme_a #header_main {
-	background: #3f51b5;
+	background: #0f9d58;
 }
 .app_theme_a.header_double_height #page_content:after {
 	background: #3f51b5
@@ -11098,7 +11098,7 @@ body:after {
 	border-left-color: #8e24aa
 }
 .app_theme_g #header_main {
-	background: #8e24aa
+	background: #3f51b5 
 }
 .app_theme_g.header_double_height #page_content:after {
 	background: #8e24aa
@@ -11235,7 +11235,7 @@ body:after {
 	background: #7cb342
 }
 #style_switcher .switcher_app_themes li.switcher_theme_a .app_color_main {
-	background: #3f51b5
+	background: #0f9d58
 }
 #style_switcher .switcher_app_themes li.switcher_theme_a .app_color_accent {
 	background: #ff4081
