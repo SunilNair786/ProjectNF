@@ -52,7 +52,13 @@
                             <?php
                             $collection = $db->nf_user_fax; 
                             $allfaxs = $collection->find();                               
-                            foreach ($allfaxs as $all_faxs) {                                
+                            foreach ($allfaxs as $all_faxs) {            
+                                
+                                $sessId = $_SESSION["user_id"]; 
+                                $to_ids = explode(",",$all_faxs['to_id']);                                    
+                                
+                                if(in_array($sessId,$to_ids)) {                                   
+
                                 // User Details
                                 $collection = $db->nf_user; 
                                 $userDetails = $collection->findOne(array('_id' => new MongoId($all_faxs['from_id'])));
@@ -75,24 +81,13 @@
                                     <span class="md-card-list-item-avatar md-bg-grey">hp</span>
                                 </div>
                                 <div class="md-card-list-item-sender">
-                                    <span><?php 
-                                    $sessId = $_SESSION["user_id"]; 
-                                    $to_ids = explode(",",$all_faxs['to_id']);                                    
-                                    
-                                    if(in_array($sessId,$to_ids)) {
-                                        echo 'I found Waldo!';
-                                    }
-                                    else
-                                    {
-                                        echo "founded";
-                                    }
-                                    ?></span>
+                                    <span><?php echo $userDetails['email_id']; ?></span>
                                 </div>
                                 <div class="md-card-list-item-subject">
                                     <div class="md-card-list-item-sender-small">
                                         <span>sophia70@danielnicolas.info</span>
                                     </div>
-                                    <span>Dolorum omnis fugit facere voluptatem.</span>
+                                    <span><?php echo substr($all_faxs['message_body'],0,20);?></span>
                                 </div>
                                 <div class="md-card-list-item-content-wrapper">
                                     <div class="md-card-list-item-content">
@@ -105,7 +100,9 @@
                                     </form>
                                 </div>
                             </li>
-                            <?php } ?>
+                            <?php } 
+                            } //If condition close
+                            ?>
                             <li>
                                 <ul class="options">
                             <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 

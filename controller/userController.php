@@ -114,9 +114,7 @@ class userController
 	}
 	
 	// Inser new User 
-	public function insertUser($arr){
-		echo "<pre>";
-		print_r($arr); exit;
+	public function insertUser($arr){		
 		$newUser  = $this->userClsObj->insertUser($arr);		
 		return $newUser;
 	}

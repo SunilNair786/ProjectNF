@@ -1,19 +1,20 @@
+
 <?php include_once('includes/header.php'); ?>
 <!-- main header end -->
 <!-- main sidebar -->
 <?php include_once('includes/sidemenu.php'); ?>
 <!-- main sidebar end -->
 <?php
-echo "<pre>";
-print_r($_REQUEST);
-if(isset($_REQUEST['btnSubmit'])){
+
+if(isset($_REQUEST['default_action']) && $_REQUEST['default_action'] == 'addUser' ){
+	echo "I m here";
 	$arrUser['first_name'] = $_POST['first_name'];
 	$arrUser['last_name'] = $_POST['last_name'];
 	$arrUser['email'] = $_POST['email'];
-	$arrUser['passsword'] = $_POST['password'];
+	$arrUser['password'] = $_POST['password'];	
 	$arrUser['phone'] = $_POST['phone'];
 	$arrUser['fax'] = $_POST['fax'];
-	
+	$arrUser['description'] = $_POST['description'];	
 	$userContObj->insertUser($arrUser);
 	
 }
@@ -102,6 +103,7 @@ if(isset($_REQUEST['btnSubmit'])){
 	        <div class="uk-modal-dialog">
 	        <button class="uk-modal-close uk-close" type="button"></button>
 	             <form name='userReg' method='post' action='usermanagement.php' >
+				 <input type='hidden' name='default_action' id='default_action' value='addUser' />
 										<div class="uk-form-row">
 												<label for="register_username">First Name</label>
 												<input class="md-input" type="text" id="first_name" name="first_name" required//>
