@@ -13,8 +13,7 @@ if(isset($_REQUEST['btnSubmit'])){
 	$arrUser['passsword'] = $_POST['password'];
 	$arrUser['phone'] = $_POST['phone'];
 	$arrUser['fax'] = $_POST['fax'];
-	echo "<pre>";
-		print_r($arr); exit;
+	
 	$userContObj->insertUser($arrUser);
 	
 }
