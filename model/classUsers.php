@@ -188,6 +188,16 @@ class users{
 		$collection->insert($insUser);			
 	}
 	
+	public function updateUser($arr){
+				
+		$collection = $this->db->nf_user;
+		
+		$editUser = array("company_id" => "1" ,"first_name" => $arr['first_name'],"last_name" => $arr['last_name'],"email_id" => $arr['email'],"description" => $arr['description'],"phone" => $arr['phone'],"fax" => $arr['fax'],"modified_date" => $this->cfObj->createDate());
+		
+		$collection->update(array("_id" => new MongoId($arr['user_id'])),array('$set' => $editUser));				
+	}
+	
+	
 	public function searchUserDetails($searchWord){
 		$regex =  new MongoRegex("/$searchWord/i");
 		

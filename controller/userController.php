@@ -119,13 +119,19 @@ class userController
 		return $newUser;
 	}
 	
-	// Inser new User 
+	// Edit new User 
+	public function updateUser($arr){				
+		$newUser  = $this->userClsObj->updateUser($arr);			
+		return $newUser;
+	}
+	
+	//Search User 
 	public function searchUserDetails($strUser){		
 		$userDetails  = $this->userClsObj->searchUserDetails($strUser);		
 		return $userDetails;
 	}
 	
-	// Inser new User 
+	// Search User Count
 	public function searchUserDetailsCount($strUser){		
 		$userDetails  = $this->userClsObj->searchUserDetailsCount($strUser);		
 		return $userDetails;

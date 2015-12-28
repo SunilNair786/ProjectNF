@@ -27,9 +27,9 @@ if($_REQUEST['action'] == "delete")
     exit;
 }
 
-if(isset($_GET['contact_list_search'])){	
-	$searchUser = $userContObj->searchUserDetails($_GET['contact_list_search']);	
-	$searchUserCnt = $userContObj->searchUserDetailsCount($_GET['contact_list_search']);	
+if(isset($_GET['searchParam'])){	
+	$searchUser = $userContObj->searchUserDetails($_GET['searchParam']);	
+	$searchUserCnt = $userContObj->searchUserDetailsCount($_GET['searchParam']);	
 	
 }
 ?>
@@ -44,12 +44,12 @@ if(isset($_GET['contact_list_search'])){
                             <div class="uk-vertical-align">
                                 <div class="uk-vertical-align-middle">
                                     <ul id="contact_list_filter" class="uk-subnav uk-subnav-pill uk-margin-remove">
-                                        <li class="uk-active" data-uk-filter=""><a href="#">All</a></li>
+                                        <li class="uk-active" data-uk-filter=""><a href="contact.php">All</a></li>
                                         <?php 
                                         $collection = $db->nf_user_groups; 
                                         $allgroups1 = $collection->find();
                                         foreach($allgroups1 as $allgroups12){?>
-                                            <li data-uk-filter="<?php echo $allgroups12['group_name']; ?>"><a href="#"><?php echo $allgroups12['group_name']; ?></a></li>
+                                            <li data-uk-filter="<?php echo $allgroups12['group_name']; ?>"><a href="contact.php"><?php echo $allgroups12['group_name']; ?></a></li>
                                         <?php } ?>                                        
                                     </ul>
                                 </div>
@@ -58,7 +58,7 @@ if(isset($_GET['contact_list_search'])){
                         <div class="uk-width-medium-1-2">
 								<form name='searchFrm' action='contact.php' />
 									<label for="contact_list_search">Find user</label>
-									<input class="md-input" type="text" name ='contact_list_search' id="contact_list_search" onkeypress="return searchContact(event)" />
+									<input class="md-input" type="text" name ="searchParam" id="searchParam" onkeypress="return searchContact(event)" />
 								</form>
                         </div>
                     </div>
@@ -68,69 +68,131 @@ if(isset($_GET['contact_list_search'])){
             <div class="uk-grid-width-small-1-2 uk-grid-width-medium-1-3 uk-grid-width-large-1-4 uk-grid-width-xlarge-1-5 hierarchical_show" id="contact_list">       
 
                 <?php 
-				if($searchUserCnt  == 0) { echo "<p style='color:red'>No users found.</p>";}
+				
 				if($searchUserCnt > 0 ){	
-					$allContactList = $searchUser;
+					$allContactList = $searchUser;			
 					
 				}else{
 					$Cinc = 1;
 					$collection = $db->nf_user_contacts; 
 					$allContactList = $collection->find(array("user_id" =>$_SESSION['user_id']))->sort(array("created_date" => -1));
 				}	
-			
-                foreach($allContactList as $contactList){
+			   
+				if(isset($_GET['searchParam']) && $searchUserCnt  == 0 ){
+					echo "<p style='color:red'>No contacts found.</p>";
+				}else if ($searchUserCnt  > 1 ){
 					
-                    // for Group Name
-                    $collection = $db->nf_user_groups; 
-                    $allContactLists1 = $collection->findOne(array('_id' => new MongoId($contactList['group_id'])));?>
+					foreach($allContactList as $contactList){
+						$collection = $db->nf_user_groups; 
+						$allContactLists1 = $collection->findOne(array('_id' => new MongoId($contactList['group_id'])));
+				?>	
+					<div data-uk-filter="<?php echo $allContactLists1['group_name']; ?>,<?php echo $contactList["contact_name"];?>">
+							<div class="md-card md-card-hover">
+								<div class="md-card-head">
+									<div class="md-card-head-menu" data-uk-dropdown="{pos:'bottom-right'}">
+										<i class="md-icon material-icons">&#xE5D4;</i>
+										<div class="uk-dropdown uk-dropdown-small">
+											<ul class="uk-nav">
+												<li><a href="#Edit_contact_<?php echo $Cinc;?>" data-uk-modal="{center:true}">Edit</a></li>
+												<li><a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'contact.php?action=delete&id=<?php echo $contactList['_id'];?>'; return false;}">Remove</a></li>
+											</ul>
+										</div>
+									</div>
+									<div class="uk-text-center">
+										<img class="md-card-head-avatar" src="assets/img/avatars/avatar_08.png" alt=""/>
+									</div>
+									<h3 class="md-card-head-text uk-text-center">
+										<?php echo $contactList["contact_name"];?>
+										<span class="uk-text-truncate">
+											<?php echo $allContactLists1['group_name']; ?>                                                  
+										</span>
+									</h3>
+								</div>
+								<div class="md-card-content">
+									<ul class="md-list">
+										<li style="height:70px;">
+											<div class="md-list-content">
+												<span class="md-list-heading">Info</span>
+												<span class="uk-text-small uk-text-muted"><?php echo $contactList["contact_info"];?></span>
+											</div>
+										</li>
+										<li>
+											<div class="md-list-content">
+												<span class="md-list-heading">Email</span>
+												<span class="uk-text-small uk-text-muted uk-text-truncate"><?php echo $contactList["email"];?></span>
+											</div>
+										</li>
+										<li>
+											<div class="md-list-content">
+												<span class="md-list-heading">Phone</span>
+												<span class="uk-text-small uk-text-muted"><?php echo $contactList["phone"];?></span>
+											</div>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					<?php $Cinc++;  	
+						}
+				
+				}else{	
+					foreach($allContactList as $contactList){
+						
+						// for Group Name
+						$collection = $db->nf_user_groups; 
+						$allContactLists1 = $collection->findOne(array('_id' => new MongoId($contactList['group_id'])));
+				?>
 
-                    <div data-uk-filter="<?php echo $allContactLists1['group_name']; ?>,<?php echo $contactList["contact_name"];?>">
-                        <div class="md-card md-card-hover">
-                            <div class="md-card-head">
-                                <div class="md-card-head-menu" data-uk-dropdown="{pos:'bottom-right'}">
-                                    <i class="md-icon material-icons">&#xE5D4;</i>
-                                    <div class="uk-dropdown uk-dropdown-small">
-                                        <ul class="uk-nav">
-                                            <li><a href="#Edit_contact_<?php echo $Cinc;?>" data-uk-modal="{center:true}">Edit</a></li>
-                                            <li><a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'contact.php?action=delete&id=<?php echo $contactList['_id'];?>'; return false;}">Remove</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="uk-text-center">
-                                    <img class="md-card-head-avatar" src="assets/img/avatars/avatar_08.png" alt=""/>
-                                </div>
-                                <h3 class="md-card-head-text uk-text-center">
-                                    <?php echo $contactList["contact_name"];?>
-                                    <span class="uk-text-truncate">
-                                        <?php echo $allContactLists1['group_name']; ?>                                                  
-                                    </span>
-                                </h3>
-                            </div>
-                            <div class="md-card-content">
-                                <ul class="md-list">
-                                    <li style="height:70px;">
-                                        <div class="md-list-content">
-                                            <span class="md-list-heading">Info</span>
-                                            <span class="uk-text-small uk-text-muted"><?php echo $contactList["contact_info"];?></span>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="md-list-content">
-                                            <span class="md-list-heading">Email</span>
-                                            <span class="uk-text-small uk-text-muted uk-text-truncate"><?php echo $contactList["email"];?></span>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="md-list-content">
-                                            <span class="md-list-heading">Phone</span>
-                                            <span class="uk-text-small uk-text-muted"><?php echo $contactList["phone"];?></span>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                <?php $Cinc++; } ?>
+						<div data-uk-filter="<?php echo $allContactLists1['group_name']; ?>,<?php echo $contactList["contact_name"];?>">
+							<div class="md-card md-card-hover">
+								<div class="md-card-head">
+									<div class="md-card-head-menu" data-uk-dropdown="{pos:'bottom-right'}">
+										<i class="md-icon material-icons">&#xE5D4;</i>
+										<div class="uk-dropdown uk-dropdown-small">
+											<ul class="uk-nav">
+												<li><a href="#Edit_contact_<?php echo $Cinc;?>" data-uk-modal="{center:true}">Edit</a></li>
+												<li><a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'contact.php?action=delete&id=<?php echo $contactList['_id'];?>'; return false;}">Remove</a></li>
+											</ul>
+										</div>
+									</div>
+									<div class="uk-text-center">
+										<img class="md-card-head-avatar" src="assets/img/avatars/avatar_08.png" alt=""/>
+									</div>
+									<h3 class="md-card-head-text uk-text-center">
+										<?php echo $contactList["contact_name"];?>
+										<span class="uk-text-truncate">
+											<?php echo $allContactLists1['group_name']; ?>                                                  
+										</span>
+									</h3>
+								</div>
+								<div class="md-card-content">
+									<ul class="md-list">
+										<li style="height:70px;">
+											<div class="md-list-content">
+												<span class="md-list-heading">Info</span>
+												<span class="uk-text-small uk-text-muted"><?php echo $contactList["contact_info"];?></span>
+											</div>
+										</li>
+										<li>
+											<div class="md-list-content">
+												<span class="md-list-heading">Email</span>
+												<span class="uk-text-small uk-text-muted uk-text-truncate"><?php echo $contactList["email"];?></span>
+											</div>
+										</li>
+										<li>
+											<div class="md-list-content">
+												<span class="md-list-heading">Phone</span>
+												<span class="uk-text-small uk-text-muted"><?php echo $contactList["phone"];?></span>
+											</div>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					<?php $Cinc++; 
+					} 
+				}	
+				?>
 
 
             </div>
@@ -459,9 +521,9 @@ if(isset($_GET['contact_list_search'])){
 
         });
 		
-		function searchContact(e) {
+		function searchContact(e) {			
 			if (e.keyCode == 13) {				
-				var searchKey = document.getElementById("contact_list_search").value;
+				var searchKey = document.getElementById("searchParam").value;			
 				document.searchFrm.submit();
 			}
 		}

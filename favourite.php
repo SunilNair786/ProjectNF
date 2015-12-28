@@ -1,42 +1,8 @@
-<!doctype html>
-<!--[if lte IE 9]> <html class="lte-ie9" lang="en"> <![endif]-->
-<!--[if gt IE 9]><!--> <html lang="en"> <!--<![endif]-->
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<!-- Remove Tap Highlight on Windows Phone IE -->
-	<meta name="msapplication-tap-highlight" content="no"/>
-
-	<link rel="icon" type="image/png" href="assets/img/favicon-16x16.png" sizes="16x16">
-	<link rel="icon" type="image/png" href="assets/img/favicon-32x32.png" sizes="32x32">
-
-	<title>NeXt FaX - Dashboard</title>
-
-
-	<!-- uikit -->
-	<link rel="stylesheet" href="bower_components/uikit/css/uikit.almost-flat.min.css" media="all">
-
-	<!-- flag icons -->
-	<link rel="stylesheet" href="assets/icons/flags/flags.min.css" media="all">
-
-	<!-- altair admin -->
-	<link rel="stylesheet" href="assets/css/main.min.css" media="all">
-
-	<!-- matchMedia polyfill for testing media queries in JS -->
-	<!--[if lte IE 9]>
-		<script type="text/javascript" src="bower_components/matchMedia/matchMedia.js"></script>
-		<script type="text/javascript" src="bower_components/matchMedia/matchMedia.addListener.js"></script>
-	<![endif]-->
-
-</head>
-<body class=" sidebar_main_open sidebar_main_swipe">
-		<!-- main header -->
-	<?php include_once('includes/header.php')?>
-	<!-- main header end -->
-	<!-- main sidebar -->
-	<?php include_once('includes/sidemenu.php')?>
-	<!-- main sidebar end -->
+<?php include_once('includes/header.php'); ?>
+<!-- main header end -->
+<!-- main sidebar -->
+<?php include_once('includes/sidemenu.php'); ?>
+<!-- main sidebar end -->
 
 <div id="page_content">
         <div id="page_content_inner">
@@ -47,6 +13,22 @@
                         <div class="md-card-list-header heading_list">Today</div>
                         <div class="md-card-list-header md-card-list-header-combined heading_list" style="display: none">All Messages</div>
                         <ul class="hierarchical_slide">
+                            <?php 
+                            //echo date('Y-m-d H:i:s',strtotime("-1 days"));
+                            $collection = $db->nf_user_fax; 
+                            $allfaxCount = $collection->find(array("favorites" => "Y"))->count();  
+                            $favFaxs = $collection->find(array("favorites" => "Y"));
+
+                            foreach ($favFaxs as $fav_Faxs) {            
+                                
+                                $sessId = $_SESSION["user_id"]; 
+                                $to_ids = explode(",",$fav_Faxs['to_id']);                                    
+                                
+                                if(in_array($sessId,$to_ids)) {    
+                                // User Details
+                                $collection = $db->nf_user; 
+                                $indUserDetails = $collection->findOne(array('_id' => new MongoId($fav_Faxs['from_id'])));
+                            ?>
                             <li>
                                 <div class="md-card-list-item-menu" data-uk-dropdown="{mode:'click',pos:'bottom-right'}">
                                     <a href="#" class="md-icon material-icons">&#xE5D4;</a>
@@ -63,27 +45,29 @@
                                     <input type="checkbox" data-md-icheck />
                                 </div>
                                 <div class="md-card-list-item-avatar-wrapper">
-                                    <span class="md-card-list-item-avatar md-bg-grey">hp</span>
+                                    <span class="md-card-list-item-avatar md-bg-grey"><?php echo substr($indUserDetails['first_name'],0,1); echo substr($indUserDetails['last_name'],0,1);?></span>
                                 </div>
                                 <div class="md-card-list-item-sender">
-                                    <span>sophia70@danielnicolas.info</span>
+                                    <span><?php echo $indUserDetails['email_id']; ?></span>
                                 </div>
                                 <div class="md-card-list-item-subject">
                                     <div class="md-card-list-item-sender-small">
                                         <span>sophia70@danielnicolas.info</span>
                                     </div>
-                                    <span>Dolorum omnis fugit facere voluptatem.</span>
+                                    <span><?php echo substr($fav_Faxs['message_body'],0,20);?></span>
                                 </div>
                                 <div class="md-card-list-item-content-wrapper">
                                     <div class="md-card-list-item-content">
-                                        Autem et in qui natus repudiandae molestiae doloribus necessitatibus aut ea repudiandae voluptas voluptas molestiae odit assumenda et rem corrupti quia sunt in ut qui ipsam maiores officiis sapiente iusto et dolor consequatur et eius fugit possimus dignissimos sapiente deserunt perferendis voluptatem molestiae architecto eum accusamus omnis.                                    </div>
+                                        <?php echo $fav_Faxs['message_body']; ?>
                                     <form class="md-card-list-item-reply">
-                                        <label for="mailbox_reply_1895">Reply to <span>sophia70@danielnicolas.info</span></label>
+                                        <label for="mailbox_reply_1895">Reply to <span><?php echo $indUserDetails['email_id']; ?></span></label>
                                         <textarea class="md-input md-input-full" name="mailbox_reply_1895" id="mailbox_reply_1895" cols="30" rows="4"></textarea>
                                         <button class="md-btn md-btn-flat md-btn-flat-primary">Send</button>
                                     </form>
                                 </div>
                             </li>
+                            <?php } 
+                            }?>
                             <li>
                                 <div class="md-card-list-item-menu" data-uk-dropdown="{mode:'click',pos:'bottom-right'}">
                                     <a href="#" class="md-icon material-icons">&#xE5D4;</a>

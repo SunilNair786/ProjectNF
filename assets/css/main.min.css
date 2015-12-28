@@ -11318,12 +11318,13 @@ body:after {
 	font-weight: normal;
 	margin: 11px 0 0 10px;
 }
-.md-card-list ul li ul{display:none;position:absolute;right:0;top:0;background:#fff;}
+.md-card-list ul li .md-card-list-item-menu {display:none;}
 
-.md-card-list ul li:hover .options{display:block;position:absolute;right:0;top:0;background:#fff;}
+.md-card-list ul li:hover .md-card-list-item-menu{display:block;position:absolute;right:0;top:0;background:#fff;}
+.margn{margin:14px 0 0 0 !important;}
 
-.md-card-list ul li ul li{float:left;padding:14px 0 0 0;list-style-type:none;font-size:17px;}
-.md-card-list ul li ul li a{color:#797979;padding:0 21px 0 0;}
+.md-card-list ul li .md-card-list-item-menu a{list-style-type:none;font-size:17px;color:#797979;padding:0 14px 0 0;}
+ 
 .md-fab-wrapper .compose{display:none;position: absolute;
     top:-176px;margin:8px 0 0 -19px;}
 .md-fab-wrapper:hover .compose{display:block; position: absolute;

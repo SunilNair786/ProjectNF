@@ -68,21 +68,21 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 $collection = $db->nf_user; 
                                 $userDetails = $collection->findOne(array('_id' => new MongoId($all_faxs['from_id'])));
                                 ?>           
-                            <li class="listingg2">
-                                <ul class="options">
-                                    <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                                    <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                                    <li><a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a></li>
-                                    <li>                                        
+                            <li>
+                                <div class="md-card-list-item-menu margn">                                    
+                                    <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                    <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                    <a href="#"><i class="fa fa-tags"></i></a>
+                                    <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                         
+                                    <span id="favs_sec_<?php echo $all_faxs['_id'];?>">
                                         <?php if($all_faxs['favorites'] == "N"){?>
-                                            <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                        <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
                                         <?php } else { ?>
-                                            <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
-                                        <?php } ?>                                        
-                                    </li>
-                                </ul>
-                                <div class="md-card-list-item-menu">
+                                        <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                        <?php } ?> 
+                                    </span>
+
                                 </div>
                                 <span class="md-card-list-item-date">13 Nov</span>
                                 <div class="md-card-list-item-select">
@@ -115,13 +115,24 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                             } //If condition close
                             ?>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                             
+                            <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
+                           
                                 <span class="md-card-list-item-date">13 Nov</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -149,13 +160,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">13 Nov</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -183,13 +203,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">13 Nov</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -222,13 +251,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                         <div class="md-card-list-header heading_list">Yesterday</div>
                         <ul class="hierarchical_slide">
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">12 Nov</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -256,13 +294,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">12 Nov</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -290,13 +337,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">12 Nov</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -324,13 +380,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">12 Nov</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -358,13 +423,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">12 Nov</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -392,13 +466,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">12 Nov</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -426,13 +509,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">12 Nov</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -465,13 +557,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                         <div class="md-card-list-header heading_list">This Month</div>
                         <ul class="hierarchical_slide">
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">12 Nov</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -499,13 +600,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">12 Nov</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -533,13 +643,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">12 Nov</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -567,13 +686,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">10 Nov</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -601,13 +729,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">10 Nov</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -635,13 +772,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">9 Nov</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -669,13 +815,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">7 Nov</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -703,13 +858,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">6 Nov</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -737,13 +901,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">5 Nov</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -771,13 +944,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">5 Nov</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -805,13 +987,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">3 Nov</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -839,13 +1030,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">2 Nov</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -873,13 +1073,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">2 Nov</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -907,13 +1116,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">1 Nov</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -941,13 +1159,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">1 Nov</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -980,13 +1207,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                         <div class="md-card-list-header heading_list">Older Messages</div>
                         <ul class="hierarchical_slide">
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">6 Sep</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -1014,13 +1250,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">9 Oct</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -1048,13 +1293,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">16 Jul</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -1082,13 +1336,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">4 Aug</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -1116,13 +1379,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">3 Oct</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -1150,13 +1422,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">4 Oct</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -1184,13 +1465,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">3 Aug</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -1218,13 +1508,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">8 Aug</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -1252,13 +1551,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">7 Oct</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -1286,13 +1594,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">18 Aug</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -1320,13 +1637,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">2 Oct</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -1354,13 +1680,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">24 Sep</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -1388,13 +1723,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">3 Sep</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -1422,13 +1766,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">18 Aug</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -1456,13 +1809,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">29 Aug</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -1490,13 +1852,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">4 Aug</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -1524,13 +1895,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">11 Oct</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -1558,13 +1938,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">23 Aug</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -1592,13 +1981,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">19 Aug</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -1626,13 +2024,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">7 Sep</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -1660,13 +2067,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">19 Sep</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -1694,13 +2110,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">6 Oct</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -1728,13 +2153,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">6 Sep</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -1762,13 +2196,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">3 Aug</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -1796,13 +2239,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">17 Jul</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -1830,13 +2282,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">24 Sep</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -1864,13 +2325,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">11 Aug</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -1898,13 +2368,22 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 </div>
                             </li>
                             <li>
-                                <ul class="options">
-                            <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
-                            <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                             <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                              <li><a href="#"><i class="fa fa-star"></i> </a></li>
-                             </ul>
+                                <div class="md-card-list-item-menu margn">
+                                    
+                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                        <a href="#"><i class="fa fa-tags"></i></a>
+                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                                                             
+                                            <?php if($all_faxs['favorites'] == "N"){?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <?php } else { ?>
+                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <?php } ?> 
+                                            
+                                                                                  
+                             
+                                </div>
                                 <span class="md-card-list-item-date">28 Jul</span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
@@ -2232,18 +2711,36 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                 success:function(html){    
                     if(Fval == 'Y')      
                     {
-                        alert('Successfully added to favorites');
-                        $()
+                        alert('Successfully added to favorites'); 
+                        $('#favs_sec_'+FID).load(location.href + " #favs_sec_"+FID);
                     }
                     else
                     {
-                        alert('Successfully removed from favorites');
+                        alert('Successfully removed from favorites');      
+                        $('#favs_sec_'+FID).load(location.href + " #favs_sec_"+FID);
                     }                    
                 }
             });        
         }
 
+        // $(document).ready(function(){
+        //     $('.fa-reply-all').on('click',function(){
+        //         $(this).closest('li').css()
+        //         margin: 40px -20px; min-height: 306px;
+        //     });
+        // })
+
      </script>
+     <script type="text/javascript"><!--
+	div = {
+		show: function(elem) {
+			document.getElementById(elem).style.visibility = 'visible';
+		},
+		hide: function(elem) {
+			document.getElementById(elem).style.visibility = 'hidden';
+		}
+	}
+--></script>
 
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">  
     <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>    
