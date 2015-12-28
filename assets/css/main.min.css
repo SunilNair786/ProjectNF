@@ -9984,7 +9984,7 @@ body.pace-done>.page_preloader {
 	z-index: -1
 }
 #page_content_inner {
-	padding: 24px 0 0 100px
+	padding: 24px 0 23px 100px
 }
 
 @media only screen and (min-width:1220px) {
@@ -10264,7 +10264,7 @@ body:after {
 	box-shadow: inset 0 -3px 0 #3f51b5
 }
 .app_theme_a .user_heading {
-	background: #303f9f
+	background: #0f9d58 
 }
 .app_theme_a #sidebar_main .menu_section>ul>li ul li.act_item a {
 	color: #ff4081
@@ -10405,7 +10405,7 @@ body:after {
 	box-shadow: inset 0 -3px 0 #673ab7
 }
 .app_theme_b .user_heading {
-	background: #512da8
+	background: #ef6c00 
 }
 .app_theme_b #sidebar_main .menu_section>ul>li ul li.act_item a {
 	color: #00bcd4
@@ -11110,7 +11110,7 @@ body:after {
 	box-shadow: inset 0 -3px 0 #8e24aa
 }
 .app_theme_g .user_heading {
-	background: #7b1fa2
+	background: #3f51b5 
 }
 .app_theme_g #sidebar_main .menu_section>ul>li ul li.act_item a {
 	color: #4caf50

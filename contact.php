@@ -27,6 +27,11 @@ if($_REQUEST['action'] == "delete")
     exit;
 }
 
+if(isset($_GET['contact_list_search'])){	
+	$searchUser = $userContObj->searchUserDetails($_GET['contact_list_search']);	
+	$searchUserCnt = $userContObj->searchUserDetailsCount($_GET['contact_list_search']);	
+	
+}
 ?>
 <div id="page_content">
     <div id="page_content_inner">
@@ -51,8 +56,10 @@ if($_REQUEST['action'] == "delete")
                             </div>
                         </div>
                         <div class="uk-width-medium-1-2">
-                            <label for="contact_list_search">Find user</label>
-                            <input class="md-input" type="text" id="contact_list_search"/>
+								<form name='searchFrm' action='contact.php' />
+									<label for="contact_list_search">Find user</label>
+									<input class="md-input" type="text" name ='contact_list_search' id="contact_list_search" onkeypress="return searchContact(event)" />
+								</form>
                         </div>
                     </div>
                 </div>
@@ -61,12 +68,18 @@ if($_REQUEST['action'] == "delete")
             <div class="uk-grid-width-small-1-2 uk-grid-width-medium-1-3 uk-grid-width-large-1-4 uk-grid-width-xlarge-1-5 hierarchical_show" id="contact_list">       
 
                 <?php 
-                $Cinc = 1;
-                $collection = $db->nf_user_contacts; 
-                $allContactList = $collection->find(array("user_id" =>$_SESSION['user_id']))->sort(array("created_date" => -1));
-
+				if($searchUserCnt  == 0) { echo "<p style='color:red'>No users found.</p>";}
+				if($searchUserCnt > 0 ){	
+					$allContactList = $searchUser;
+					
+				}else{
+					$Cinc = 1;
+					$collection = $db->nf_user_contacts; 
+					$allContactList = $collection->find(array("user_id" =>$_SESSION['user_id']))->sort(array("created_date" => -1));
+				}	
+			
                 foreach($allContactList as $contactList){
-
+					
                     // for Group Name
                     $collection = $db->nf_user_groups; 
                     $allContactLists1 = $collection->findOne(array('_id' => new MongoId($contactList['group_id'])));?>
@@ -445,6 +458,13 @@ if($_REQUEST['action'] == "delete")
 
 
         });
+		
+		function searchContact(e) {
+			if (e.keyCode == 13) {				
+				var searchKey = document.getElementById("contact_list_search").value;
+				document.searchFrm.submit();
+			}
+		}
     </script>
 </body>
 </html>

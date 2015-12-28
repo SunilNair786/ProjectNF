@@ -118,6 +118,19 @@ class userController
 		$newUser  = $this->userClsObj->insertUser($arr);		
 		return $newUser;
 	}
+	
+	// Inser new User 
+	public function searchUserDetails($strUser){		
+		$userDetails  = $this->userClsObj->searchUserDetails($strUser);		
+		return $userDetails;
+	}
+	
+	// Inser new User 
+	public function searchUserDetailsCount($strUser){		
+		$userDetails  = $this->userClsObj->searchUserDetailsCount($strUser);		
+		return $userDetails;
+	}
+
 }
 
 ?>

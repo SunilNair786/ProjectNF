@@ -16,9 +16,9 @@ class users{
 	// Checking the User Credentials
 	public function checkAuth($post){				
 		
-		$collection = $this->db->nf_user;
-		
-		$resultC = $collection->find(array("email_id" => $_POST['login_email'] , "password" =>md5($_POST['login_password'])))->count();
+		$collection = $this->db->nf_user;	
+
+		$resultC = $collection->findOne(array("email_id" => $post['login_email'] , "password" =>md5($post['login_password']), "status" => 'A'));
 
 		return $resultC;
 	}
@@ -183,9 +183,31 @@ class users{
 		
 		$collection = $this->db->nf_user;
 		
-		$insUser = array("user_id" => $_SESSION['user_id'],"company_id" => "1" ,"first_name" => $arr['first_name'],"last_name" => $arr['first_name'],"email" => $arr['email'],"password" => md5($arr['password']),"description" => $arr['description'],"phone" => $arr['phone'],"fax" => $arr['fax'],"user_type" => 'EU',"user_type" => 'A',"created_date" => $this->cfObj->createDate(),"modified_date" => "");
+		$insUser = array("user_id" => $_SESSION['user_id'],"company_id" => "1" ,"first_name" => $arr['first_name'],"last_name" => $arr['first_name'],"email_id" => $arr['email'],"password" => md5($arr['password']),"description" => $arr['description'],"phone" => $arr['phone'],"fax" => $arr['fax'],"user_type" => 'EU',"status" => 'A',"created_date" => $this->cfObj->createDate(),"modified_date" => "");
 		
 		$collection->insert($insUser);			
+	}
+	
+	public function searchUserDetails($searchWord){
+		$regex =  new MongoRegex("/$searchWord/i");
+		
+		$collection = $this->db->nf_user_contacts;
+		
+		$resultC = $collection->find(array("contact_name" => $regex, "status" => 'A'));		
+				
+		return $resultC;
+		
+	}
+	
+	public function searchUserDetailsCount($searchWord){
+		$regex =  new MongoRegex("/$searchWord/i");
+		
+		$collection = $this->db->nf_user_contacts;
+		
+		$resultC = $collection->find(array("contact_name" => $regex, "status" => 'A'))->count();		
+				
+		return $resultC;
+		
 	}
 }
 ?>

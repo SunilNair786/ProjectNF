@@ -10,7 +10,7 @@ $userContObj = new userController();
 if($_POST['submits'] == "Sign In")
 {
 	$countVal = $userContObj->userLogin($_POST);
-
+	 
 	if($countVal>0 && $_SESSION['user_id']!="")
 	{
 		header("location:index.php");exit;

@@ -11,7 +11,8 @@ $db = $m->nextfax;
 
 $collection = $db->nf_user;
 
-$document = array("first_name" => "Hema","last_name" => "Sundar","email_id"=>"hemasundar@nextfax.com","password" => $cfObj->generatePassword('123456'),"description"=>"testing purpose","profile_pic"=>"","mobile"=>"564635453","fax"=>"","user_type"=>"EU","created_date"=>$cfObj->createDate(),"modified_date"=>"","status"=>"A");
+$document = array("first_name" => "lambda","last_name" => "admin","email_id"=>"admin@admin.com","password" => $cfObj->generatePassword('admin'),"description"=>"testing purpose","profile_pic"=>"","mobile"=>"564635453","fax"=>"","user_type"=>"AU","created_date"=>$cfObj->createDate(),"modified_date"=>"","status"=>"A");
+//$document = array("first_name" => "Hema","last_name" => "Sundar","email_id"=>"hemasundar@nextfax.com","password" => $cfObj->generatePassword('123456'),"description"=>"testing purpose","profile_pic"=>"","mobile"=>"564635453","fax"=>"","user_type"=>"EU","created_date"=>$cfObj->createDate(),"modified_date"=>"","status"=>"A");
 $collection->insert($document);
 
 //$collection->update(array("title"=>"firstName"), array('$set'=>array("first_name"=>'test')));

@@ -1,13 +1,12 @@
-<!-- main header -->
 <?php include_once('includes/header.php');?>
 <!-- main header end -->
 <!-- main sidebar -->
 <?php include_once('includes/sidemenu.php');?>
 <!-- main sidebar end -->
 
-	<?php
-	if(isset($_REQUEST['submit'])){	        
-		$faxObjCon = new faxController();
+<?php
+    $faxObjCon = new faxController();
+	if(isset($_REQUEST['submit'])){	        		
 		$faxObjCon->copyFiles($_POST,$_FILES);
 		//define where the files will be uploaded
 		/*$upload_directory = 'upload_dir/files/';
@@ -31,6 +30,12 @@
 		}*/
 		header("location:inbox.php");
 	}	
+
+if($_GET['action']=="delete" && $_GET['faxsId']!="")
+{
+    $faxObjCon->deleteFax($_GET['faxsId']);
+    header("location:inbox.php");
+}
 ?>
 
 <style>
@@ -63,13 +68,19 @@
                                 $collection = $db->nf_user; 
                                 $userDetails = $collection->findOne(array('_id' => new MongoId($all_faxs['from_id'])));
                                 ?>           
-                            <li>
+                            <li class="listingg2">
                                 <ul class="options">
                                     <li><a href="#"><i class="fa fa-reply-all"></i> </a></li> 
                                     <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
                                     <li><a href="#"><i class="fa fa-tags"></i></a></li>
-                                    <li><a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&id=<?php echo $indGroup['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-star"></i> </a></li>
+                                    <li><a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a></li>
+                                    <li>                                        
+                                        <?php if($all_faxs['favorites'] == "N"){?>
+                                            <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                        <?php } else { ?>
+                                            <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                        <?php } ?>                                        
+                                    </li>
                                 </ul>
                                 <div class="md-card-list-item-menu">
                                 </div>
@@ -2211,6 +2222,26 @@
 		function RemoveFileUpload(div){
 			document.getElementById("FileUploadContainer").removeChild(div.parentNode);
 		}
+
+        function gFavorites(FID,Fval)
+        {
+            $.ajax({
+                url:"auto_complete.php",
+                type:"GET",
+                data: {"fax_id": FID,"fav_val":Fval},
+                success:function(html){    
+                    if(Fval == 'Y')      
+                    {
+                        alert('Successfully added to favorites');
+                        $()
+                    }
+                    else
+                    {
+                        alert('Successfully removed from favorites');
+                    }                    
+                }
+            });        
+        }
 
      </script>
 
