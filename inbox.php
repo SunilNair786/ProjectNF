@@ -51,12 +51,15 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
             <div class="md-card-list-wrapper" id="mailbox">
                 <div class="uk-width-large-8-10 uk-container-center">
                     <div class="md-card-list">
-                        <div class="md-card-list-header heading_list">Today</div>
+                        <div class="md-card-list-header heading_list">Today</div>                        
                         <div class="md-card-list-header md-card-list-header-combined heading_list" style="display: none">All Messages</div>
                         <ul class="hierarchical_slide">
                             <?php
+                            $startDate = date('Y-m-d 00:00:00');                            
+                            //$endDate = date('Y-m-d H:i:s');
+
                             $collection = $db->nf_user_fax; 
-                            $allfaxs = $collection->find();                               
+                            $allfaxs = $collection->find(array("created_date" => array('$gt' => $startDate)));   
                             foreach ($allfaxs as $all_faxs) {            
                                 
                                 $sessId = $_SESSION["user_id"]; 
@@ -68,23 +71,23 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                 $collection = $db->nf_user; 
                                 $userDetails = $collection->findOne(array('_id' => new MongoId($all_faxs['from_id'])));
                                 ?>           
-                            <li>
+                            <li <?php if($all_faxs['read'] == "0"){?>onClick="seenAjax('<?php echo $all_faxs['_id'];?>')"<?php } ?>>
                                 <div class="md-card-list-item-menu margn">                                    
                                     <a href="#"><i class="fa fa-reply-all"></i> </a>
                                     <a href="#"><i class="fa fa-long-arrow-right"></i></a>
                                     <a href="#"><i class="fa fa-tags"></i></a>
-                                    <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
-                                         
+                                    <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>                                         
                                     <span id="favs_sec_<?php echo $all_faxs['_id'];?>">
                                         <?php if($all_faxs['favorites'] == "N"){?>
-                                        <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                            <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
                                         <?php } else { ?>
-                                        <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                            <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
                                         <?php } ?> 
                                     </span>
 
                                 </div>
-                                <span class="md-card-list-item-date">13 Nov</span>
+                                
+                                <span class="md-card-list-item-date"><?php echo date('j M',strtotime($all_faxs['created_date'])); ?></span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
                                 </div>
@@ -92,17 +95,17 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                     <span class="md-card-list-item-avatar md-bg-grey">hp</span>
                                 </div>
                                 <div class="md-card-list-item-sender">
-                                    <span><?php echo $userDetails['email_id']; ?></span>
+                                    <span><?php echo $userDetails['email_id']; ?></span>                                    
                                 </div>
                                 <div class="md-card-list-item-subject">
                                     <div class="md-card-list-item-sender-small">
-                                        <span>sophia70@danielnicolas.info</span>
+                                        <span><?php echo $userDetails['email_id']; ?></span>
                                     </div>
                                     <span><?php echo substr($all_faxs['message_body'],0,20);?></span>
                                 </div>
                                 <div class="md-card-list-item-content-wrapper">
                                     <div class="md-card-list-item-content">
-                                        <?php echo $all_faxs['message_body']; ?>
+                                        <?php echo $all_faxs['message_body']; ?>                                        
                                     </div>
                                     <form class="md-card-list-item-reply">
                                         <label for="mailbox_reply_1895">Reply to <span><?php echo $userDetails['email_id']; ?></span></label>
@@ -247,27 +250,45 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                             </li>
                         </ul>
                     </div>
+
+<!-- Yesterday Faxs -->
+
                     <div class="md-card-list">
                         <div class="md-card-list-header heading_list">Yesterday</div>
                         <ul class="hierarchical_slide">
-                            <li>
+                            <?php
+                            $startDate = date('Y-m-d 00:00:00',strtotime("-1 days"));
+                            $endDate = date('Y-m-d 23:59:59',strtotime("-1 days"));
+
+                            $collection = $db->nf_user_fax; 
+                            $yesterdfaxs = $collection->find(array("created_date" => array('$gt' => $startDate,'$lte' => $endDate)));   
+                            foreach ($yesterdfaxs as $yesterd_faxs) {            
+                                
+                                $sessId = $_SESSION["user_id"]; 
+                                $yest_to_ids = explode(",",$yesterd_faxs['to_id']);                                    
+                                
+                                if(in_array($sessId,$yest_to_ids)) {                                   
+
+                                // User Details
+                                $collection = $db->nf_user; 
+                                $userDetails1 = $collection->findOne(array('_id' => new MongoId($yesterd_faxs['from_id'])));
+                                ?>
+                            <li <?php if($yesterd_faxs['read'] == "0"){?>onClick="seenAjax('<?php echo $yesterd_faxs['_id'];?>')"<?php } ?>>
                                 <div class="md-card-list-item-menu margn">
                                     
-                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
-                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
-                                        <a href="#"><i class="fa fa-tags"></i></a>
-                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
-                                                                             
-                                            <?php if($all_faxs['favorites'] == "N"){?>
-                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
-                                            <?php } else { ?>
-                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
-                                            <?php } ?> 
-                                            
-                                                                                  
-                             
+                                    <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                    <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                    <a href="#"><i class="fa fa-tags"></i></a>
+                                    <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $yesterd_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                    <span id="favs_sec_<?php echo $yesterd_faxs['_id'];?>">
+                                        <?php if($yesterd_faxs['favorites'] == "N"){?>
+                                            <a id="Fav_id" onClick="gFavorites('<?php echo $yesterd_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                        <?php } else { ?>
+                                            <a id="Fav_id" onClick="gFavorites('<?php echo $yesterd_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                        <?php } ?> 
+                                    </span>
                                 </div>
-                                <span class="md-card-list-item-date">12 Nov</span>
+                                <span class="md-card-list-item-date"><?php echo date('j M',strtotime($yesterd_faxs['created_date'])); ?></span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
                                 </div>
@@ -275,24 +296,27 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                     <img src="assets/img/avatars/avatar_01_tn.png" class="md-card-list-item-avatar" alt="" />
                                 </div>
                                 <div class="md-card-list-item-sender">
-                                    <span>luettgen.rahul@gmail.com</span>
+                                    <span><?php echo $userDetails1['email_id']; ?></span>
                                 </div>
                                 <div class="md-card-list-item-subject">
                                     <div class="md-card-list-item-sender-small">
-                                        <span>luettgen.rahul@gmail.com</span>
+                                        <span><?php echo $userDetails1['email_id']; ?></span>
                                     </div>
-                                    <span>Sed autem atque omnis distinctio.</span>
+                                    <span><?php echo substr($yesterd_faxs['message_body'],'0','20'); ?></span>
                                 </div>
                                 <div class="md-card-list-item-content-wrapper">
                                     <div class="md-card-list-item-content">
-                                        Earum maxime ratione itaque et consequatur sed laborum sed mollitia architecto laudantium ipsa porro molestiae accusamus numquam corrupti voluptatum quia eum blanditiis et molestiae illum explicabo suscipit autem non porro voluptatem molestiae atque est molestias hic officiis quisquam velit quis sint et consequuntur et consequuntur sit dolores non necessitatibus ea ex quos id et vitae omnis deleniti omnis et sunt ratione dolores quos voluptatem ut dolor voluptas omnis exercitationem voluptas voluptatem voluptas iste ea libero odit rerum et ex nihil qui qui ut sunt reprehenderit fuga recusandae error quod consequatur ab accusantium officia consequuntur sunt dolorem explicabo animi nihil dolor itaque in sint vel aperiam ut consequatur molestias doloremque eius tempore voluptas esse voluptatibus et asperiores consequuntur et dolores ut iusto id fugiat laboriosam voluptatum veritatis rerum sunt at qui dignissimos ab dignissimos magni error recusandae sunt eius vero rerum quo officiis id et non molestiae aspernatur illum ullam ad ea animi impedit ea doloribus est ut dolorem eos quis autem tenetur sapiente neque et tenetur sapiente quam sed rem at ex voluptatem adipisci consequuntur et maxime dolores quibusdam laboriosam consequatur molestiae voluptas excepturi ut dicta rerum quas sint esse accusamus quod ut laborum aperiam autem totam repellat qui perspiciatis consequuntur similique saepe sed aut numquam beatae reprehenderit eveniet tempora consequuntur saepe quia voluptatum ullam et expedita aut aut quo mollitia possimus deserunt dolorum voluptate modi veniam voluptatum suscipit enim vitae sunt voluptatem nihil nihil aut dolores alias distinctio modi molestias consequatur hic enim qui qui ipsa libero reiciendis tempora qui ut aut ut quis eveniet vel voluptatibus perferendis iure dolorum nobis quo voluptate molestiae iusto iure voluptas et repellat deserunt reprehenderit distinctio aliquam reprehenderit sunt quos rem molestiae nemo mollitia sed voluptates nostrum laboriosam magnam minima eos voluptatibus accusamus porro sunt consequatur nihil aliquid sunt ex quidem quis eligendi autem similique sed nihil sapiente praesentium voluptas nulla non et magnam nemo aut qui magnam id dolorem sapiente voluptatibus excepturi qui quidem assumenda aut est soluta quae tempora est voluptatem magnam et omnis et enim necessitatibus quod iusto exercitationem ea porro voluptatem laudantium sunt rerum animi quasi illum consequatur ducimus et ut pariatur nulla ut qui optio doloribus magni porro molestiae distinctio modi cumque cupiditate id et qui autem assumenda maiores enim reprehenderit voluptates fuga saepe aut nihil.                                    </div>
+                                     <?php echo $yesterd_faxs['message_body']; ?>
+                                    </div>
                                     <form class="md-card-list-item-reply">
-                                        <label for="mailbox_reply_7254">Reply to <span>luettgen.rahul@gmail.com</span></label>
+                                        <label for="mailbox_reply_7254">Reply to <span><?php echo $userDetails1['email_id']; ?></span></label>
                                         <textarea class="md-input md-input-full" name="mailbox_reply_7254" id="mailbox_reply_7254" cols="30" rows="4"></textarea>
                                         <button class="md-btn md-btn-flat md-btn-flat-primary">Send</button>
                                     </form>
                                 </div>
                             </li>
+                            <?php } 
+                            }   ?>
                             <li>
                                 <div class="md-card-list-item-menu margn">
                                     
@@ -553,27 +577,46 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                             </li>
                         </ul>
                     </div>
+
+    <!-- This Month Faxs -->
+
                     <div class="md-card-list">
                         <div class="md-card-list-header heading_list">This Month</div>
                         <ul class="hierarchical_slide">
-                            <li>
+                            <?php
+                            $M_startDate = date('Y-m-d 00:00:00',strtotime("-30 days"));
+                            $M_endDate = date('Y-m-d 23:59:59',strtotime("-2 days"));
+
+                            $collection = $db->nf_user_fax; 
+                            $lastMnthfaxs = $collection->find(array("created_date" => array('$gt' => $M_startDate,'$lte' => $M_endDate)));   
+                            foreach ($lastMnthfaxs as $lastMnth_faxs) {            
+                                
+                                $sessId = $_SESSION["user_id"]; 
+                                $mnth_to_ids = explode(",",$lastMnth_faxs['to_id']);                                    
+                                
+                                if(in_array($sessId,$mnth_to_ids)) {                                   
+
+                                // User Details
+                                $collection = $db->nf_user; 
+                                $userDetails2 = $collection->findOne(array('_id' => new MongoId($lastMnth_faxs['from_id'])));
+                                ?>
+                            <li <?php if($yesterd_faxs['read'] == "0"){?>onClick="seenAjax('<?php echo $yesterd_faxs['_id'];?>')"<?php } ?>>
                                 <div class="md-card-list-item-menu margn">
                                     
-                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
-                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
-                                        <a href="#"><i class="fa fa-tags"></i></a>
-                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
-                                                                             
-                                            <?php if($all_faxs['favorites'] == "N"){?>
-                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
-                                            <?php } else { ?>
-                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
-                                            <?php } ?> 
-                                            
-                                                                                  
+                                    <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                    <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                    <a href="#"><i class="fa fa-tags"></i></a>
+                                    <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $lastMnth_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                    <span id="favs_sec_<?php echo $lastMnth_faxs['_id'];?>">                                                                             
+                                        <?php if($lastMnth_faxs['favorites'] == "N"){?>
+                                            <a id="Fav_id" onClick="gFavorites('<?php echo $lastMnth_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                        <?php } else { ?>
+                                            <a id="Fav_id" onClick="gFavorites('<?php echo $lastMnth_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                        <?php } ?> 
+                                    </span>                                   
                              
                                 </div>
-                                <span class="md-card-list-item-date">12 Nov</span>
+                                <span class="md-card-list-item-date"><?php echo date('j M',strtotime($lastMnth_faxs['created_date'])); ?></span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
                                 </div>
@@ -581,24 +624,29 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                     <img src="assets/img/avatars/avatar_01_tn.png" class="md-card-list-item-avatar" alt="" />
                                 </div>
                                 <div class="md-card-list-item-sender">
-                                    <span>eileen03@blick.net</span>
+                                    <span><?php echo $userDetails2['email_id']; ?></span>
                                 </div>
                                 <div class="md-card-list-item-subject">
                                     <div class="md-card-list-item-sender-small">
-                                        <span>eileen03@blick.net</span>
+                                        <span><?php echo $userDetails2['email_id']; ?></span>
                                     </div>
-                                    <span>Qui expedita in ad ut.</span>
+                                    <span><?php echo substr($lastMnth_faxs['message_body'],'0','20'); ?></span>
                                 </div>
                                 <div class="md-card-list-item-content-wrapper">
                                     <div class="md-card-list-item-content">
-                                        Autem et in qui natus repudiandae molestiae doloribus necessitatibus aut ea repudiandae voluptas voluptas molestiae odit assumenda et rem corrupti quia sunt in ut qui ipsam maiores officiis sapiente iusto et dolor consequatur et eius fugit possimus dignissimos sapiente deserunt perferendis voluptatem molestiae architecto eum accusamus omnis.                                    </div>
+                                        <?php echo $lastMnth_faxs['message_body']; ?>
+                                    </div>
                                     <form class="md-card-list-item-reply">
-                                        <label for="mailbox_reply_1276">Reply to <span>eileen03@blick.net</span></label>
+                                        <label for="mailbox_reply_1276">Reply to <span><?php echo $userDetails2['email_id']; ?></span></label>
                                         <textarea class="md-input md-input-full" name="mailbox_reply_1276" id="mailbox_reply_1276" cols="30" rows="4"></textarea>
                                         <button class="md-btn md-btn-flat md-btn-flat-primary">Send</button>
                                     </form>
                                 </div>
                             </li>
+                            <?php } 
+                            } ?>
+
+
                             <li>
                                 <div class="md-card-list-item-menu margn">
                                     
@@ -1203,27 +1251,48 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                             </li>
                         </ul>
                     </div>
+
+
+    <!-- Older messages -->
+
+
                     <div class="md-card-list">
                         <div class="md-card-list-header heading_list">Older Messages</div>
                         <ul class="hierarchical_slide">
+                            <?php
+                            $old_startDate = date('Y-m-d 00:00:00',strtotime("-100 years"));
+                            $old_endDate = date('Y-m-d 23:59:59',strtotime("-30 days"));
+
+                            $collection = $db->nf_user_fax; 
+                            $olderfaxs = $collection->find(array("created_date" => array('$gt' => $old_startDate,'$lte' => $old_endDate)));   
+                            foreach ($olderfaxs as $older_faxs) {            
+                                
+                                $sessId = $_SESSION["user_id"]; 
+                                $old_to_ids = explode(",",$older_faxs['to_id']);                                    
+                                
+                                if(in_array($sessId,$old_to_ids)) {                                   
+
+                                // User Details
+                                $collection = $db->nf_user; 
+                                $userDetails3 = $collection->findOne(array('_id' => new MongoId($older_faxs['from_id'])));
+                                ?>
                             <li>
                                 <div class="md-card-list-item-menu margn">
                                     
-                                      <a href="#"><i class="fa fa-reply-all"></i> </a>
-                                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
-                                        <a href="#"><i class="fa fa-tags"></i></a>
-                                       <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
-                                                                             
-                                            <?php if($all_faxs['favorites'] == "N"){?>
-                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
-                                            <?php } else { ?>
-                                                <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
-                                            <?php } ?> 
+                                    <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                    <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                    <a href="#"><i class="fa fa-tags"></i></a>
+                                    <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $older_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+                                    <?php if($older_faxs['favorites'] == "N"){?>
+                                        <a id="Fav_id" onClick="gFavorites('<?php echo $older_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                    <?php } else { ?>
+                                        <a id="Fav_id" onClick="gFavorites('<?php echo $older_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                    <?php } ?> 
                                             
                                                                                   
                              
                                 </div>
-                                <span class="md-card-list-item-date">6 Sep</span>
+                                <span class="md-card-list-item-date"><?php echo date('j M',strtotime($older_faxs['created_date'])); ?></span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
                                 </div>
@@ -1231,24 +1300,28 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                     <img src="assets/img/avatars/avatar_06_tn.png" class="md-card-list-item-avatar" alt="" />
                                 </div>
                                 <div class="md-card-list-item-sender">
-                                    <span>Isaac Gutkowski</span>
+                                    <span><?php echo $userDetails3['email_id']; ?></span>
                                 </div>
                                 <div class="md-card-list-item-subject">
                                     <div class="md-card-list-item-sender-small">
-                                        <span>Isaac Gutkowski</span>
+                                        <span><?php echo $userDetails3['email_id']; ?></span>
                                     </div>
-                                    <span>Aut ut exercitationem totam expedita.</span>
+                                    <span><?php echo substr($older_faxs['message_body'],'0','20'); ?></span>
                                 </div>
                                 <div class="md-card-list-item-content-wrapper">
                                     <div class="md-card-list-item-content">
-                                        Autem et in qui natus repudiandae molestiae doloribus necessitatibus aut ea repudiandae voluptas voluptas molestiae odit assumenda et rem corrupti quia sunt in ut qui ipsam maiores officiis sapiente iusto et dolor consequatur et eius fugit possimus dignissimos sapiente deserunt perferendis voluptatem molestiae architecto eum accusamus omnis.                                    </div>
+                                        <?php echo $older_faxs['message_body']; ?>
+                                    </div>
                                     <form class="md-card-list-item-reply">
-                                        <label for="mailbox_reply_299">Reply to <span>Isaac Gutkowski</span></label>
+                                        <label for="mailbox_reply_299">Reply to <span><?php echo $userDetails3['email_id']; ?></span></label>
                                         <textarea class="md-input md-input-full" name="mailbox_reply_299" id="mailbox_reply_299" cols="30" rows="4"></textarea>
                                         <button class="md-btn md-btn-flat md-btn-flat-primary">Send</button>
                                     </form>
                                 </div>
                             </li>
+                            <?php } 
+                            } ?>
+
                             <li>
                                 <div class="md-card-list-item-menu margn">
                                     
@@ -2723,12 +2796,16 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
             });        
         }
 
-        // $(document).ready(function(){
-        //     $('.fa-reply-all').on('click',function(){
-        //         $(this).closest('li').css()
-        //         margin: 40px -20px; min-height: 306px;
-        //     });
-        // })
+        function seenAjax(Fids)
+        {            
+            $.ajax({
+                url:"auto_complete.php",
+                type:"GET",
+                data: {"Sfax_id": Fids,"section":"seen"},
+                success:function(html){         
+                }
+            }); 
+        }
 
      </script>
      <script type="text/javascript"><!--

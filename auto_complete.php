@@ -19,9 +19,24 @@ if(isset($_GET['tagId'])){
 	$userContObj->deleteTag($_GET['tagId'],$_SESSION['user_id']);	
 }
 
+// update favorites
 if($_GET['fax_id'] != "")
 {	
 	$faxObjCon->updateFavorites($_GET['fax_id'],$_GET['fav_val']);	
+}
+// updating seen or Unseen
+if(isset($_GET['Sfax_id']) && $_GET['section'] == "seen")
+{
+	$faxObjCon->updatefaxSeenStatus($_GET['Sfax_id']);	
+}
+
+if(isset($_GET['email']) && $_GET['email'] !='' ){
+	$verify = $userContObj->checkEmail($_GET['email']);	
+	if($verify > 0){
+		echo "Email id exists!.";			
+	}else{
+		echo "";
+	}	
 }
 
 ?>

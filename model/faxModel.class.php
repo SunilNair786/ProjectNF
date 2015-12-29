@@ -41,6 +41,16 @@
 			$collection->update(array('_id' => new MongoId($mFavId)), array('$set' => $Update_fax_vals));		
 		}
 
+		// updating Read Status
+		public function updateReadStat($mFavId)
+		{
+			$collection = $this->db->nf_user_fax;
+
+			$Update_fax_vals = array("read" => "1");
+
+			$collection->update(array('_id' => new MongoId($mFavId)), array('$set' => $Update_fax_vals));		
+		}
+
 		// Deleting Fax
 		public function deleFaxs($mPost)
 		{

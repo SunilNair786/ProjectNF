@@ -14,10 +14,12 @@
                         <div class="md-card-list-header md-card-list-header-combined heading_list" style="display: none">All Messages</div>
                         <ul class="hierarchical_slide">
                             <?php 
-                            //echo date('Y-m-d H:i:s',strtotime("-1 days"));
+                            $startDate = date('Y-m-d H:i:s',strtotime("-1 days"));
+                            $endDate = date('Y-m-d H:i:s');
+
                             $collection = $db->nf_user_fax; 
-                            $allfaxCount = $collection->find(array("favorites" => "Y"))->count();  
-                            $favFaxs = $collection->find(array("favorites" => "Y"));
+                            $allfaxCount = $collection->find(array("favorites" => "Y","created_date" => array('$gt' => $startDate, '$lt' => $endDate)))->count();  
+                            $favFaxs = $collection->find(array("favorites" => "Y","created_date" => array('$gt' => $startDate, '$lt' => $endDate)));                           
 
                             foreach ($favFaxs as $fav_Faxs) {            
                                 

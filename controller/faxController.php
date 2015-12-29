@@ -37,6 +37,13 @@ class faxController{
 		return $fav_Det;
 	}
 
+	// Changing read status
+	public function updatefaxSeenStatus($post_id)
+	{
+		$read_stat = $this->faxObj->updateReadStat($post_id);
+		return $read_stat;
+	}
+
 	// Deleting Fax
 	public function deleteFax($Cpost)
 	{

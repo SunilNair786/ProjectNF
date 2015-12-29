@@ -190,9 +190,9 @@ class users{
 	
 	public function updateUser($arr){
 				
-		$collection = $this->db->nf_user;
+		$collection = $this->db->nf_user;		
 		
-		$editUser = array("company_id" => "1" ,"first_name" => $arr['first_name'],"last_name" => $arr['last_name'],"email_id" => $arr['email'],"description" => $arr['description'],"phone" => $arr['phone'],"fax" => $arr['fax'],"modified_date" => $this->cfObj->createDate());
+		$editUser = array("company_id" => "1" ,"first_name" => $arr['first_name'],"last_name" => $arr['last_name'],"description" => $arr['description'],"phone" => $arr['phone'],"fax" => $arr['fax'],"modified_date" => $this->cfObj->createDate());
 		
 		$collection->update(array("_id" => new MongoId($arr['user_id'])),array('$set' => $editUser));				
 	}
@@ -215,6 +215,24 @@ class users{
 		$collection = $this->db->nf_user_contacts;
 		
 		$resultC = $collection->find(array("contact_name" => $regex, "status" => 'A'))->count();		
+				
+		return $resultC;
+		
+	}
+	
+	//Delete Notes
+	public function deleteUser($userId){
+		
+		$collection = $this->db->nf_user;
+		
+		$collection->remove(array('_id' => new MongoId($userId)));
+	}
+	
+	public function checkEmail($emailId){
+		
+		$collection = $this->db->nf_user;
+		
+		$resultC = $collection->find(array("email_id" => $emailId))->count();		
 				
 		return $resultC;
 		

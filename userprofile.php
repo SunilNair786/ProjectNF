@@ -1,33 +1,23 @@
-<?php include_once('includes/header.php');?>
+
+<?php include_once('includes/header.php');
+	if($_SESSION['userType'] != 'AU'){
+		header("location:index.php");
+	}
+	$collection = $db->nf_user; 
+	
+	if(isset($_GET['user_id'])){
+		$userInfo = $collection->findOne(array('_id' => new MongoId($_GET['user_id'])));			
+	}else{
+		header("location:index.php");
+		exit;
+	}
+	
+?>
 <!-- main header end -->
 <!-- main sidebar -->
 <?php include_once('includes/sidemenu.php');?>
 <!-- main sidebar end -->
-<?php
-if($_POST['submit'] == "Save")
-{
-    $cntVal = $userContObj->insertContact($_POST);   
-    header('location:contact.php'); 
-    exit;
-}
 
-// Update Contact
-if($_POST['submit'] == "Update")
-{
-    $updateCon = $userContObj->updateContact($_POST);    
-    header('location:contact.php'); 
-    exit;
-}
-
-// Delete Contact
-if($_REQUEST['action'] == "delete")
-{
-    $deleteCo = $userContObj->deleteContact($_GET['id']);    
-    header('location:contact.php'); 
-    exit;
-}
-
-?>
 <div id="page_content">
     <div id="page_content_inner">
         <div class="uk-width-large-8-10 uk-container-center">
@@ -61,9 +51,19 @@ if($_REQUEST['action'] == "delete")
                                     </li>
                                 </ul>
                             </div>
-                            <a <a href="#Edit_Grp<?php echo $incc;?>" data-uk-modal="{center:true}" class="md-fab md-fab-small md-fab-accent">
-                                <i class="material-icons"></i>
-                            </a>
+							
+							
+							<div class="md-fab-wrapper">
+                                    <div class="md-fab md-fab-toolbar md-fab-small md-fab-accent" style="">
+                                        <i class="material-icons"></i>
+                                        <div class="md-fab-toolbar-actions">
+                                            <button data-uk-tooltip="{cls:'uk-tooltip-small',pos:'bottom'}" id="user_edit_save" type="submit"><i class="material-icons md-color-white"></i></button>
+                                             
+                                            <button data-uk-tooltip="{cls:'uk-tooltip-small',pos:'bottom'}" id="user_edit_delete" type="submit"><i class="material-icons md-color-white"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+							 
                         </div>
                         <div class="uk-modal" id="Edit_Grp<?php echo $incc;?>">
 									        <div class="uk-modal-dialog">
@@ -93,12 +93,12 @@ if($_REQUEST['action'] == "delete")
                         <div class="user_content">
                             <div class="uk-sticky-placeholder" style="height: 46px;"><ul data-uk-sticky="{ top: 48, media: 960 }" data-uk-tab="{connect:'#user_profile_tabs_content', animation:'slide-horizontal'}" class="uk-tab" id="user_profile_tabs" style="margin: 0px;">
                                 <li class="uk-active" aria-expanded="true"><a href="#">About</a></li>
-                                <li aria-expanded="false"><a href="#">Photos</a></li>
-                                <li aria-expanded="false"><a href="#">Posts</a></li>
+                                <!--li aria-expanded="false"><a href="#">Photos</a></li>
+                                <li aria-expanded="false"><a href="#">Posts</a></li!-->
                             <li class="uk-tab-responsive uk-active uk-hidden" aria-haspopup="true" aria-expanded="false"><a>About</a><div class="uk-dropdown uk-dropdown-small"><ul class="uk-nav uk-nav-dropdown"></ul><div></div></div></li></ul></div>
                             <ul class="uk-switcher uk-margin" id="user_profile_tabs_content">
                                 <li aria-hidden="false" class="uk-active">
-                                    Aut ipsum quibusdam consequatur iusto nesciunt eaque omnis et minus et tenetur et iusto sunt aut voluptatem qui qui deleniti sint delectus quisquam dolorem tempora tempore voluptas commodi quo assumenda sint sint omnis voluptatem aut iusto est aut molestiae magnam dolore sapiente aut possimus qui excepturi consequatur excepturi ut sit nisi doloremque hic amet numquam quo quia cum ab voluptatum corrupti nulla omnis ipsa quis dolorum dolor iste quae nobis voluptatum id et exercitationem dolor eum sit exercitationem possimus consequatur qui laudantium dolore eligendi laborum molestias rerum delectus accusamus illo rem reiciendis id sunt voluptate deserunt similique aspernatur earum et omnis sed nisi eligendi vel asperiores voluptates eos veniam sint quos aut in quis laboriosam necessitatibus ex iste culpa quidem consequatur quasi corrupti qui eius qui vitae distinctio eaque deleniti reprehenderit accusantium perferendis voluptatem eum ea sit in molestiae consequatur est voluptatem reiciendis reiciendis qui.                                    <div data-uk-grid-margin="" class="uk-grid uk-margin-medium-top uk-margin-large-bottom">
+                                    <?php echo $userInfo['description']; ?>                               <div data-uk-grid-margin="" class="uk-grid uk-margin-medium-top uk-margin-large-bottom">
                                         <div class="uk-width-large-1-2">
                                             <h4 class="heading_c uk-margin-small-bottom">Contact Info</h4>
                                             <ul class="md-list md-list-addon">
@@ -107,7 +107,7 @@ if($_REQUEST['action'] == "delete")
                                                         <i class="md-list-addon-icon material-icons"></i>
                                                     </div>
                                                     <div class="md-list-content">
-                                                        <span class="md-list-heading">minnie09@gmail.com</span>
+                                                        <span class="md-list-heading"><?php echo $userInfo['email_id'];?></span>
                                                         <span class="uk-text-small uk-text-muted">Email</span>
                                                     </div>
                                                 </li>
@@ -116,28 +116,11 @@ if($_REQUEST['action'] == "delete")
                                                         <i class="md-list-addon-icon material-icons"></i>
                                                     </div>
                                                     <div class="md-list-content">
-                                                        <span class="md-list-heading">+59(4)0145096762</span>
+                                                        <span class="md-list-heading">+<?php echo $userInfo['phone'];?></span>
                                                         <span class="uk-text-small uk-text-muted">Phone</span>
                                                     </div>
                                                 </li>
-                                                <li>
-                                                    <div class="md-list-addon-element">
-                                                        <i class="md-list-addon-icon uk-icon-facebook-official"></i>
-                                                    </div>
-                                                    <div class="md-list-content">
-                                                        <span class="md-list-heading">facebook.com/envato</span>
-                                                        <span class="uk-text-small uk-text-muted">Facebook</span>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="md-list-addon-element">
-                                                        <i class="md-list-addon-icon uk-icon-twitter"></i>
-                                                    </div>
-                                                    <div class="md-list-content">
-                                                        <span class="md-list-heading">twitter.com/envato</span>
-                                                        <span class="uk-text-small uk-text-muted">Twitter</span>
-                                                    </div>
-                                                </li>
+                                               
                                             </ul>
                                         </div>
                                         <div class="uk-width-large-1-2">
@@ -692,76 +675,58 @@ if($_REQUEST['action'] == "delete")
         </div>
     </div>
     <!-- End New Contact -->
+<form name="editUser" method='post'  id='editUser' >
+ <?php 
+                $Cinc = 1;
+                $collection = $db->nf_user; 
+                $allContactList = $collection->find(array("user_id" =>$_SESSION['user_id'],'user_type' => 'EU'))->sort(array("created_date" => -1));
+				
+                foreach($allContactList as $contactList){					
+?>			
 
-
-    <?php 
-    $Cinc1 = 1;
-    $collection = $db->nf_user_contacts; 
-    $allContactList1 = $collection->find()->sort(array("created_date" => -1));?>
-    <script type="text/javascript"> 
-     var ii = 1;
-    </script>
-
-    <?php foreach($allContactList1 as $contactList1){?>
-    <!-- Edit Contact List-->
-    <div class="uk-modal" id="Edit_contact_<?php echo $Cinc1;?>">
-        <div class="uk-modal-dialog">
-        <button class="uk-modal-close uk-close" type="button"></button>
-            <form name="newContact" method="post">
-                <div class="uk-modal-header">
-                    <h3 class="uk-modal-title"><?php echo $contactList1['name']; ?></h3>
-                    <input type="hidden" name="hidd_contact_id" id="hidd_contact_id" value="<?php echo $contactList1['_id']; ?>"/>
+				<!-- Edit Contact List-->
+				<div class="uk-modal" id="Edit_contact_<?php echo $Cinc;?>">
+					<div class="uk-modal-dialog">
+					<button class="uk-modal-close uk-close" type="button"></button>
+						
+						<input type='hidden' name='user_id' id='user_id' value ='<?php echo $contactList['_id'];?>' />
+						
+							<div class="uk-form-row">
+							<div class="uk-modal-header">
+                    <h3 class="uk-modal-title">Edit User</h3>
                 </div>
-                <div class="uk-margin-medium-bottom">
-                    <label for="contact_name">Full Name</label>
-                    <input type="text" class="md-input" name="contact_name" id="contact_name" value="<?php echo $contactList1['contact_name']; ?>" required/>
-                </div>
-                <div class="uk-margin-medium-bottom">
-                    <label for="contact_email">Email</label>
-                    <input type="text" class="md-input" name="contact_email" id="contact_email" value="<?php echo $contactList1['email']; ?>" required/>
-                </div>
-                <div class="uk-margin-medium-bottom">
-                    <label for="Group_name">Group Name</label>
-                    <select name="GroupName" id="GroupName<?php echo $Cinc1; ?>" class="md-input" required>
-                        <option value=""></option>
-                        <?php
-                        $collection = $db->nf_user_groups; 
-                        $allGrpList = $collection->find()->sort(array("created_date" => -1));
-                        foreach($allGrpList as $all_GrpList){ ?>
-                            <option value="<?php echo $all_GrpList['_id']; ?>"><?php echo $all_GrpList['group_name']; ?></option>
-                        <?php } ?>
-                    </select>
-                    <script type="text/javascript">                        
-                    for(var i=0;i<document.getElementById('GroupName'+ii).length;i++)
-                    {                        
-                        if(document.getElementById('GroupName'+ii).options[i].value=="<?php echo $contactList1['group_id']; ?>")
-                        {
-                            document.getElementById('GroupName'+ii).options[i].selected=true;
-                        }
-                    }
-                    ii++;
-                    </script>
-                </div>
-                <div class="uk-margin-medium-bottom">
-                    <label for="contact_phone">Phone No</label>
-                    <input type="text" class="md-input" name="contact_phone" id="contact_phone" value="<?php echo $contactList1['phone']; ?>" required/>
-                </div>
-                <div class="uk-margin-medium-bottom">
-                    <label for="contact_faxNo">Fax No</label>
-                    <input type="text" class="md-input" name="contact_faxNo" id="contact_faxNo" value="<?php echo $contactList1['fax']; ?>" />
-                </div>
-                <div class="uk-margin-large-bottom">
-                    <label for="contact_info">Info</label>
-                    <textarea name="contact_info" id="contact_info" cols="30" rows="6" class="md-input"><?php echo $contactList1['contact_info']; ?></textarea>
-                </div>
-                <div class="uk-modal-footer">                    
-                    <input type="button" class="uk-modal-close md-btn md-btn-flat md-btn-flat-primary pull-right" value="Cancel" />             
-                    <input type="submit" class="uk-float-right md-btn md-btn-flat md-btn-flat-primary" name="submit" value="Update" />
-                </div>
-            </form>
-        </div>
-    </div>
-    <?php $Cinc1++; } ?>
+									   <label for="register_username">First Name</label>
+												<input class="md-input" type="text" id="edit_first_name" name="edit_first_name" value='<?php echo $contactList["first_name"]; ?>' required//>
+										</div>
+										<div class="uk-form-row">
+												<label for="register_username">Last Name</label>
+												<input class="md-input" type="text" id="edit_last_name" name="edit_last_name" value='<?php echo $contactList["last_name"]; ?>' required />
+										</div>																		
+										<div class="uk-form-row">
+												<label for="register_email">Phone Number</label>
+												<input class="md-input" type="text" id="edit_phone" name="edit_phone" required  value='<?php echo $contactList["phone"]; ?>'/>
+										</div>
+										<div class="uk-form-row">
+												<label for="register_email">Fax</label>
+												<input class="md-input" type="text" id="edit_fax" name="edit_fax" value='<?php echo $contactList["fax"]; ?>'  required/>
+										</div>
+										<div class="uk-form-row">
+												<label for="register_email">User Description</label>
+												<textarea class="md-input" type="text" id="edit_description" name="edit_description"  required/><?php echo $contactList["description"]; ?></textarea>
+												
+												<span style='color:red;' id='edit_error_content'></span>												
+										</div>
+							<div class="uk-modal-footer">                    
+								<input type="button" class="uk-modal-close md-btn md-btn-flat md-btn-flat-primary pull-right" value="Cancel" />             
+								<input type="button" class="uk-float-right md-btn md-btn-flat md-btn-flat-primary" name="editsubmit" value="Update"  onclick='javascript:updateFrm();' />
+							</div>
+						
+					</div>
+				</div>
+	<?php
+	$Cinc++;
+	} ?>
+	</form>
     <!-- End Edit Contact List-->
 
 
