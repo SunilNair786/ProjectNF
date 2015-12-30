@@ -18,7 +18,6 @@ if($_POST['submit'] == "Update")
     header('location:contact.php'); 
     exit;
 }
-
 // Delete Contact
 if($_REQUEST['action'] == "delete")
 {
@@ -26,11 +25,9 @@ if($_REQUEST['action'] == "delete")
     header('location:contact.php'); 
     exit;
 }
-
 if(isset($_GET['searchParam'])){	
 	$searchUser = $userContObj->searchUserDetails($_GET['searchParam']);	
-	$searchUserCnt = $userContObj->searchUserDetailsCount($_GET['searchParam']);	
-	
+	$searchUserCnt = $userContObj->searchUserDetailsCount($_GET['searchParam']);		
 }
 ?>
 <div id="page_content">
@@ -197,8 +194,6 @@ if(isset($_GET['searchParam'])){
 					} 
 				}	
 				?>
-
-
             </div>
         </div>
     </div>
@@ -207,7 +202,6 @@ if(isset($_GET['searchParam'])){
             <i class="material-icons">&#xE145;</i>
         </a>
     </div>
-
     <!-- Create New Contact -->
     <div class="uk-modal" id="mailbox_new_message">
         <div class="uk-modal-dialog">
