@@ -1,43 +1,7 @@
-<!doctype html>
-<!--[if lte IE 9]> <html class="lte-ie9" lang="en"> <![endif]-->
-<!--[if gt IE 9]><!--> <html lang="en"> <!--<![endif]-->
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<!-- Remove Tap Highlight on Windows Phone IE -->
-	<meta name="msapplication-tap-highlight" content="no"/>
-
-	<link rel="icon" type="image/png" href="assets/img/favicon-16x16.png" sizes="16x16">
-	<link rel="icon" type="image/png" href="assets/img/favicon-32x32.png" sizes="32x32">
-
-	<title>NeXt FaX - Dashboard</title>
-
-
-	<!-- uikit -->
-	<link rel="stylesheet" href="bower_components/uikit/css/uikit.almost-flat.min.css" media="all">
-
-	<!-- flag icons -->
-	<link rel="stylesheet" href="assets/icons/flags/flags.min.css" media="all">
-
-	<!-- altair admin -->
-	<link rel="stylesheet" href="assets/css/main.min.css" media="all">
-
-	<!-- matchMedia polyfill for testing media queries in JS -->
-	<!--[if lte IE 9]>
-		<script type="text/javascript" src="bower_components/matchMedia/matchMedia.js"></script>
-		<script type="text/javascript" src="bower_components/matchMedia/matchMedia.addListener.js"></script>
-	<![endif]-->
-
-</head>
-<body class=" sidebar_main_open sidebar_main_swipe">
-	<!-- main header -->
-    
-	 <!-- main header end -->
-     <?php include_once('includes/header.php')?>
-	<!-- main sidebar -->
-    <?php include_once('includes/sidemenu.php')?>
-	<!-- main sidebar end -->
+<?php include_once('includes/header.php'); ?>
+<!-- main sidebar -->
+<?php include_once('includes/sidemenu.php'); ?>
+<!-- main sidebar end -->
 
 <div id="page_content">
         <div id="page_content_inner">
@@ -48,18 +12,29 @@
                         <div class="md-card-list-header heading_list">Today</div>
                         <div class="md-card-list-header md-card-list-header-combined heading_list" style="display: none">All Messages</div>
                         <ul class="hierarchical_slide">
-                            <li>
-                                <div class="md-card-list-item-menu" data-uk-dropdown="{mode:'click',pos:'bottom-right'}">
-                                    <a href="#" class="md-icon material-icons">&#xE5D4;</a>
-                                    <div class="uk-dropdown uk-dropdown-small">
-                                        <ul class="uk-nav">
-                                            <li><a href="#"><i class="material-icons">&#xE15E;</i> Reply</a></li>
-                                            <li><a href="#"><i class="material-icons">&#xE149;</i> Archive</a></li>
-                                            <li><a href="#"><i class="material-icons">&#xE872;</i> Delete</a></li>
-                                        </ul>
-                                    </div>
+                            <?php
+                            $startDate = date('Y-m-d 00:00:00');                            
+                            //$endDate = date('Y-m-d H:i:s');
+
+                            $collection = $db->nf_user_fax; 
+                            $allOutfaxs = $collection->find(array("from_id" => $_SESSION['user_id'],"created_date" => array('$gt' => $startDate)));   
+                            foreach ($allOutfaxs as $allOut_faxs) {                               
+                                ?>    
+                            <li>                                
+                                <div class="md-card-list-item-menu margn">                                    
+                                    <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                    <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                    <a href="#"><i class="fa fa-tags"></i></a>
+                                    <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $allOut_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>                                         
+                                    <span id="favs_sec_<?php echo $allOut_faxs['_id'];?>">
+                                        <?php if($allOut_faxs['favorites'] == "N"){?>
+                                            <a id="Fav_id" onClick="gFavorites('<?php echo $allOut_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                        <?php } else { ?>
+                                            <a id="Fav_id" onClick="gFavorites('<?php echo $allOut_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                        <?php } ?> 
+                                    </span>
                                 </div>
-                                <span class="md-card-list-item-date">13 Nov</span>
+                                <span class="md-card-list-item-date"><?php echo date('j M',strtotime($allOut_faxs['created_date'])); ?></span>
                                 <div class="md-card-list-item-select">
                                     <input type="checkbox" data-md-icheck />
                                 </div>
@@ -67,17 +42,30 @@
                                     <span class="md-card-list-item-avatar md-bg-grey">hp</span>
                                 </div>
                                 <div class="md-card-list-item-sender">
-                                    <span>sophia70@danielnicolas.info</span>
+                                    <span>
+                                        <?php 
+                                        $toid_arr = explode(",",$allOut_faxs['to_id']);                                        
+                                        for($i=0;$i < count($toid_arr);$i++){
+                                            $collection = $db->nf_user; 
+                                            $outUserDetail = $collection->findOne(array('_id' => new MongoId($toid_arr[$i])));
+                                            echo $outUserDetail['email_id'];
+                                            if($i < (count($toid_arr)-1))
+                                            {
+                                                echo ",";
+                                            }
+                                        } ?>
+                                    </span>
                                 </div>
                                 <div class="md-card-list-item-subject">
                                     <div class="md-card-list-item-sender-small">
                                         <span>sophia70@danielnicolas.info</span>
                                     </div>
-                                    <span>Dolorum omnis fugit facere voluptatem.</span>
+                                    <span><?php echo substr($allOut_faxs['message_body'],'0','20'); ?></span>
                                 </div>
                                 <div class="md-card-list-item-content-wrapper">
                                     <div class="md-card-list-item-content">
-                                        Autem et in qui natus repudiandae molestiae doloribus necessitatibus aut ea repudiandae voluptas voluptas molestiae odit assumenda et rem corrupti quia sunt in ut qui ipsam maiores officiis sapiente iusto et dolor consequatur et eius fugit possimus dignissimos sapiente deserunt perferendis voluptatem molestiae architecto eum accusamus omnis.                                    </div>
+                                        <?php echo $allOut_faxs['message_body']; ?>
+                                    </div>
                                     <form class="md-card-list-item-reply">
                                         <label for="mailbox_reply_1895">Reply to <span>sophia70@danielnicolas.info</span></label>
                                         <textarea class="md-input md-input-full" name="mailbox_reply_1895" id="mailbox_reply_1895" cols="30" rows="4"></textarea>
@@ -85,6 +73,8 @@
                                     </form>
                                 </div>
                             </li>
+                            <?php } ?>
+
                             <li>
                                 <div class="md-card-list-item-menu" data-uk-dropdown="{mode:'click',pos:'bottom-right'}">
                                     <a href="#" class="md-icon material-icons">&#xE5D4;</a>
@@ -198,19 +188,36 @@
                             </li>
                         </ul>
                     </div>
+
+    <!-- Outbox Yesterday Messages -->
+
                     <div class="md-card-list">
                         <div class="md-card-list-header heading_list">Yesterday</div>
                         <ul class="hierarchical_slide">
+                            <?php
+                            $startDate = date('Y-m-d 00:00:00',strtotime("-1 days"));
+                            $endDate = date('Y-m-d 23:59:59',strtotime("-1 days"));
+
+                            $collection = $db->nf_user_fax; 
+                            $yesterdOutfaxs = $collection->find(array("from_id"=>$_SESSION['user_id'],"created_date" => array('$gt' => $startDate,'$lte' => $endDate)));   
+                            foreach ($yesterdOutfaxs as $yesterdOut_faxs) {            
+                                // User Details
+                                $collection = $db->nf_user; 
+                                $userDetails1 = $collection->findOne(array('_id' => new MongoId($yesterdOut_faxs['from_id'])));
+                                ?>
                             <li>
-                                <div class="md-card-list-item-menu" data-uk-dropdown="{mode:'click',pos:'bottom-right'}">
-                                    <a href="#" class="md-icon material-icons">&#xE5D4;</a>
-                                    <div class="uk-dropdown uk-dropdown-small">
-                                        <ul class="uk-nav">
-                                            <li><a href="#"><i class="material-icons">&#xE15E;</i> Reply</a></li>
-                                            <li><a href="#"><i class="material-icons">&#xE149;</i> Archive</a></li>
-                                            <li><a href="#"><i class="material-icons">&#xE872;</i> Delete</a></li>
-                                        </ul>
-                                    </div>
+                                <div class="md-card-list-item-menu margn">                                    
+                                    <a href="#"><i class="fa fa-reply-all"></i> </a>
+                                    <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                    <a href="#"><i class="fa fa-tags"></i></a>
+                                    <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $yesterdOut_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>                                         
+                                    <span id="favs_sec_<?php echo $yesterdOut_faxs['_id'];?>">
+                                        <?php if($yesterdOut_faxs['favorites'] == "N"){?>
+                                            <a id="Fav_id" onClick="gFavorites('<?php echo $yesterdOut_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+                                        <?php } else { ?>
+                                            <a id="Fav_id" onClick="gFavorites('<?php echo $yesterdOut_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+                                        <?php } ?> 
+                                    </span>
                                 </div>
                                 <span class="md-card-list-item-date">12 Nov</span>
                                 <div class="md-card-list-item-select">
@@ -238,6 +245,10 @@
                                     </form>
                                 </div>
                             </li>
+                            <?php  
+                            } ?>
+
+
                             <li>
                                 <div class="md-card-list-item-menu" data-uk-dropdown="{mode:'click',pos:'bottom-right'}">
                                     <a href="#" class="md-icon material-icons">&#xE5D4;</a>
@@ -2298,9 +2309,30 @@
                     localStorage.removeItem('altair_layout');
                     location.reload(true);
                 });
-
-
         });
+    
+
+        // check / Uncheck Favorites
+        function gFavorites(FID,Fval)
+        {
+            $.ajax({
+                url:"auto_complete.php",
+                type:"GET",
+                data: {"fax_id": FID,"fav_val":Fval},
+                success:function(html){    
+                    if(Fval == 'Y')      
+                    {
+                        alert('Successfully added to favorites'); 
+                        $('#favs_sec_'+FID).load(location.href + " #favs_sec_"+FID);
+                    }
+                    else
+                    {
+                        alert('Successfully removed from favorites');      
+                        $('#favs_sec_'+FID).load(location.href + " #favs_sec_"+FID);
+                    }                    
+                }
+            });        
+        }
     </script>
    
 </body>

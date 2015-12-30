@@ -183,7 +183,7 @@ class users{
 		
 		$collection = $this->db->nf_user;
 		
-		$insUser = array("user_id" => $_SESSION['user_id'],"company_id" => "1" ,"first_name" => $arr['first_name'],"last_name" => $arr['first_name'],"email_id" => $arr['email'],"password" => md5($arr['password']),"description" => $arr['description'],"phone" => $arr['phone'],"fax" => $arr['fax'],"user_type" => 'EU',"status" => 'A',"created_date" => $this->cfObj->createDate(),"modified_date" => "");
+		$insUser = array("user_id" => $_SESSION['user_id'],"company_id" => "1" ,"first_name" => $arr['first_name'],"last_name" => $arr['last_name'],"email_id" => $arr['email'],"password" => md5($arr['password']),"description" => $arr['description'],"phone" => $arr['phone'],"fax" => $arr['fax'],"user_type" => 'EU',"status" => 'A',"created_date" => $this->cfObj->createDate(),"modified_date" => "");
 		
 		$collection->insert($insUser);			
 	}
@@ -237,5 +237,28 @@ class users{
 		return $resultC;
 		
 	}
+	
+	public function userActiveDeactive($userId, $status){
+		
+		$collection = $this->db->nf_user;
+		
+		$updateInfo = array("status"=>$status);
+		
+		$restultC = $collection->update(array("_id" => new MongoId($userId)),array('$set' => $updateInfo));
+		
+		return $resultC;
+	}
+	
+	public function changePassword($userId, $chgPwd){
+	
+		$collection = $this->db->nf_user;
+		
+		$updateInfo = array("password"=>$chgPwd);
+		
+		$restultC = $collection->update(array("_id" => new MongoId($userId)),array('$set' => $updateInfo));
+		
+		return $resultC;
+	}
+	
 }
 ?>

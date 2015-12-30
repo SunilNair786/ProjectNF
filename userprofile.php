@@ -1,15 +1,49 @@
 
 <?php include_once('includes/header.php');
-	if($_SESSION['userType'] != 'AU'){
-		header("location:index.php");
-	}
+	
 	$collection = $db->nf_user; 
 	
 	if(isset($_GET['user_id'])){
 		$userInfo = $collection->findOne(array('_id' => new MongoId($_GET['user_id'])));			
-	}else{
-		header("location:index.php");
-		exit;
+	}
+	
+	if(isset($_REQUEST['flag']) && $_REQUEST['flag'] == 'edit' ){
+		$arrUser['first_name'] = $_POST['edit_first_name'];
+		$arrUser['last_name'] = $_POST['edit_last_name'];	
+		$arrUser['phone'] = $_POST['edit_phone'];
+		$arrUser['fax'] = $_POST['edit_fax'];
+		$arrUser['description'] = $_POST['edit_description'];	
+		$arrUser['user_id'] = $_POST['user_id'];	
+		
+		$editUser = $userContObj->updateUser($arrUser);
+		header("location:userprofile.php?user_id=".$_POST['user_id']);exit;
+		
+	}
+	if(isset($_REQUEST['flag']) && $_REQUEST['flag'] == 'delete' ){		
+		$id = $_REQUEST['user_id'];
+		$delUser = $userContObj->deleteUser($id);
+		header("location:usermanagement.php?er_msg=1");exit;
+	}
+	
+	if(isset($_REQUEST['flag']) && $_REQUEST['flag'] == 'active' ){		
+		$id = $_REQUEST['user_id'];
+		$status = 'A';
+		$delUser = $userContObj->userActiveDeactive($id,$status);
+		header("location:usermanagement.php?er_msg=2");exit;
+	}
+	
+	if(isset($_REQUEST['flag']) && $_REQUEST['flag'] == 'deactive' ){		
+		$id = $_REQUEST['user_id'];
+		$status = 'D';
+		$delUser = $userContObj->userActiveDeactive($id,$status);
+		header("location:usermanagement.php?er_msg=3");exit;
+	}
+	
+	if(isset($_REQUEST['flag']) && $_REQUEST['flag'] == 'chgPwd' ){			
+		$id = $_REQUEST['user_id'];
+		$newPwd = md5($_REQUEST['new_password']);
+		$delUser = $userContObj->changePassword($id,$newPwd);
+		header("location:usermanagement.php?er_msg=4");exit;
 	}
 	
 ?>
@@ -29,16 +63,20 @@
                                 <i class="md-icon material-icons md-icon-light"></i>
                                 <div class="uk-dropdown uk-dropdown-small uk-dropdown-left" style="min-width: 160px; top: 0px; left: -160px;">
                                     <ul class="uk-nav">
-                                        <li><a href="usermanagement.php">Back to Users list</a></li>
-                                        <li><a href="#">Action 2</a></li>
+										<?php if($_SESSION['userType'] == 'AU') {?>
+											<li><a href="usermanagement.php">Back to Users list</a></li>
+											
+										<?php } ?>
+											<li><a href="#changePwd" data-uk-modal="{center:true}">Change Password</a></li>
+                                        
                                     </ul>
                                 </div>
                             </div>
                             <div class="user_heading_avatar">
-                                <img alt="user avatar" src="assets/img/avatars/avatar_11.png" class="">
+                                <img alt="" src="" class="">
                             </div>
                             <div class="user_heading_content">
-                                <h2 class="heading_b uk-margin-bottom"><span class="uk-text-truncate">Fiona DuBuque</span><span class="sub-heading">Land acquisition specialist</span></h2>
+                                <h2 class="heading_b uk-margin-bottom"><span class="uk-text-truncate"><?php echo $userInfo['first_name'].' '.$userInfo['last_name'];?></span><span class="sub-heading"></span></h2>
                                 <ul class="user_stats">
                                     <li>
                                         <h4 class="heading_a">2391 <span class="sub-heading">Posts</span></h4>
@@ -50,44 +88,93 @@
                                         <h4 class="heading_a">284 <span class="sub-heading">Following</span></h4>
                                     </li>
                                 </ul>
-                            </div>
-							
+                            </div>							
 							
 							<div class="md-fab-wrapper">
                                     <div class="md-fab md-fab-toolbar md-fab-small md-fab-accent" style="">
                                         <i class="material-icons"></i>
                                         <div class="md-fab-toolbar-actions">
-                                            <button data-uk-tooltip="{cls:'uk-tooltip-small',pos:'bottom'}" id="user_edit_save" type="submit"><i class="material-icons md-color-white"></i></button>
-                                             
-                                            <button data-uk-tooltip="{cls:'uk-tooltip-small',pos:'bottom'}" id="user_edit_delete" type="submit"><i class="material-icons md-color-white"></i></button>
+                                          <!--button data-uk-tooltip="{cls:'uk-tooltip-small',pos:'bottom'}" id="user_edit_save" type="submit"><i class="material-icons md-color-white"></i></button>
+										   <button data-uk-tooltip="{cls:'uk-tooltip-small',pos:'bottom'}" id="user_edit_delete" type="submit"><i class="material-icons md-color-white"></i></button!-->
+										  <a href='#editUserInfo' data-uk-modal="{center:true}"><i class="material-icons md-color-white" title="Edit">&#xE150;</i></a>
+										  <?php if(($_SESSION['userType'] == 'AU') &&  ($userInfo['user_type'] != $_SESSION['userType']) ) { ?>
+                                          <a href='userprofile.php?flag=delete&user_id=<?php echo $userInfo['_id'];?>' ><i class="material-icons md-color-white" title="Delete"></i></a>   
+										  <?php if($userInfo['status'] == 'A') {?>
+											<a href='userprofile.php?flag=deactive&user_id=<?php echo $userInfo['_id'];?>' ><i class="material-icons md-color-white" title="Deactive">&#xE8DB;</i></a>   
+										  <?php }else{ ?>
+											<a href='userprofile.php?flag=active&user_id=<?php echo $userInfo['_id'];?>' ><i class="material-icons md-color-white" title="Active">&#xE8DC;</i></a>   
+										  <?php } 
+										  }
+										  ?>	
+                                          
                                         </div>
                                     </div>
                                 </div>
 							 
                         </div>
-                        <div class="uk-modal" id="Edit_Grp<?php echo $incc;?>">
+						
+						<div class="uk-modal" id="changePwd">
+							<div class="uk-modal-dialog">
+							    <button class="uk-modal-close uk-close" type="button"></button>
+								   <form name="editUser" method='post' action='userprofile.php?flag=chgPwd'  id='editUser' onsubmit='return changePwd()'>
+							
+									
+									<input type='hidden' name='user_id' id='user_id' value ='<?php echo $userInfo['_id'];?>' />		
+									
+										<div class="uk-form-row">
+											<div class="uk-modal-header">
+												<h3 class="uk-modal-title">Change Password</h3>
+											</div>
+												<label for="register_username">New Password</label>
+												<input class="md-input" type="password" id="new_password" name="new_password"  required//>
+												<span style='color:red;' id='edit_error_password'></span>	
+										</div>	
+										<div class="uk-modal-footer">                    
+											<input type="button" class="uk-modal-close md-btn md-btn-flat md-btn-flat-primary pull-right" value="Cancel" />             
+											<input type="submit" class="uk-float-right md-btn md-btn-flat md-btn-flat-primary" name="editsubmit" value="Update"   />
+										</div>
+									
+									</form>
+							</div>
+						</div>
+						
+                        <div class="uk-modal" id="editUserInfo">
 									        <div class="uk-modal-dialog">
 									        <button class="uk-modal-close uk-close" type="button"></button>
-									            <form>
-										<div class="uk-form-row">
-												<label for="register_username">Change Username</label>
-												<input class="md-input" type="text" id="register_username" name="register_username" />
+									           <form name="editUser" method='post' action='userprofile.php?flag=edit&user_id=<?php echo $userInfo['_id'];?>'  id='editUser' onsubmit='return updateFrm()'>
+				<!-- Edit Contact List-->	
+						
+						<input type='hidden' name='user_id' id='user_id' value ='<?php echo $userInfo['_id'];?>' />						
+							<div class="uk-form-row">
+								<div class="uk-modal-header">
+									<h3 class="uk-modal-title">Edit User</h3>
+								</div>
+									   <label for="register_username">First Name</label>
+												<input class="md-input" type="text" id="edit_first_name" name="edit_first_name" value='<?php echo $userInfo["first_name"]; ?>' required//>
 										</div>
-										 
 										<div class="uk-form-row">
-												<label for="register_password_repeat">Change Password</label>
-												<input class="md-input" type="text" id="register_password_repeat" name="register_password_repeat" />
+												<label for="register_username">Last Name</label>
+												<input class="md-input" type="text" id="edit_last_name" name="edit_last_name" value='<?php echo $userInfo["last_name"]; ?>' required />
+										</div>																		
+										<div class="uk-form-row">
+												<label for="register_email">Phone Number</label>
+												<input class="md-input" type="text" id="edit_phone" name="edit_phone" required  value='<?php echo $userInfo["phone"]; ?>'/>
 										</div>
 										<div class="uk-form-row">
-												<label for="register_email">Change E-mail</label>
-												<input class="md-input" type="text" id="register_email" name="register_email" />
+												<label for="register_email">Fax</label>
+												<input class="md-input" type="text" id="edit_fax" name="edit_fax" value='<?php echo $userInfo["fax"]; ?>'  required/>
 										</div>
-										 
-								
-									                <div class="uk-modal-footer">  								                	           
-									                    <input type="submit" class="uk-float-right md-btn md-btn-flat md-btn-flat-primary" name="submit" value="Update" />
-									                </div>
-									            </form>
+										<div class="uk-form-row">
+												<label for="register_email">User Description</label>
+												<textarea class="md-input" type="text" id="edit_description" name="edit_description"  required/><?php echo $userInfo["description"]; ?></textarea>												
+												<span style='color:red;' id='edit_error_content'></span>												
+										</div>
+							<div class="uk-modal-footer">                    
+								<input type="button" class="uk-modal-close md-btn md-btn-flat md-btn-flat-primary pull-right" value="Cancel" />             
+								<input type="submit" class="uk-float-right md-btn md-btn-flat md-btn-flat-primary" name="editsubmit" value="Update"   />
+							</div>
+						
+					</form>
 									        </div>
 									    </div>
                         <div class="user_content">
@@ -118,6 +205,15 @@
                                                     <div class="md-list-content">
                                                         <span class="md-list-heading">+<?php echo $userInfo['phone'];?></span>
                                                         <span class="uk-text-small uk-text-muted">Phone</span>
+                                                    </div>
+                                                </li>
+												<li>
+                                                    <div class="md-list-addon-element">
+                                                        <i class="material-icons md-list-addon-icon">&#xE8AD;</i>
+                                                    </div>
+                                                    <div class="md-list-content">
+                                                        <span class="md-list-heading">+<?php echo $userInfo['fax'];?></span>
+                                                        <span class="uk-text-small uk-text-muted">Fax</span>
                                                     </div>
                                                 </li>
                                                
@@ -622,11 +718,11 @@
              
         </div>
     </div>
-    <div class="md-fab-wrapper">
+    <!--div class="md-fab-wrapper">
         <a class="md-fab md-fab-accent" href="#mailbox_new_message" data-uk-modal="{center:true}">
             <i class="material-icons">&#xE145;</i>
         </a>
-    </div>
+    </div!-->
 
     <!-- Create New Contact -->
     <div class="uk-modal" id="mailbox_new_message">
@@ -829,103 +925,41 @@
             </p>
         </div>
     </div>
-
+	<script src="assets/js/common_nf.js"></script>
     <script>
-        $(function() {
-            var $switcher = $('#style_switcher'),
-                $switcher_toggle = $('#style_switcher_toggle'),
-                $theme_switcher = $('#theme_switcher'),
-                $mini_sidebar_toggle = $('#style_sidebar_mini'),
-                $boxed_layout_toggle = $('#style_layout_boxed'),
-                $body = $('body');
-
-
-            $switcher_toggle.click(function(e) {
-                e.preventDefault();
-                $switcher.toggleClass('switcher_active');
-            });
-
-            $theme_switcher.children('li').click(function(e) {
-                e.preventDefault();
-                var $this = $(this),
-                    this_theme = $this.attr('data-app-theme');
-
-                $theme_switcher.children('li').removeClass('active_theme');
-                $(this).addClass('active_theme');
-                $body
-                    .removeClass('app_theme_a app_theme_b app_theme_c app_theme_d app_theme_e app_theme_f app_theme_g')
-                    .addClass(this_theme);
-
-                if(this_theme == '') {
-                    localStorage.removeItem('altair_theme');
-                } else {
-                    localStorage.setItem("altair_theme", this_theme);
-                }
-
-            });
-
-            // hide style switcher
-            $document.on('click keyup', function(e) {
-                if( $switcher.hasClass('switcher_active') ) {
-                    if (
-                        ( !$(e.target).closest($switcher).length )
-                        || ( e.keyCode == 27 )
-                    ) {
-                        $switcher.removeClass('switcher_active');
-                    }
-                }
-            });
-
-            // get theme from local storage
-            if(localStorage.getItem("altair_theme") !== null) {
-                $theme_switcher.children('li[data-app-theme='+localStorage.getItem("altair_theme")+']').click();
-            }
-
-
-        // toggle mini sidebar
-
-            // change input's state to checked if mini sidebar is active
-            if((localStorage.getItem("altair_sidebar_mini") !== null && localStorage.getItem("altair_sidebar_mini") == '1') || $body.hasClass('sidebar_mini')) {
-                $mini_sidebar_toggle.iCheck('check');
-            }
-
-            $mini_sidebar_toggle
-                .on('ifChecked', function(event){
-                    $switcher.removeClass('switcher_active');
-                    localStorage.setItem("altair_sidebar_mini", '1');
-                    location.reload(true);
-                })
-                .on('ifUnchecked', function(event){
-                    $switcher.removeClass('switcher_active');
-                    localStorage.removeItem('altair_sidebar_mini');
-                    location.reload(true);
-                });
-
-
-        // toggle boxed layout
-
-            // change input's state to checked if mini sidebar is active
-            if((localStorage.getItem("altair_layout") !== null && localStorage.getItem("altair_layout") == 'boxed') || $body.hasClass('boxed_layout')) {
-                $boxed_layout_toggle.iCheck('check');
-                $body.addClass('boxed_layout');
-                $(window).resize();
-            }
-
-            // toggle mini sidebar
-            $boxed_layout_toggle
-                .on('ifChecked', function(event){
-                    $switcher.removeClass('switcher_active');
-                    localStorage.setItem("altair_layout", 'boxed');
-                    location.reload(true);
-                })
-                .on('ifUnchecked', function(event){
-                    $switcher.removeClass('switcher_active');
-                    localStorage.removeItem('altair_layout');
-                    location.reload(true);
-                });
-
-
-        });
+       function updateFrm(){
+			document.getElementById("edit_error_content").innerHTML = '';			
+			document.getElementById('default_action').value = 'updateUser'
+			
+			var phone = document.getElementById('edit_phone').value;
+			
+			if(!isNormalInteger(phone)){
+				alert("Please enter proper phone number.")
+				return false;
+			}else{
+				if( phone.length > 10){
+					alert("Phone length should not greather than 10 digits")
+					return false;
+				}
+			}
+			var description = trimAll(document.getElementById('edit_description').value);
+			if(description ==''){				
+				document.getElementById("edit_error_content").innerHTML = 'Please enter description.';
+				return false;
+			}
+			return true;
+		}
+		
+		function changePwd(){
+			document.getElementById("edit_error_password").innerHTML = '';		
+			var new_password = document.getElementById('new_password').value;
+			
+			if( new_password == ''){
+				alert("Please enter new password.")
+				return false;
+			}
+		}
+		
     </script>
 </body>
 </html>

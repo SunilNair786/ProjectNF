@@ -2,8 +2,9 @@ function ValidateEmail(mail){
 		if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)){  
 			return (true)  
 		}  
-			alert("You have entered an invalid email address!")  
-			return (false)  
+		alert("You have entered an invalid email address!");			
+		document.getElementById("email").focus();
+		return (false);  
 	}
 function isNormalInteger(str) {
 	return /^\+?(0|[1-9]\d*)$/.test(str);

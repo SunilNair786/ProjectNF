@@ -20,6 +20,23 @@
 	position: relative;
 	display: block
 }
+.inactive{background:#d7d7d7 !important;}
+.alert-success {
+    background-color: #dff0d8 ;
+    border-color: #d6e9c6 !important;
+    color: #3c763d;
+}
+.alert-danger {
+    background-color: #f2dede;
+    border-color: #ebccd1 !important;
+    color: #a94442;
+}
+.alert {
+    border: 1px solid transparent;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    padding: 15px;
+}
 .uk-alert-success {
 	background: #8bc34a!important
 }

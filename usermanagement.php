@@ -21,6 +21,7 @@ if(isset($_REQUEST['default_action']) && $_REQUEST['default_action'] == 'addUser
 	$arrUser['fax'] = $_POST['fax'];
 	$arrUser['description'] = $_POST['description'];	
 	$userContObj->insertUser($arrUser);	
+	header("location:usermanagement.php?er_msg=5");exit;
 }
 
 if(isset($_REQUEST['flag']) && $_REQUEST['flag'] == 'edit' ){
@@ -36,6 +37,7 @@ if(isset($_REQUEST['flag']) && $_REQUEST['flag'] == 'edit' ){
 if(isset($_REQUEST['action'])){
 	$id = $_REQUEST['id'];
 	$delUser = $userContObj->deleteUser($id);
+	
 }
 
 ?>
@@ -72,7 +74,49 @@ if(isset($_REQUEST['action'])){
                         </div>
                     </div>
                 </div>
+				
+				
             </div>
+			<?php
+		
+			if(isset($_GET['er_msg']) && $_GET['er_msg'] == 1){?>
+				<div class="alert alert-success">
+					<a title="close" aria-label="close" data-dismiss="alert" class="close" href="#" ><i class="material-icons" style="color:green;font-size:18px; float:right;">&#xE5CD;</i></a>
+					<strong>Success!</strong> User information deleted sucessfully.
+				</div>
+			<?php } ?>
+			<?php if( isset($_GET['er_msg']) && $_GET['er_msg'] == 2){?>
+				<div class="alert alert-success">
+					<a title="close" aria-label="close" data-dismiss="alert" class="close" href="#" ><i class="material-icons" style="color:green;font-size:18px; float:right;">&#xE5CD;</i></a>
+					<strong>Success!</strong> User profile activated sucessfully.
+				</div>
+			<?php } ?>
+			<?php if( isset($_GET['er_msg']) && $_GET['er_msg'] == 3){?>
+				<div class="alert alert-success">
+					<a title="close" aria-label="close" data-dismiss="alert" class="close" href="#" ><i class="material-icons" style="color:green;font-size:18px; float:right;">&#xE5CD;</i></a>
+					<strong>Success!</strong>  User profile deactivated sucessfully.
+				</div>
+			<?php } ?>
+			<?php if( isset($_GET['er_msg']) && $_GET['er_msg'] == 4){?>
+				<div class="alert alert-success">
+					<a title="close" aria-label="close" data-dismiss="alert" class="close" href="#" ><i class="material-icons" style="color:green;font-size:18px; float:right;">&#xE5CD;</i></a>
+					<strong>Success!</strong> Password changed sucessfully.
+				</div>
+			<?php } ?>
+			<?php if( isset($_GET['er_msg']) && $_GET['er_msg'] == 5){?>
+				<div class="alert alert-success">
+					<a title="close" aria-label="close" data-dismiss="alert" class="close" href="#" ><i class="material-icons" style="color:green;font-size:18px; float:right;">&#xE5CD;</i></a>
+					<strong>Success!</strong> User created successfully.
+				</div>
+			<?php } ?>
+
+
+
+			<!--div class="alert alert-danger fade in ">
+				<a title="close" aria-label="close" data-dismiss="alert" class="close" href="#" ><i class="material-icons" style="color:#c00;font-size:18px; float:right;">&#xE5CD;</i></a>
+				<strong>Danger!</strong> This alert box indicates a dangerous or potentially negative action.
+			</div!-->
+			
             <div class="uk-grid-width-small-1-2 uk-grid-width-medium-1-3 uk-grid-width-large-1-4 uk-grid-width-xlarge-1-5 hierarchical_show" id="contact_list">       
 
                 <?php 
@@ -99,11 +143,16 @@ if(isset($_REQUEST['action'])){
 				}
                 $Cinc = 1;              
 				
-                foreach($allContactList as $contactList){		
+                foreach($allContactList as $contactList){
+					
+						if($contactList['status'] == 'A')
+							$class = '';
+						else	
+							$class = 'inactive';
                 ?>   
 
-                    <div data-uk-filter="">
-                        <div class="md-card md-card-hover">
+                    <div data-uk-filter="All,<?php echo $contactList["first_name"].' '.$contactList["last_name"];?>" >
+                        <div class="md-card md-card-hover <?php echo $class;?>">
                             <div class="md-card-head">
                                 <div class="md-card-head-menu" data-uk-dropdown="{pos:'bottom-right'}">
                                     <i class="md-icon material-icons">&#xE5D4;</i>
@@ -169,44 +218,44 @@ if(isset($_REQUEST['action'])){
     <div class="uk-modal" id="mailbox_new_message">
         <div class="uk-modal-dialog">
         <button class="uk-modal-close uk-close" type="button"></button>
-            <form name='userReg' method='post' action='usermanagement.php' >
+            <form name='userReg' method='post' action='usermanagement.php' onsubmit='return formSubmit()'>
             <div class="uk-modal-header">
                     <h3 class="uk-modal-title">Create User</h3>
                 </div>
 				 <input type='hidden' name='default_action' id='default_action' value='addUser' />
 										<div class="uk-form-row">
 												<label for="register_username">First Name</label>
-												<input class="md-input" type="text" id="first_name" name="first_name" required//>
+												<input class="md-input" type="text" id="first_name" name="first_name" tabindex=1/>
 										</div>
 										<div class="uk-form-row">
 												<label for="register_username">Last Name</label>
-												<input class="md-input" type="text" id="last_name" name="last_name" required />
+												<input class="md-input" type="text" id="last_name" name="last_name"  />
 										</div>
 										<div class="uk-form-row">
 												<label for="register_email">E-mail</label>
-												<input class="md-input" type="text" id="email" name="email" required />
+												<input class="md-input" type="text" id="email" name="email"  />
 												<span style='color:red' id='error_email'></span>
 										</div>
 										<div class="uk-form-row">
 												<label for="register_password">Password</label>
-												<input class="md-input" type="password" id="password" name="password" required />
+												<input class="md-input" type="password" id="password" name="password"  />
 										</div>
 										<div class="uk-form-row">
 												<label for="register_email">Phone Number</label>
-												<input class="md-input" type="text" id="phone" name="phone" required />
+												<input class="md-input" type="text" id="phone" name="phone"  />
 										</div>
 										<div class="uk-form-row">
 												<label for="register_email">Fax</label>
-												<input class="md-input" type="text" id="fax" name="fax"  required/>
+												<input class="md-input" type="text" id="fax" name="fax"  />
 										</div>
 										<div class="uk-form-row">
 												<label for="register_email">User Description</label>
-												<textarea class="md-input" type="text" id="description" name="description"  required/></textarea>
+												<textarea class="md-input" type="text" id="description" name="description"  /></textarea>
 												<span style='color:red;' id='error_content'></span>												
 										</div>
 										
 										<div class="uk-margin-medium-top">
-										 <input type="button" class="md-btn md-btn-primary md-btn-block md-btn-large btns" name="btnSubmit" value="Create User"  onclick='javascript:formSubmit();' />
+										 <input type="submit" class="md-btn md-btn-primary md-btn-block md-btn-large btns" name="submit" value="Create User"' />
 											
 										</div>
 								</form>
@@ -227,7 +276,7 @@ if(isset($_REQUEST['action'])){
 					<div class="uk-modal-dialog">
 					<button class="uk-modal-close uk-close" type="button"></button>
 						
-						<input type='text' name='user_id' id='user_id' value ='<?php echo $contactList['_id'];?>' />
+						<input type='hidden' name='user_id' id='user_id' value ='<?php echo $contactList['_id'];?>' />
 						
 							<div class="uk-form-row">
 							<div class="uk-modal-header">
@@ -349,15 +398,40 @@ if(isset($_REQUEST['action'])){
         </div>
     </div>
 	<script src="assets/js/common_nf.js"></script>
+	<script>(function ($) {
+    $('.close').click(function(){
+        $('.alert').fadeOut();
+    });
+})(jQuery);</script>
     <script>
        
 		function formSubmit(){
 			document.getElementById("error_content").innerHTML = '';
+			var first_name = trimAll(document.getElementById('first_name').value);			
+			var last_name = trimAll(document.getElementById('last_name').value);			
 			var email = trimAll(document.getElementById('email').value);			
 			var phone = document.getElementById('phone').value;
-			if(!ValidateEmail(email)){
+			
+			if(first_name ==''){
+				alert("Please enter first name.")
+				document.getElementById("first_name").focus();				
 				return false;
 			}
+			if(last_name ==''){
+				alert("Please enter last name.")
+				document.getElementById("last_name").focus();				
+				return false;
+			}
+			if(email == ''){
+				alert("Please enter email.")
+				document.getElementById("email").focus();				
+				return false;
+			}
+			if(!ValidateEmail(email)){
+				document.getElementById("email").focus();				
+				return false;
+			}
+			
 			if(!isNormalInteger(phone)){
 				alert("Please enter proper phone number.")
 				return false;
@@ -372,10 +446,7 @@ if(isset($_REQUEST['action'])){
 				document.getElementById("error_content").innerHTML = 'Please enter description.';
 				return false;
 			}
-			//document.userReg.submit();
-			var frm = document.userReg;
-			frm.action = 'usermanagement.php';
-			frm.submit();		
+			return true;			
 		}
 		function updateFrm(){
 			document.getElementById("edit_error_content").innerHTML = '';			
@@ -397,11 +468,18 @@ if(isset($_REQUEST['action'])){
 				document.getElementById("edit_error_content").innerHTML = 'Please enter description.';
 				return false;
 			}
+			return true;		
 		
 		}
 		
-		$('#email').on("change", function () {
+		$('#email').on("change", function () {			
 			email = $(this).val();
+			if(!ValidateEmail(email)){
+				 $('#email').focus();
+				 return false;
+			}else{
+				return true;
+			}
 			
 			$.ajax({
 				url: 'auto_complete.php',

@@ -49,7 +49,7 @@ if(isset($_GET['searchParam'])){
                                         $collection = $db->nf_user_groups; 
                                         $allgroups1 = $collection->find();
                                         foreach($allgroups1 as $allgroups12){?>
-                                            <li data-uk-filter="<?php echo $allgroups12['group_name']; ?>"><a href="contact.php"><?php echo $allgroups12['group_name']; ?></a></li>
+                                            <li data-uk-filter="<?php echo $allgroups12['group_name'];?>"><a href="contact.php"><?php echo $allgroups12['group_name']; ?></a></li>
                                         <?php } ?>                                        
                                     </ul>
                                 </div>
@@ -57,8 +57,9 @@ if(isset($_GET['searchParam'])){
                         </div>
                         <div class="uk-width-medium-1-2">
 								<form name='searchFrm' action='contact.php' />
-									<label for="contact_list_search">Find user</label>
-									<input class="md-input" type="text" name ="searchParam" id="searchParam" onkeypress="return searchContact(event)" />
+									<label for="contact_list_search">Find contact</label>
+									   <input class="md-input" type="text" id="contact_list_search"/>
+									<!--input class="md-input" type="text" name ="searchParam" id="searchParam" onkeypress="return searchContact(event)" /!-->
 								</form>
                         </div>
                     </div>
@@ -79,7 +80,10 @@ if(isset($_GET['searchParam'])){
 				}	
 			   
 				if(isset($_GET['searchParam']) && $searchUserCnt  == 0 ){
-					echo "<p style='color:red'>No contacts found.</p>";
+					echo '<div class="alert alert-danger fade in ">
+				<a title="close" aria-label="close" data-dismiss="alert" class="close" href="#" ><i class="material-icons" style="color:#c00;font-size:18px; float:right;">&#xE5CD;</i></a>
+				<strong>Danger!</strong> No records found.
+			</div>';
 				}else if ($searchUserCnt  > 1 ){
 					
 					foreach($allContactList as $contactList){
@@ -143,7 +147,7 @@ if(isset($_GET['searchParam'])){
 						$allContactLists1 = $collection->findOne(array('_id' => new MongoId($contactList['group_id'])));
 				?>
 
-						<div data-uk-filter="<?php echo $allContactLists1['group_name']; ?>,<?php echo $contactList["contact_name"];?>">
+						<div data-uk-filter="<?php echo $allContactLists1['group_name']; ?>,<?php echo $contactList["contact_name"];?>" aria-hidden="false">
 							<div class="md-card md-card-hover">
 								<div class="md-card-head">
 									<div class="md-card-head-menu" data-uk-dropdown="{pos:'bottom-right'}">
@@ -528,5 +532,10 @@ if(isset($_GET['searchParam'])){
 			}
 		}
     </script>
+	<script>(function ($) {
+    $('.close').click(function(){
+        $('.alert').fadeOut();
+    });
+})(jQuery);</script>
 </body>
 </html>

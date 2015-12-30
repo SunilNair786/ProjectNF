@@ -136,7 +136,29 @@ class userController
 		$userDetails  = $this->userClsObj->searchUserDetailsCount($strUser);		
 		return $userDetails;
 	}
+    
+	// Search User Count
+	public function checkEmail($emailId){		
+		$userDetails  = $this->userClsObj->checkEmail($emailId);		
+		return $userDetails;
+	}	
+	
+	public function deleteUser($userId){
+		$delUser  = $this->userClsObj->deleteUser($userId);		
+		return $delUser;
+	}
 
+	public function userActiveDeactive($userId,$status){
+		$delUser  = $this->userClsObj->userActiveDeactive($userId,$status);		
+		return $delUser;
+	}	
+		
+	public function changePassword($userId,$chgPwd){
+		$delUser  = $this->userClsObj->changePassword($userId,$chgPwd);		
+		return $delUser;
+	}
+
+	
 }
 
 ?>

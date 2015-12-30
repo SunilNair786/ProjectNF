@@ -84,7 +84,6 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                                             <a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
                                         <?php } ?> 
                                     </span>
-
                                 </div>
                                 
                                 <span class="md-card-list-item-date"><?php echo date('j M',strtotime($all_faxs['created_date'])); ?></span>
