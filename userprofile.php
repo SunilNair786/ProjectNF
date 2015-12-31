@@ -98,9 +98,9 @@
 										   <button data-uk-tooltip="{cls:'uk-tooltip-small',pos:'bottom'}" id="user_edit_delete" type="submit"><i class="material-icons md-color-white"></i></button!-->
 										  <a href='#editUserInfo' data-uk-modal="{center:true}"><i class="material-icons md-color-white" title="Edit">&#xE150;</i></a>
 										  <?php if(($_SESSION['userType'] == 'AU') &&  ($userInfo['user_type'] != $_SESSION['userType']) ) { ?>
-                                          <a href='userprofile.php?flag=delete&user_id=<?php echo $userInfo['_id'];?>' ><i class="material-icons md-color-white" title="Delete"></i></a>   
+                                          <a href='#' onClick="return deleteProfile();" ><i class="material-icons md-color-white" title="Delete"></i></a>   
 										  <?php if($userInfo['status'] == 'A') {?>
-											<a href='userprofile.php?flag=deactive&user_id=<?php echo $userInfo['_id'];?>' ><i class="material-icons md-color-white" title="Deactive">&#xE8DB;</i></a>   
+											<a href='userprofile.php?flag=active&user_id=<?php echo $userInfo['_id'];?>' ><i class="material-icons md-color-white" title="Deactive">&#xE8DB;</i></a>   
 										  <?php }else{ ?>
 											<a href='userprofile.php?flag=active&user_id=<?php echo $userInfo['_id'];?>' ><i class="material-icons md-color-white" title="Active">&#xE8DC;</i></a>   
 										  <?php } 
@@ -958,6 +958,11 @@
 				alert("Please enter new password.")
 				return false;
 			}
+		}
+		
+		function deleteProfile(){
+			var q = confirm('Are you sure you want to delete selected record?'); 
+			if (q) { window.location = "userprofile.php?flag=delete&user_id=<?php echo $userInfo['_id'];?>"; return false; }
 		}
 		
     </script>

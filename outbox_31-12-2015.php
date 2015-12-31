@@ -15,20 +15,17 @@
                             <?php
                             $startDate = date('Y-m-d 00:00:00');                            
                             //$endDate = date('Y-m-d H:i:s');
-                            $collection = $db->nf_fax_users;
-							$collection_fax = $db->nf_fax;	
-							$collection_user = $db->nf_user; 							
-                            $allOutfaxs = $collection->find(array("from_id" => $_SESSION['user_id'],"created_date" => array('$gt' => $startDate),'is_delete'=> 0));   
-                            foreach ($allOutfaxs as $allOut_faxs) {  								
-								$faxId = $allOut_faxs['fax_id']->{'$id'};
-								$faxInfo = $collection_fax->findOne(array('_id' => new MongoId($faxId), "status" => 'A'));							
-                            ?>    
+
+                            $collection = $db->nf_user_fax; 
+                            $allOutfaxs = $collection->find(array("from_id" => $_SESSION['user_id'],"created_date" => array('$gt' => $startDate)));   
+                            foreach ($allOutfaxs as $allOut_faxs) {                               
+                                ?>    
                             <li>                                
                                 <div class="md-card-list-item-menu margn">                                    
                                     <a href="#"><i class="fa fa-reply-all"></i> </a>
                                     <a href="#"><i class="fa fa-long-arrow-right"></i></a>
                                     <a href="#"><i class="fa fa-tags"></i></a>
-                                    <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location='inbox.php?action=delete&faxsId=<?php echo $allOut_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>                                         
+                                    <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $allOut_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>                                         
                                     <span id="favs_sec_<?php echo $allOut_faxs['_id'];?>">
                                         <?php if($allOut_faxs['favorites'] == "N"){?>
                                             <a id="Fav_id" onClick="gFavorites('<?php echo $allOut_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
@@ -46,19 +43,29 @@
                                 </div>
                                 <div class="md-card-list-item-sender">
                                     <span>
-                                        <?php                                           
-											$outUserDetail = $collection->find(array('_id' => $allOut_faxs['to_id']));											
-										?>
+                                        <?php 
+                                        $toid_arr = explode(",",$allOut_faxs['to_id']);                                        
+                                        for($i=0;$i < count($toid_arr);$i++){
+                                            $collection = $db->nf_user; 
+                                            $outUserDetail = $collection->findOne(array('_id' => new MongoId($toid_arr[$i])));
+                                            echo $outUserDetail['email_id'];
+                                            if($i < (count($toid_arr)-1))
+                                            {
+                                                echo ",";
+                                            }
+                                        } ?>
                                     </span>
                                 </div>
                                 <div class="md-card-list-item-subject">
                                     <div class="md-card-list-item-sender-small">
                                         <span>sophia70@danielnicolas.info</span>
                                     </div>
-                                    <span><?php echo substr($faxInfo['message_subject'],'0','20'); ?></span>
+                                    <span><?php echo substr($allOut_faxs['message_body'],'0','20'); ?></span>
                                 </div>
                                 <div class="md-card-list-item-content-wrapper">
-                                    <div class="md-card-list-item-content"></div>
+                                    <div class="md-card-list-item-content">
+                                        <?php echo $allOut_faxs['message_body']; ?>
+                                    </div>
                                     <form class="md-card-list-item-reply">
                                         <label for="mailbox_reply_1895">Reply to <span>sophia70@danielnicolas.info</span></label>
                                         <textarea class="md-input md-input-full" name="mailbox_reply_1895" id="mailbox_reply_1895" cols="30" rows="4"></textarea>
@@ -181,7 +188,7 @@
                             </li>
                         </ul>
                     </div>
-					
+
     <!-- Outbox Yesterday Messages -->
 
                     <div class="md-card-list">
@@ -191,7 +198,7 @@
                             $startDate = date('Y-m-d 00:00:00',strtotime("-1 days"));
                             $endDate = date('Y-m-d 23:59:59',strtotime("-1 days"));
 
-                            $collection = $db->nf_fax_users; 
+                            $collection = $db->nf_user_fax; 
                             $yesterdOutfaxs = $collection->find(array("from_id"=>$_SESSION['user_id'],"created_date" => array('$gt' => $startDate,'$lte' => $endDate)));   
                             foreach ($yesterdOutfaxs as $yesterdOut_faxs) {                                                                            
                                 ?>

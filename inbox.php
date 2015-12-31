@@ -4,37 +4,62 @@
 <?php include_once('includes/sidemenu.php');?>
 <!-- main sidebar end -->
 
+
 <?php
     $faxObjCon = new faxController();
-	if(isset($_REQUEST['submit'])){	        		
-		$faxObjCon->copyFiles($_POST,$_FILES);
-		//define where the files will be uploaded
-		/*$upload_directory = 'upload_dir/files/';
-		$x=0;
-		$userId = $_SESSION['user_id'];	
-		$timeStamp = $cfObj->getTimeStamp();
-		$newFileName = $userId."_".$timeStamp;
-		echo "<pre>";
-		print_r($_FILES);  
-		foreach ( $_FILES['file']['name'] AS $key => $value ){  
-		   //Move file to server directory
-		   move_uploaded_file($_FILES["file"]["tmp_name"][$x], $upload_directory.'/'.$newFileName.'_'.$x.'_'. $_FILES["file"]["name"][$x]);	   
-			if($_FILES["file"]["type"][$x] == 'image/png'){
-				//Create pdf file from images.	
-					
-		    }		   
-		   $x++;  
+	if(isset($_REQUEST['submit'])){	 	 
+	  $toIds = $_POST['mail_new_to']; 
+	  if(isset($toIds)){		  
+		if(strpos($toIds, ',')){	
+			$finalUserIds =  array();
+		    $findMe =  $toIds[strlen(trim($toIds))-1]; 
+			if($findMe == ','){
+				$userIds = substr(trim($toIds),0,-1);	
+			}else{
+				$userIds = $toIds;	
+			}			
+			$arrToUserIds = explode(",",$userIds);			
+			if(is_array($arrToUserIds)){
+				foreach($arrToUserIds as $key=>$val){					
+					if(is_numeric($val)){						
+						$finalUserIds[] = $val;
+					}
+				}
+			}else{
+				if(is_numeric($arrToUserIds)){
+					$finalUserIds[] = $arrToUserIds;
+				}
+			}			
+		}else{			
+			if(is_numeric($toIds)){
+				$finalUserIds[] = $toIds;
+			}			
+		}  
+	  }
+	 
+		if(isset($_POST['hidd_values']) && !empty($_POST['hidd_values'])){		
+			$arrHidIds = explode(",",$_POST['hidd_values']);
+			$finalUserToIds = array_merge($finalUserIds,$arrHidIds);			
+		}else{		
+			$finalUserToIds = $finalUserIds;
 		}
-		foreach ( $_FILES['file']['name'] AS $key => $value ){  
-			
-		}*/
+		$faxId = $faxObjCon->copyFiles($_POST,$_FILES);
+		
+		if(is_array($finalUserToIds)){													
+			for($i=0;$i<count($finalUserToIds);$i++){
+				$faxObjCon->insertToFaxIds($finalUserToIds[$i],$faxId);	
+			}
+		}else{
+				$arrToId = $finalUserToIds;
+				$faxObjCon->insertToFaxIds($arrToId,$faxId);	
+		}
 		header("location:inbox.php");
 	}	
 
-if($_GET['action']=="delete" && $_GET['faxsId']!="")
+if(isset($_GET['action']) && ($_GET['action'] == "delete") && isset($_GET['faxsId']) && ($_GET['faxsId']!="" ))
 {
     $faxObjCon->deleteFax($_GET['faxsId']);
-    header("location:inbox.php");
+    header("location:outbox.php");
 }
 ?>
 
@@ -2523,13 +2548,19 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                 </div>
                 <div class="uk-margin-medium-bottom">
                     <label for="mail_new_to">To</label>
-                    <input type="text" class="md-input" name="mail_new_to" id="mail_new_to" >                    
+                    <input type="text" class="md-input" name="mail_new_to" id="mail_new_to" required>                    
                     
                     <input type="hidden" name="hidd_labels" id="labels">
                     
                     <input type="hidden" name="hidd_values" id="values">    
 
                 </div>
+				
+				<div class="uk-margin-large-bottom">
+                    <label for="mail_new_message">Subject</label>
+                    <input name="message_subject" id="message_subject" class="md-input" required />
+                </div>
+				
                 <div class="uk-margin-large-bottom">
                     <label for="mail_new_message">Message</label>
                     <textarea name="message_body" id="message_body" cols="30" rows="6" class="md-input"></textarea>
@@ -2537,7 +2568,6 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                 <div id="mail_upload-drop" class="uk-file-upload">
 					 <input id="Button1" type="button" value="Add File" onclick = "AddFileUpload()" class="uk-form-file md-btn" />
 					 <div id = "FileUploadContainer">
-
 							<!--FileUpload Controls will be added here -->
 
 					</div>
@@ -2548,7 +2578,7 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
                     <div class="uk-progress-bar" style="width:0">0%</div>
                 </div>
                 <div class="uk-modal-footer">
-                    <a href="#" class="md-icon-btn"><i class="md-icon material-icons">&#xE226;</i></a>
+                    <!--a href="#" class="md-icon-btn"><i class="md-icon material-icons">&#xE226;</i></a!-->
 					<input type='submit' value='send' class="uk-float-right md-btn md-btn-flat md-btn-flat-primary" name='submit'  />
                     <!--button type="button" >Send</button-->
                 </div>
@@ -2575,7 +2605,8 @@ if($_GET['action']=="delete" && $_GET['faxsId']!="")
             s.parentNode.insertBefore(wf, s);
         })();
     </script>
-
+      <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+	  <script>tinymce.init({ selector:'textarea' });</script>
     <!-- common functions -->
 	
     <script src="assets/js/common.min.js"></script>

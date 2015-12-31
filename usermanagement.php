@@ -37,7 +37,7 @@ if(isset($_REQUEST['flag']) && $_REQUEST['flag'] == 'edit' ){
 if(isset($_REQUEST['action'])){
 	$id = $_REQUEST['id'];
 	$delUser = $userContObj->deleteUser($id);
-	
+	header("location:usermanagement.php?er_msg=1");exit;
 }
 
 ?>
@@ -225,28 +225,34 @@ if(isset($_REQUEST['action'])){
 				 <input type='hidden' name='default_action' id='default_action' value='addUser' />
 										<div class="uk-form-row">
 												<label for="register_username">First Name</label>
-												<input class="md-input" type="text" id="first_name" name="first_name" tabindex=1/>
+												<input class="md-input" type="text" id="first_name" name="first_name" />
+												<span id='error_firstname' style='color:red' ></span>
 										</div>
 										<div class="uk-form-row">
 												<label for="register_username">Last Name</label>
 												<input class="md-input" type="text" id="last_name" name="last_name"  />
+												<span id='error_lastname' style='color:red' ></span>
 										</div>
 										<div class="uk-form-row">
 												<label for="register_email">E-mail</label>
 												<input class="md-input" type="text" id="email" name="email"  />
 												<span style='color:red' id='error_email'></span>
+												
 										</div>
 										<div class="uk-form-row">
 												<label for="register_password">Password</label>
 												<input class="md-input" type="password" id="password" name="password"  />
+												<span id='error_password' style='color:red' ></span>
 										</div>
 										<div class="uk-form-row">
 												<label for="register_email">Phone Number</label>
 												<input class="md-input" type="text" id="phone" name="phone"  />
+												<span id='error_phone' style='color:red' ></span>
 										</div>
 										<div class="uk-form-row">
 												<label for="register_email">Fax</label>
 												<input class="md-input" type="text" id="fax" name="fax"  />
+												<span id='error_fax' style='color:red' ></span>
 										</div>
 										<div class="uk-form-row">
 												<label for="register_email">User Description</label>
@@ -276,26 +282,26 @@ if(isset($_REQUEST['action'])){
 					<div class="uk-modal-dialog">
 					<button class="uk-modal-close uk-close" type="button"></button>
 						
-						<input type='hidden' name='user_id' id='user_id' value ='<?php echo $contactList['_id'];?>' />
+						<input type='hidden' name='user_id' id='user_id' value ="<?php echo $contactList['_id'];?>" />
 						
 							<div class="uk-form-row">
 							<div class="uk-modal-header">
                     <h3 class="uk-modal-title">Edit User</h3>
                 </div>
 									   <label for="register_username">First Name</label>
-												<input class="md-input" type="text" id="edit_first_name" name="edit_first_name" value='<?php echo $contactList["first_name"]; ?>' required//>
+												<input class="md-input" type="text" id="edit_first_name" name="edit_first_name" value="<?php echo $contactList['first_name']; ?>" required//>
 										</div>
 										<div class="uk-form-row">
 												<label for="register_username">Last Name</label>
-												<input class="md-input" type="text" id="edit_last_name" name="edit_last_name" value='<?php echo $contactList["last_name"]; ?>' required />
+												<input class="md-input" type="text" id="edit_last_name" name="edit_last_name" value="<?php echo $contactList['last_name']; ?>" required />
 										</div>																		
 										<div class="uk-form-row">
 												<label for="register_email">Phone Number</label>
-												<input class="md-input" type="text" id="edit_phone" name="edit_phone" required  value='<?php echo $contactList["phone"]; ?>'/>
+												<input class="md-input" type="text" id="edit_phone" name="edit_phone" required  value="<?php echo $contactList['phone']; ?>"/>
 										</div>
 										<div class="uk-form-row">
 												<label for="register_email">Fax</label>
-												<input class="md-input" type="text" id="edit_fax" name="edit_fax" value='<?php echo $contactList["fax"]; ?>'  required/>
+												<input class="md-input" type="text" id="edit_fax" name="edit_fax" value="<?php echo $contactList['fax']; ?>"  required/>
 										</div>
 										<div class="uk-form-row">
 												<label for="register_email">User Description</label>
@@ -402,44 +408,67 @@ if(isset($_REQUEST['action'])){
     $('.close').click(function(){
         $('.alert').fadeOut();
     });
-})(jQuery);</script>
+})(jQuery);
+$(document).ready( function() {
+        $('.alert').delay(3000).fadeOut();
+      });
+
+</script>
     <script>
        
 		function formSubmit(){
+			document.getElementById("error_firstname").innerHTML = '';
+			document.getElementById("error_lastname").innerHTML = '';
+			document.getElementById("error_email").innerHTML = '';
+			document.getElementById("error_password").innerHTML = '';
+			document.getElementById("error_phone").innerHTML = '';
+			document.getElementById("error_fax").innerHTML = '';
 			document.getElementById("error_content").innerHTML = '';
 			var first_name = trimAll(document.getElementById('first_name').value);			
 			var last_name = trimAll(document.getElementById('last_name').value);			
+			var password = document.getElementById('password').value;
 			var email = trimAll(document.getElementById('email').value);			
+			var fax = document.getElementById('fax').value;
 			var phone = document.getElementById('phone').value;
 			
-			if(first_name ==''){
-				alert("Please enter first name.")
+			if( first_name ==''){				
+				document.getElementById("error_firstname").innerHTML = 'Please enter first name.';		
 				document.getElementById("first_name").focus();				
 				return false;
 			}
-			if(last_name ==''){
-				alert("Please enter last name.")
+			if( last_name ==''){
+				document.getElementById("error_lastname").innerHTML = 'Please enter last name.';		
 				document.getElementById("last_name").focus();				
 				return false;
 			}
-			if(email == ''){
-				alert("Please enter email.")
+			if( email == ''){
+				document.getElementById("error_email").innerHTML = 'Please enter email.';		
 				document.getElementById("email").focus();				
 				return false;
 			}
-			if(!ValidateEmail(email)){
-				document.getElementById("email").focus();				
+			if( password == ''){
+				document.getElementById("error_password").innerHTML = 'Please enter password.';		
+				document.getElementById("password").focus();				
 				return false;
 			}
 			
+			if(!ValidateEmail(email)){
+				document.getElementById("email").focus();				
+				return false;
+			}			
 			if(!isNormalInteger(phone)){
-				alert("Please enter proper phone number.")
+				document.getElementById("error_phone").innerHTML = 'Please enter proper phone number.';		
 				return false;
 			}else{
 				if( phone.length > 10){
-					alert("Phone length should not greather than 10 digits")
+					document.getElementById("error_phone").innerHTML = 'Phone length should not greather than 10 digits.';						
 					return false;
 				}
+			}
+			if(fax == ''){
+				document.getElementById("error_fax").innerHTML = 'Please enter fax number.';		
+				document.getElementById("error_fax").focus();				
+				return false;
 			}
 			var description = trimAll(document.getElementById('description').value);
 			if(description ==''){				
@@ -477,10 +506,7 @@ if(isset($_REQUEST['action'])){
 			if(!ValidateEmail(email)){
 				 $('#email').focus();
 				 return false;
-			}else{
-				return true;
-			}
-			
+			}			
 			$.ajax({
 				url: 'auto_complete.php',
 				data: 'email='+email,
