@@ -83,12 +83,14 @@ if(isset($_GET['action']) && ($_GET['action'] == "delete") && isset($_GET['faxsI
                             $startDate = date('Y-m-d 00:00:00');                            
                             //$endDate = date('Y-m-d H:i:s');
 
-                            $collection = $db->nf_user_fax; 
-                            $allfaxs = $collection->find(array("created_date" => array('$gt' => $startDate)));   
-                            foreach ($allfaxs as $all_faxs) {            
-                                
+                            $collection = $db->nf_fax_users; 
+							echo $_SESSION['user_id'];
+                            $allfaxs = $collection->find(array('to_id' => $_SESSION['user_id'],'created_date' => array('$gt' => $startDate),'is_delete'=> 0));  
+                            foreach ($allfaxs as $all_faxs) { 
+							    
                                 $sessId = $_SESSION["user_id"]; 
-                                $to_ids = explode(",",$all_faxs['to_id']);                                    
+								$to_ids = $all_faxs['to_id']; 
+                                //$to_ids = explode(",",$all_faxs['to_id']);                                    
                                 
                                 if(in_array($sessId,$to_ids)) {                                   
 

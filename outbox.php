@@ -47,6 +47,7 @@
                                 <div class="md-card-list-item-sender">
                                     <span>
                                         <?php                                           
+											echo $allOut_faxs['to_id'];
 											$outUserDetail = $collection->find(array('_id' => $allOut_faxs['to_id']));											
 										?>
                                     </span>
