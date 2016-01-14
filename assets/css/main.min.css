@@ -10288,6 +10288,16 @@ body:after {
 .app_theme_a #sidebar_main .menu_section>ul>li ul li.act_item a {
 	color: #ff4081
 }
+.app_theme_a  .md-fab{background:#ff4081  !important;}
+.app_theme_b  .md-fab{background:#00bcd4   !important;} 
+.app_theme_c  .md-fab{background:#1e88e5   !important;}
+.app_theme_d  .md-fab{background:#673ab7    !important;}
+.app_theme_e  .md-fab{background:#0277bd     !important;}   
+.app_theme_f .md-fab{background:#d32f2f     !important;}  
+.app_theme_g  .md-fab{background:#4caf50     !important;}  
+
+
+
 .app_theme_a #sidebar_main .menu_section>ul>li.current_section>a>.menu_icon .material-icons {
 	color: #ff4081
 }
@@ -10792,7 +10802,7 @@ body:after {
 	background: #ffebee
 }
 .app_theme_e .md-fab.md-fab-accent {
-	background: #e53935
+	background: #0277bd 
 }
 .app_theme_e .md-list .uk-nestable-list>li.md-list-item-active, .app_theme_e .md-list>li.md-list-item-active {
 	color: #e53935
@@ -11281,13 +11291,13 @@ body:after {
 	background: #607d8b
 }
 #style_switcher .switcher_app_themes li.switcher_theme_e .app_color_accent {
-	background: #e53935
+	background: #0277bd 
 }
 #style_switcher .switcher_app_themes li.switcher_theme_f .app_color_main {
 	background: #424242
 }
 #style_switcher .switcher_app_themes li.switcher_theme_f .app_color_accent {
-	background: #7cb342
+	background: #d32f2f 
 }
 #style_switcher .switcher_app_themes li.switcher_theme_g .app_color_main {
 	background: #3f51b5 
@@ -11355,5 +11365,12 @@ body:after {
 .clr3{background:#00acc1;} .clr3 a{color:#e2fff1;}
 .md-fab-wrapper  .compose li:hover{
 box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);}
+
+.md-card-list ul li .options {}
+.options {display:none;}
+.options li{float:left;list-style-type:none;background:#fff;padding:8px 5px;}
+.options li i{font-size:16px;}
+
+.md-card-list ul li:hover .options {display:block;float:right;}
 
 

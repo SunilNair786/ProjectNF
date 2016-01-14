@@ -65,7 +65,7 @@
 		// Insert Fax ToIds
 		public function insertToFaxIds($fromId,$toId,$faxId){			
 		 	$collection = $this->db->nf_fax_users;
-
+			
 			$files_values = array("fax_id"=>$faxId,"from_id"=>$_SESSION['user_id'] ,"to_id" => $toId,"status" => "A","is_read" => "0","folder_id" => "","favorites" => "N","is_delete" => 0,"created_date" => $this->cfObj->createDate(),"modified_date" => "");
 
 			$collection->insert($files_values);
@@ -79,7 +79,20 @@
 
 			$Update_fax_vals = array("favorites" => $mFVal,"modified_date" => $this->cfObj->createDate());
 
-			$collection->update(array('_id' => new MongoId($mFavId)), array('$set' => $Update_fax_vals));		
+			$updateRes = $collection->update(array('_id' => new MongoId($mFavId)), array('$set' => $Update_fax_vals));	
+			
+			return 	$updateRes;		
+		}
+		
+		public function updateReadCount($mFavId){
+			
+			$collection = $this->db->nf_fax_users;
+
+			$Update_fax_vals = array("is_read" => 1,"modified_date" => $this->cfObj->createDate());
+
+			$updateRes = $collection->update(array('_id' => new MongoId($mFavId)), array('$set' => $Update_fax_vals));	
+			
+			return 	$updateRes;		
 		}
 
 		// updating Read Status

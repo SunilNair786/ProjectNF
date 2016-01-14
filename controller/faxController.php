@@ -46,15 +46,19 @@ class faxController{
 	}
 
 	// Changing Favorites
-	public function updateFavorites($post_id,$fVal)
-	{
+	public function updateFavorites($post_id,$fVal){
 		$fav_Det = $this->faxObj->updFavorites($post_id,$fVal);
+		return $fav_Det;
+	}
+	
+	// Changing Favorites
+	public function updateReadCount($post_id){
+		$fav_Det = $this->faxObj->updateReadCount($post_id);
 		return $fav_Det;
 	}
 
 	// Changing read status
-	public function updatefaxSeenStatus($post_id)
-	{
+	public function updatefaxSeenStatus($post_id){
 		$read_stat = $this->faxObj->updateReadStat($post_id);
 		return $read_stat;
 	}

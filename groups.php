@@ -27,7 +27,7 @@ if($_REQUEST['action'] == "delete")
 }
 ?>
 <div id="page_content">
-	<div id="page_content_inner">
+<div id="page_content_inner">
 <div class="uk-width-large-8-10 uk-container-center">
 		<h3 class="heading_b uk-margin-bottom">Groups</h3>
 

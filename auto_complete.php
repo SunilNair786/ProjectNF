@@ -20,10 +20,15 @@ if(isset($_GET['tagId'])){
 }
 
 // update favorites
-if($_GET['fax_id'] != "")
-{	
+if(isset($_GET['fax_id']) && isset($_GET['fav_val']) && $_GET['fav_val'] != ""){	
 	$faxObjCon->updateFavorites($_GET['fax_id'],$_GET['fav_val']);	
 }
+
+// update fax read count
+if(isset($_GET['fax_id'])){
+	$faxObjCon->updateReadCount($_GET['fax_id']);	
+}
+
 // updating seen or Unseen
 if(isset($_GET['Sfax_id']) && $_GET['section'] == "seen")
 {
