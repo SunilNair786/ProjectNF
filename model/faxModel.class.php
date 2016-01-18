@@ -114,6 +114,19 @@
 
 			$collection->update(array('_id' => new MongoId($mPost)), array('$set' => $Update_fax_vals));	
 		}
+
+
+		// Sending reply messages
+		public function reply_Msg_fax($mPost)
+		{			
+			$collection = $this->db->nf_fax_replys;
+			
+			$reply_values = array("fax_id"=>$mPost['reply_fax_id'],"from_id"=>$mPost['from_id'],"to_id" => $mPost['to_id'],"message_body" => $mPost['reply_message'],"created_date" => $this->cfObj->createDate(),"modified_date" => "");
+			//print_r($reply_values); exit;
+
+			$collection->insert($reply_values);
+		}
+
 	}
 	
 ?>

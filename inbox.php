@@ -59,6 +59,12 @@ if(isset($_GET['action']) && ($_GET['action'] == "delete") && isset($_GET['faxsI
     $faxObjCon->deleteFax($_GET['faxsId']);
     header("location:inbox.php");
 }
+
+if($_POST['submit_reply']=="reply")
+{	
+	$faxObjCon->sendReply($_POST);
+    header("location:inbox.php");
+}
 ?>
 
 <style>
@@ -112,7 +118,7 @@ if(isset($_GET['action']) && ($_GET['action'] == "delete") && isset($_GET['faxsI
 									<li <?php if($all_faxs['is_read'] == "0"){?>onClick="seenAjax('<?php echo $all_faxs['_id'];?>')"<?php } ?>>
 										<div class="md-card-list-item-menu margn">                                    
 											<a href="#"><i class="fa fa-reply-all"></i> </a>
-											<a href="#"><i class="fa fa-long-arrow-right"></i></a>
+											<a href="#mailbox_new_message" data-uk-modal="{center:true}" onClick="fwdmsg('<?php echo $userFaxDetails['message_subject'];?>','<?php echo $userFaxDetails['message_body'];?>')"><i class="fa fa-long-arrow-right"></i></a>
 											<a href="#"><i class="fa fa-tags"></i></a>
 											<a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>                                         
 											<span id="favs_sec_<?php echo $all_faxs['_id'];?>">
@@ -139,13 +145,43 @@ if(isset($_GET['action']) && ($_GET['action'] == "delete") && isset($_GET['faxsI
 												<span><?php echo $userDetails['first_name'][0].''.$userDetails['last_name'][0]; ?></span>
 											</div>
 											<span><?php echo substr($userFaxDetails['message_subject'],0,30);?></span>
-										</div>
+										</div>		
 										<div class="md-card-list-item-content-wrapper">
-											<div class="md-card-list-item-content"></div>
-											<form class="md-card-list-item-reply">
-												<?php echo html_entity_decode($userFaxDetails['message_body']); ?>
-												<label for="mailbox_reply_1895">Reply to <span><?php echo $userDetails['email_id']; ?></span></label>												
-												<textarea class="md-input md-input-full" name="mailbox_reply_1895" id="mailbox_reply_1895" cols="30" rows="4"></textarea>			
+											<div class="md-card-list-item-content">
+												<?php echo html_entity_decode($userFaxDetails['message_body']); ?>												
+											</div>
+
+											<?php 
+											$collection_fax_reply = $db->nf_fax_replys; 
+											$rfax_id = $all_faxs['fax_id'];
+											$replyfaxs = $collection_fax_reply->find(array('fax_id' => "$rfax_id"))->sort(array("created_date" => -1));
+
+											foreach ($replyfaxs as $reply_faxs) {													
+											?>
+												<span class="md-card-list-item-date"><?php echo date('j M',strtotime($reply_faxs['created_date'])); ?></span>
+												<div class="md-card-list-item-select">
+													<!-- <input type="checkbox" data-md-icheck /> -->
+												</div>
+												<?php $rplyUserDetails = $collection->findOne(array('_id' => new MongoId($reply_faxs['from_id']))); 	?>
+												<div class="md-card-list-item-avatar-wrapper">
+													<span class="md-card-list-item-avatar md-bg-grey"><?php echo $rplyUserDetails['first_name'][0].''.$rplyUserDetails['last_name'][0]; ?></span>
+												</div>
+												<div class="md-card-list-item-sender">
+													<span><?php echo ucfirst($rplyUserDetails['first_name']).' '.ucfirst($rplyUserDetails['last_name']); ?></span>                                    
+												</div>																									
+												<div class="md-card-list-item-content">
+													<?php echo html_entity_decode($reply_faxs['message_body']); ?>												
+												</div>
+												<br><br><br>
+											<?php } ?>
+
+											<form class="md-card-list-item-reply" name="replyform" method="post">	
+												<label for="mailbox_reply_1895">Reply to <span><?php echo $userDetails['email_id']; ?></span></label>		
+												<input type="hidden" name="to_id" id="to_id" value="<?php echo $userDetails['email_id'];?>">
+												<input type="hidden" name="from_id" id="from_id" value="<?php echo $_SESSION['userEmail'];?>">												
+												<input type="hidden" name="reply_fax_id" id="reply_fax_id" value="<?php echo $all_faxs['fax_id']; ?>">
+												<textarea class="md-input md-input-full" name="reply_message" id="reply_message" cols="30" rows="4" required></textarea>			
+												<input type="submit" name="submit_reply" id="submit_reply" class="uk-float-left md-btn md-btn-flat md-btn-flat-primary" value="reply">
 											</form>
 										</div>
 									</li>	
@@ -273,7 +309,6 @@ if(isset($_GET['action']) && ($_GET['action'] == "delete") && isset($_GET['faxsI
                             	
                             $yesterdfaxs = $collection_fax->find(array('to_id' => "$sessId","created_date" => array('$gt' => $startDate,'$lte' => $endDate),'is_delete'=>0))->sort(array("created_date" => 1));   
 							$allWeekCnt = $collection_fax->find(array('to_id' => "$sessId","created_date" => array('$gt' => $startDate,'$lte' => $endDate),"is_delete"=>0))->count();		
-							
 					?>	
 									<div class="md-card-list">
 										<div class="md-card-list-header heading_list">Yesterday</div>
@@ -285,13 +320,13 @@ if(isset($_GET['action']) && ($_GET['action'] == "delete") && isset($_GET['faxsI
 														$userDetails = $collection->findOne(array('_id' => new MongoId($yesterd_faxs['from_id'])));	
 														
 														// Fetch Fax subject information from nf_fax;
-														$userFaxDetails = $collection_fax_details->findOne(array('_id' =>new MongoId($yesterd_faxs['fax_id'])));															
+														$userFaxDetails = $collection_fax_details->findOne(array('_id' =>new MongoId($yesterd_faxs['fax_id'])));		
 											?>
 													<li <?php if($yesterd_faxs['is_read'] == "0"){?>onClick="seenAjax('<?php echo $yesterd_faxs['_id'];?>')"<?php } ?>>
 														<div class="md-card-list-item-menu margn">
 															
 															<a href="#"><i class="fa fa-reply-all"></i> </a>
-															<a href="#"><i class="fa fa-long-arrow-right"></i></a>
+															<a href="#mailbox_new_message" data-uk-modal="{center:true}" onClick="fwdmsg('<?php echo $userFaxDetails['message_subject'];?>','<?php echo $userFaxDetails['message_body'];?>')"><i class="fa fa-long-arrow-right"></i></a>
 															<a href="#"><i class="fa fa-tags"></i></a>
 															<a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $yesterd_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
 															<span id="favs_sec_<?php echo $yesterd_faxs['_id'];?>">
@@ -316,15 +351,16 @@ if(isset($_GET['action']) && ($_GET['action'] == "delete") && isset($_GET['faxsI
 															<div class="md-card-list-item-sender-small">
 																<span><?php echo $userDetails['first_name'][0].''.$userDetails['last_name'][0]; ?></span>
 															</div>
-															<span><?php echo substr($userFaxDetails['message_body'],'0','20'); ?></span>
+															<span><?php echo substr($userFaxDetails['message_subject'],'0','20'); ?></span>
 														</div>
 														<div class="md-card-list-item-content-wrapper">
 															<div class="md-card-list-item-content">
-															 
+																<?php echo $userFaxDetails['message_body']; ?>
 															</div>
 															<form class="md-card-list-item-reply">
 																<label for="mailbox_reply_7254">Reply to <span><?php echo $userDetails['email_id']; ?></span></label>
-																<textarea class="md-input md-input-full" name="mailbox_reply_7254" id="mailbox_reply_7254" cols="30" rows="4"><?php echo $userFaxDetails['message_body']; ?></textarea>												
+																<input type="text" name="from_id" id="from_id" value="<?php echo $userDetails['email_id'];?>">
+																<textarea class="md-input md-input-full" name="mailbox_reply_7254" id="mailbox_reply_7254" cols="30" rows="4"></textarea>												
 															</form>
 														</div>
 													</li>
@@ -506,7 +542,7 @@ if(isset($_GET['action']) && ($_GET['action'] == "delete") && isset($_GET['faxsI
 										<div class="md-card-list-item-menu margn">
 											
 											<a href="#"><i class="fa fa-reply-all"></i> </a>
-											<a href="#"><i class="fa fa-long-arrow-right"></i></a>
+											<a href="#mailbox_new_message" data-uk-modal="{center:true}" onClick="fwdmsg('<?php echo $userFaxDetails['message_subject'];?>','<?php echo $userFaxDetails['message_body'];?>')"><i class="fa fa-long-arrow-right"></i></a>
 											<a href="#"><i class="fa fa-tags"></i></a>
 											<a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $amonth_Faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
 											<span id="favs_sec_<?php echo $amonth_Faxs['_id'];?>">
@@ -531,15 +567,19 @@ if(isset($_GET['action']) && ($_GET['action'] == "delete") && isset($_GET['faxsI
 											<div class="md-card-list-item-sender-small">
 												<span><?php echo $userDetails['first_name'][0].''.$userDetails['last_name'][0]; ?></span>
 											</div>
-											<span><?php echo substr($userFaxDetails['message_body'],'0','20'); ?></span>
+											<span><?php echo substr($userFaxDetails['message_subject'],'0','20'); ?></span>
 										</div>
 										<div class="md-card-list-item-content-wrapper">
 											<div class="md-card-list-item-content">
-											 
+												<?php echo $userFaxDetails['message_body']; ?>											 
 											</div>
 											<form class="md-card-list-item-reply">
 												<label for="mailbox_reply_7254">Reply to <span><?php echo $userDetails['email_id']; ?></span></label>
-												<textarea class="md-input md-input-full" name="mailbox_reply_7254" id="mailbox_reply_7254" cols="30" rows="4"><?php echo $userFaxDetails['message_body']; ?></textarea>												
+												<input type="text" name="to_id" id="to_id" value="<?php echo $userDetails['email_id'];?>">
+												<input type="text" name="from_id" id="from_id" value="<?php echo $_SESSION['userEmail'];?>">
+												<input type="text" name="replied" id="replied" value="1">
+												<input type="text" name="reply_fax_id" id="reply_fax_id" value="<?php echo $amonth_Faxs['fax_id']; ?>">
+												<textarea class="md-input md-input-full" name="mailbox_reply_7254" id="mailbox_reply_7254" cols="30" rows="4"></textarea>												
 											</form>
 										</div>
 									</li>
@@ -1096,7 +1136,7 @@ if(isset($_GET['action']) && ($_GET['action'] == "delete") && isset($_GET['faxsI
 														<div class="md-card-list-item-menu margn">
 															
 															<a href="#"><i class="fa fa-reply-all"></i> </a>
-															<a href="#"><i class="fa fa-long-arrow-right"></i></a>
+															<a href="#mailbox_new_message" data-uk-modal="{center:true}" onClick="fwdmsg('<?php echo $userFaxDetails['message_subject'];?>','<?php echo $userFaxDetails['message_body'];?>')"><i class="fa fa-long-arrow-right"></i></a>
 															<a href="#"><i class="fa fa-tags"></i></a>
 															<a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $Oldmonth_Faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
 															<span id="favs_sec_<?php echo $Oldmonth_Faxs['_id'];?>">
@@ -1121,15 +1161,15 @@ if(isset($_GET['action']) && ($_GET['action'] == "delete") && isset($_GET['faxsI
 															<div class="md-card-list-item-sender-small">
 																<span><?php echo $userDetails['first_name'][0].''.$userDetails['last_name'][0]; ?></span>
 															</div>
-															<span><?php echo substr($userFaxDetails['message_body'],'0','20'); ?></span>
+															<span><?php echo substr($userFaxDetails['message_subject'],'0','20'); ?></span>
 														</div>
 														<div class="md-card-list-item-content-wrapper">
 															<div class="md-card-list-item-content">
-															 
+																<?php echo $userFaxDetails['message_body']; ?>
 															</div>
 															<form class="md-card-list-item-reply">
 																<label for="mailbox_reply_7254">Reply to <span><?php echo $userDetails['email_id']; ?></span></label>
-																<textarea class="md-input md-input-full" name="mailbox_reply_7254" id="mailbox_reply_7254" cols="30" rows="4"><?php echo $userFaxDetails['message_body']; ?></textarea>												
+																<textarea class="md-input md-input-full" name="mailbox_reply_7254" id="mailbox_reply_7254" cols="30" rows="4"></textarea>												
 															</form>
 														</div>
 													</li>
@@ -1866,21 +1906,21 @@ if(isset($_GET['action']) && ($_GET['action'] == "delete") && isset($_GET['faxsI
         	<?php 
         	 	$ri =1;
 				$collection_fax1 = $db->nf_fax_users; 			
-				$recentFaxs = $collection_fax1->find(array('from_id' => $_SESSION['user_id']))->sort(array("created_date" => -1));								
-				foreach($recentFaxs as $recent_Faxs){					
+				$recentFaxs = $collection_fax1->find(array('from_id' => $_SESSION['user_id']))->sort(array("created_date" => -1))->limit(10);		
+				foreach($recentFaxs as $recent_Faxs){							
 					if($recent_Faxs['to_id'] != $_SESSION['user_id'])
 					{
-						// User Details							
+						// User Details		
 						$RUserDetailsCnt = $collection->find(array('_id' => new MongoId($recent_Faxs['to_id'])))->count();
-						if($RUserDetailsCnt > 0){							
-							$RUserDetails = $collection->findOne(array('_id' => new MongoId($recent_Faxs['to_id'])));														
+						if($RUserDetailsCnt > 0){		
+							$RUserDetails = $collection->findOne(array('_id' => new MongoId($recent_Faxs['to_id'])));			
 						?> 	
-	            			<li class="clr<?php echo $ri;?>"><a href="#mailbox_new_message" title="<?php echo $RUserDetails['first_name']." ".$RUserDetails['last_name']; ?>" data-uk-modal="{center:true}" data-uk-tooltip="{cls:'uk-tooltip-small',pos:'left'}" onClick="appdmail('<?php echo $RUserDetails['first_name']." ".$RUserDetails['last_name']; ?>','<?php echo $RUserDetails['email_id'];?>','<?php echo $RUserDetails['_id'];?>')"><?php echo ucfirst(substr($RUserDetails['email_id'],0,1)); ?></a></li>
+	            			<li class="clr<?php echo $ri;?>" name='dssd'><a href="#mailbox_new_message" title="<?php echo $RUserDetails['first_name']." ".$RUserDetails['last_name']; ?>" data-uk-modal="{center:true}" data-uk-tooltip="{cls:'uk-tooltip-small',pos:'left'}" onClick="appdmail('<?php echo $RUserDetails['first_name']." ".$RUserDetails['last_name']; ?>','<?php echo $RUserDetails['email_id'];?>','<?php echo $RUserDetails['_id'];?>')"><?php echo ucfirst(substr($RUserDetails['email_id'],0,1)); ?></a></li>
 	              <?php $ri++; }      
 	              		else
 	              		{
 	              			$collection_cont = $db->nf_user_contacts;
-	              			$RUserDetails = $collection_cont->findOne(array('_id' => new MongoId($recent_Faxs['to_id'])));														
+	              			$RUserDetails = $collection_cont->findOne(array('_id' => new MongoId($recent_Faxs['to_id'])));
 						?> 	
 	            			<li class="clr<?php echo $ri;?>"><a href="#mailbox_new_message" title="<?php echo $RUserDetails['contact_name']; ?>" data-uk-modal="{center:true}" data-uk-tooltip="{cls:'uk-tooltip-small',pos:'left'}" onClick="appdmail('<?php echo $RUserDetails['contact_name']; ?>','<?php echo $RUserDetails['email'];?>','<?php echo $RUserDetails['_id'];?>')"><?php echo ucfirst(substr($RUserDetails['email'],0,1)); ?></a></li>
 	              <?php $ri++;
@@ -1888,8 +1928,8 @@ if(isset($_GET['action']) && ($_GET['action'] == "delete") && isset($_GET['faxsI
 
 	             	}
             }?>
-            <!-- <li class="clr2"><a href="#" title="Javved Shaik" data-uk-tooltip="{cls:'uk-tooltip-small',pos:'left'}">J</a></li>-->
-            <li class="clr3"><a href="#" title="mohd khalil" data-uk-tooltip="{cls:'uk-tooltip-small',pos:'left'}">K</a></li> 
+            <!-- <li class="clr2"><a href="#" title="Javved Shaik" data-uk-tooltip="{cls:'uk-tooltip-small',pos:'left'}">J</a></li>
+            <li class="clr3"><a href="#" title="mohd khalil" data-uk-tooltip="{cls:'uk-tooltip-small',pos:'left'}">K</a></li> -->
         </ul>
     </div>    
     <script type="text/javascript">
@@ -1908,7 +1948,7 @@ if(isset($_GET['action']) && ($_GET['action'] == "delete") && isset($_GET['faxsI
     <div class="uk-modal" id="mailbox_new_message">
         <div class="uk-modal-dialog">
             <button class="uk-modal-close uk-close" type="button"></button>
-            <form name='composeFrm' action='inbox.php' enctype="multipart/form-data" method='post'>
+            <form name='composeFrm' id="composeFrm" action='inbox.php' enctype="multipart/form-data" method='post'>
                 <div class="uk-modal-header">
                     <h3 class="uk-modal-title">Compose Message</h3>
                 </div>
@@ -1971,8 +2011,8 @@ if(isset($_GET['action']) && ($_GET['action'] == "delete") && isset($_GET['faxsI
             s.parentNode.insertBefore(wf, s);
         })();
     </script>
-      <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
-	  <script>tinymce.init({ mode : "exact", elements : "message_body"});</script>
+      <!--<script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+	  <script>tinymce.init({ mode : "exact", elements : "message_body"});</script>-->
     <!-- common functions -->
 	
     <script src="assets/js/common.min.js"></script>
@@ -2320,7 +2360,8 @@ if(isset($_GET['action']) && ($_GET['action'] == "delete") && isset($_GET['faxsI
                 }
             });        
 		}
-function getDivUserNameClick(faxId){
+
+		function getDivUserNameClick(faxId){
 			$.ajax({
                 url:"auto_complete.php",
                 type:"GET",
@@ -2338,6 +2379,23 @@ function getDivUserNameClick(faxId){
                 }
             });        
 		}
+
+		// Forwarded Message
+		function fwdmsg(fax_subj,fax_body)
+		{
+			document.getElementById('message_subject').value = fax_subj;			
+			document.getElementById('message_body').value = fax_body;
+			//$('#message_body').append("sdasawdd");			
+			// var obj = document.getElementById('message_body');
+		 	// var txt = document.createTextNode(fax_body);
+		 	// obj.appendChild(txt);
+		 	$('.md-input-wrapper').addClass('md-input-filled');		    
+		}					
+
+		$('.uk-close').click(function(){
+			$('#composeFrm')[0].reset();		
+			$('.md-input-wrapper').removeClass('md-input-filled');		
+		});		
 	</script>
    
 	

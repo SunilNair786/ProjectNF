@@ -69,6 +69,14 @@ class faxController{
 		$del_fax = $this->faxObj->deleFaxs($Cpost);
 		return $del_fax;
 	}
+
+
+	// Saving Reply Messages
+	public function sendReply($Cpost)
+	{
+		$reply_fax = $this->faxObj->reply_Msg_fax($Cpost);
+		return $reply_fax;
+	}
 	
 }
 
