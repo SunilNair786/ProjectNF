@@ -44,4 +44,9 @@ if(isset($_GET['email']) && $_GET['email'] !='' ){
 	}	
 }
 
+// adding tags to faxs
+if($_GET['section']=="tagsAdd" && isset($_GET['tagfaxs']))
+{
+	$faxObjCon->updateFaxTags($_GET);
+}
 ?>

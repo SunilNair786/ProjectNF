@@ -109,9 +109,12 @@ class users{
 	// Inserting Tags
 	public function tagsInserting($post)
 	{
+		print_r($post);		
 		$collection = $this->db->nf_company_tags;
+		//echo "ewregjhf"; exit;
 
-		$tags_values = array("user_id" => $_SESSION['user_id'],"company_id" => "1" ,"tag_name" => $_POST['tag_name'],"created_date" => $this->cfObj->createDate(),"modified_date" => "");
+		$tags_values = array("user_id" => $_SESSION['user_id'],"company_id" => "1" ,"tag_name" => $post['tag_name'],"created_date" => $this->cfObj->createDate(),"modified_date" => "");
+		//print_r($tags_values); exit;
 
 		$collection->insert($tags_values);			
 	}

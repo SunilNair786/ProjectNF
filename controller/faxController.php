@@ -77,6 +77,13 @@ class faxController{
 		$reply_fax = $this->faxObj->reply_Msg_fax($Cpost);
 		return $reply_fax;
 	}
+
+	// Updating faxs Tags
+	public function updateFaxTags($Cpost)
+	{
+		$tags_fax = $this->faxObj->update_fax_tags($Cpost);
+		return $tags_fax;
+	}
 	
 }
 

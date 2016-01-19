@@ -10,7 +10,7 @@ if($_POST['submit'] == "Save")
 {
 	$tagIns = $userContObj->TagInsert($_POST);   
     header('location:tag.php'); 
-    exit;	
+    // exit;	
 }
 
 //  Tag
@@ -18,7 +18,7 @@ if($_POST['submit'] == "Update")
 {
 	$Edit_tagIns = $userContObj->TagEditing($_POST);   
     header('location:tag.php'); 
-    exit;	
+    // exit;	
 }
 
 ?>

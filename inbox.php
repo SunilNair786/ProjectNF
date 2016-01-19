@@ -73,6 +73,52 @@ if($_POST['submit_reply']=="reply")
 {
     z-index: 9999 !important;
 }
+.dropdown{
+    min-width: 150px;     
+    display: none;
+    position: absolute;
+    z-index: 999;
+    left: 0;    
+    top:10px;    
+    box-shadow: 0 3px 6px rgba(0,0,0,.23);
+}
+.dropdown ul{
+	background: #fff;
+	list-style: none;
+	height: 235px;
+	overflow-y: scroll;
+	position: relative;
+	padding-left:0px !important;
+}
+
+.dropdown ul li{
+	background-color: #fff;	
+	padding: 5px;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 14px !important;
+	cursor: pointer;
+}
+.dropdown ul li:hover{
+	background-color: #eee;		
+}
+.dropdown ul li a{	
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 14px !important;
+}
+
+.arrow-up {
+	width: 0; 
+	height: 0; 
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	margin: 12px 0px -15px 70px;	
+	border-bottom: 10px solid #eee;
+}
+
+
+a#tagging:hover + .dropdown , .dropdown:hover {
+    display: block;
+}
 </style>
 
 <div id="page_content">
@@ -119,7 +165,20 @@ if($_POST['submit_reply']=="reply")
 										<div class="md-card-list-item-menu margn">                                    
 											<a href="#"><i class="fa fa-reply-all"></i> </a>
 											<a href="#mailbox_new_message" data-uk-modal="{center:true}" onClick="fwdmsg('<?php echo $userFaxDetails['message_subject'];?>','<?php echo $userFaxDetails['message_body'];?>')"><i class="fa fa-long-arrow-right"></i></a>
-											<a href="#"><i class="fa fa-tags"></i></a>
+											<a href="#" id="tagging"><i class="fa fa-tags"></i></a>														
+												<div class="dropdown">
+													<div class="arrow-up"></div>
+												    <ul>
+												    	<?php 
+												    	$collection_tag = $db->nf_company_tags; 
+												    	$alltags = $collection_tag->find()->sort(array("created_date" => -1));
+												    	foreach ($alltags as $all_tags) {?>
+												    		<li onClick="addingtags('<?php echo $all_faxs['_id'];?>','<?php echo $all_tags['_id'];?>','<?php echo $all_tags['tag_name'];?>')">
+												    			<a><?php echo $all_tags['tag_name'];?></a>
+												    		</li>
+												    	<?php }?>										                
+										            </ul>
+									            </div>
 											<a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>                                         
 											<span id="favs_sec_<?php echo $all_faxs['_id'];?>">
 												<?php if($all_faxs['favorites'] == "N"){?>
@@ -151,34 +210,36 @@ if($_POST['submit_reply']=="reply")
 												<?php echo html_entity_decode($userFaxDetails['message_body']); ?>												
 											</div>
 
-											<?php 
-											$collection_fax_reply = $db->nf_fax_replys; 
-											$rfax_id = $all_faxs['fax_id'];
-											$replyfaxs = $collection_fax_reply->find(array('fax_id' => "$rfax_id"))->sort(array("created_date" => -1));
+											<!-- Reply Messages Section start -->
+												<?php 
+												$collection_fax_reply = $db->nf_fax_replys; 
+												$rfax_id = $all_faxs['fax_id'];
+												$replyfaxs = $collection_fax_reply->find(array('fax_id' => "$rfax_id"))->sort(array("created_date" => -1));
 
-											foreach ($replyfaxs as $reply_faxs) {													
-											?>
-												<span class="md-card-list-item-date"><?php echo date('j M',strtotime($reply_faxs['created_date'])); ?></span>
-												<div class="md-card-list-item-select">
-													<!-- <input type="checkbox" data-md-icheck /> -->
-												</div>
-												<?php $rplyUserDetails = $collection->findOne(array('_id' => new MongoId($reply_faxs['from_id']))); 	?>
-												<div class="md-card-list-item-avatar-wrapper">
-													<span class="md-card-list-item-avatar md-bg-grey"><?php echo $rplyUserDetails['first_name'][0].''.$rplyUserDetails['last_name'][0]; ?></span>
-												</div>
-												<div class="md-card-list-item-sender">
-													<span><?php echo ucfirst($rplyUserDetails['first_name']).' '.ucfirst($rplyUserDetails['last_name']); ?></span>                                    
-												</div>																									
-												<div class="md-card-list-item-content">
-													<?php echo html_entity_decode($reply_faxs['message_body']); ?>												
-												</div>
-												<br><br><br>
-											<?php } ?>
+												foreach ($replyfaxs as $reply_faxs) {													
+												?>
+													<span class="md-card-list-item-date"><?php echo date('j M',strtotime($reply_faxs['created_date'])); ?></span>
+													<div class="md-card-list-item-select">
+														<!-- <input type="checkbox" data-md-icheck /> -->
+													</div>
+													<?php $rplyUserDetails = $collection->findOne(array('_id' => new MongoId($reply_faxs['from_id']))); 	?>
+													<div class="md-card-list-item-avatar-wrapper">
+														<span class="md-card-list-item-avatar md-bg-grey"><?php echo $rplyUserDetails['first_name'][0].''.$rplyUserDetails['last_name'][0]; ?></span>
+													</div>
+													<div class="md-card-list-item-sender">
+														<span><?php echo ucfirst($rplyUserDetails['first_name']).' '.ucfirst($rplyUserDetails['last_name']); ?></span>                                    
+													</div>																									
+													<div class="md-card-list-item-content">
+														<?php echo html_entity_decode($reply_faxs['message_body']); ?>												
+													</div>
+													<br><br><br>
+												<?php } ?> 												
+											<!-- Reply Message Section End -->
 
 											<form class="md-card-list-item-reply" name="replyform" method="post">	
 												<label for="mailbox_reply_1895">Reply to <span><?php echo $userDetails['email_id']; ?></span></label>		
-												<input type="hidden" name="to_id" id="to_id" value="<?php echo $userDetails['email_id'];?>">
-												<input type="hidden" name="from_id" id="from_id" value="<?php echo $_SESSION['userEmail'];?>">												
+												<input type="hidden" name="to_id" id="to_id" value="<?php echo $userDetails['_id'];?>">
+												<input type="hidden" name="from_id" id="from_id" value="<?php echo $_SESSION['user_id'];?>">												
 												<input type="hidden" name="reply_fax_id" id="reply_fax_id" value="<?php echo $all_faxs['fax_id']; ?>">
 												<textarea class="md-input md-input-full" name="reply_message" id="reply_message" cols="30" rows="4" required></textarea>			
 												<input type="submit" name="submit_reply" id="submit_reply" class="uk-float-left md-btn md-btn-flat md-btn-flat-primary" value="reply">
@@ -326,8 +387,21 @@ if($_POST['submit_reply']=="reply")
 														<div class="md-card-list-item-menu margn">
 															
 															<a href="#"><i class="fa fa-reply-all"></i> </a>
-															<a href="#mailbox_new_message" data-uk-modal="{center:true}" onClick="fwdmsg('<?php echo $userFaxDetails['message_subject'];?>','<?php echo $userFaxDetails['message_body'];?>')"><i class="fa fa-long-arrow-right"></i></a>
-															<a href="#"><i class="fa fa-tags"></i></a>
+															<a href="#mailbox_new_message" data-uk-modal="{center:true}" onClick="fwdmsg('<?php echo $userFaxDetails['message_subject'];?>','<?php echo $userFaxDetails['message_body'];?>')"><i class="fa fa-long-arrow-right"></i></a>															
+															<a href="#" id="tagging"><i class="fa fa-tags"></i></a>														
+																<div class="dropdown">
+																	<div class="arrow-up"></div>
+																    <ul>
+																    	<?php 
+																    	$collection_tag = $db->nf_company_tags; 
+																    	$alltags = $collection_tag->find()->sort(array("created_date" => -1));
+																    	foreach ($alltags as $all_tags) {?>
+																    		<li onClick="addingtags('<?php echo $yesterd_faxs['_id'];?>','<?php echo $all_tags['_id'];?>','<?php echo $all_tags['tag_name'];?>')">
+																    			<a><?php echo $all_tags['tag_name'];?></a>
+																    		</li>
+																    	<?php }?>										                
+														            </ul>
+													            </div>
 															<a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $yesterd_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
 															<span id="favs_sec_<?php echo $yesterd_faxs['_id'];?>">
 																<?php if($yesterd_faxs['favorites'] == "N"){?>
@@ -357,11 +431,42 @@ if($_POST['submit_reply']=="reply")
 															<div class="md-card-list-item-content">
 																<?php echo $userFaxDetails['message_body']; ?>
 															</div>
-															<form class="md-card-list-item-reply">
-																<label for="mailbox_reply_7254">Reply to <span><?php echo $userDetails['email_id']; ?></span></label>
-																<input type="text" name="from_id" id="from_id" value="<?php echo $userDetails['email_id'];?>">
-																<textarea class="md-input md-input-full" name="mailbox_reply_7254" id="mailbox_reply_7254" cols="30" rows="4"></textarea>												
-															</form>
+
+															<!-- Reply Messages Section start -->
+																<?php 
+																$collection_fax_reply = $db->nf_fax_replys; 
+																$rfax_id1 = $yesterd_faxs['fax_id'];
+																$replyfaxs1 = $collection_fax_reply->find(array('fax_id' => "$rfax_id1"))->sort(array("created_date" => -1));
+
+																foreach ($replyfaxs1 as $reply1_faxs) {													
+																?>
+																	<span class="md-card-list-item-date"><?php echo date('j M',strtotime($reply1_faxs['created_date'])); ?></span>
+																	<div class="md-card-list-item-select">
+																		<!-- <input type="checkbox" data-md-icheck /> -->
+																	</div>
+																	<?php $rplyUserDetails1 = $collection->findOne(array('_id' => new MongoId($reply1_faxs['from_id']))); 	?>
+																	<div class="md-card-list-item-avatar-wrapper">
+																		<span class="md-card-list-item-avatar md-bg-grey"><?php echo $rplyUserDetails1['first_name'][0].''.$rplyUserDetails1['last_name'][0]; ?></span>
+																	</div>
+																	<div class="md-card-list-item-sender">
+																		<span><?php echo ucfirst($rplyUserDetails1['first_name']).' '.ucfirst($rplyUserDetails1['last_name']); ?></span>                                    
+																	</div>																									
+																	<div class="md-card-list-item-content">
+																		<?php echo html_entity_decode($reply1_faxs['message_body']); ?>												
+																	</div>
+																	<br><br><br>
+																<?php } ?> 												
+															<!-- Reply Message Section End -->
+
+															<form class="md-card-list-item-reply" name="replyform" method="post">	
+																<label for="mailbox_reply_1895">Reply to <span><?php echo $userDetails['email_id']; ?></span></label>		
+																<input type="hidden" name="to_id" id="to_id" value="<?php echo $userDetails['_id'];?>">
+																<input type="hidden" name="from_id" id="from_id" value="<?php echo $_SESSION['user_id'];?>">												
+																<input type="hidden" name="reply_fax_id" id="reply_fax_id" value="<?php echo $yesterd_faxs['fax_id']; ?>">
+																<textarea class="md-input md-input-full" name="reply_message" id="reply_message" cols="30" rows="4" required></textarea>			
+																<input type="submit" name="submit_reply" id="submit_reply" class="uk-float-left md-btn md-btn-flat md-btn-flat-primary" value="reply">
+															</form>														
+
 														</div>
 													</li>
 												<?php 	} }// foreach ?>
@@ -402,6 +507,44 @@ if($_POST['submit_reply']=="reply")
 					                                    </form>
 					                                </div>
 					                            </li>
+					                            <li>
+					                                <div class="md-card-list-item-menu" data-uk-dropdown="{mode:'click',pos:'bottom-right'}">
+					                                    <a href="#" class="md-icon material-icons">&#xE5D4;</a>
+					                                    <div class="uk-dropdown uk-dropdown-small">
+					                                        <ul class="uk-nav">
+					                                            <li><a href="#"><i class="material-icons">&#xE15E;</i> Reply</a></li>
+					                                            <li><a href="#"><i class="material-icons">&#xE149;</i> Archive</a></li>
+					                                            <li><a href="#"><i class="material-icons">&#xE872;</i> Delete</a></li>
+					                                        </ul>
+					                                    </div>
+					                                </div>
+					                                <span class="md-card-list-item-date">12 Nov</span>
+					                                <div class="md-card-list-item-select">
+					                                    <input type="checkbox" data-md-icheck />
+					                                </div>
+					                                <div class="md-card-list-item-avatar-wrapper">
+					                                    <img src="assets/img/avatars/avatar_03_tn.png" class="md-card-list-item-avatar" alt="" />
+					                                </div>
+					                                <div class="md-card-list-item-sender">
+					                                    <span>Ana Paucek</span>
+					                                </div>
+					                                <div class="md-card-list-item-subject">
+					                                    <div class="md-card-list-item-sender-small">
+					                                        <span>Ana Paucek</span>
+					                                    </div>
+					                                    <span>Sapiente sunt quidem dolores consequatur qui fugiat magnam mollitia.</span>
+					                                </div>
+					                                <div class="md-card-list-item-content-wrapper">
+					                                    <div class="md-card-list-item-content">
+					                                        Totam dolores aut sit deleniti nihil distinctio doloribus ratione a voluptas itaque mollitia sit suscipit voluptatem aliquid libero aut enim numquam suscipit doloribus perferendis consectetur adipisci quibusdam quisquam necessitatibus aperiam corrupti voluptatem animi placeat amet esse sed recusandae distinctio dolores voluptatem eius enim at sunt voluptate tenetur et sit iusto rerum molestiae cum dolores architecto quis enim dolorem nam ut sint repellendus et voluptatem labore magnam quia consectetur quo quia consequatur veniam enim ipsa quaerat culpa voluptatem est natus molestiae nihil autem quia incidunt sunt modi velit deserunt cupiditate consequatur nihil aut saepe perferendis adipisci ut doloremque quisquam suscipit et inventore et corporis quae consectetur labore consectetur ab impedit harum iure nesciunt a maxime aut repellat fuga saepe tempore sit reprehenderit ullam fugit neque sapiente nemo ea voluptate dolorem eos voluptatem eos harum reiciendis quidem dolores dolorem facilis ut vel laboriosam vel qui quod est modi eligendi earum voluptatem amet aut voluptas sint deserunt a et porro est beatae pariatur consequatur doloremque ut tenetur ut pariatur fuga eos nulla dicta aut eum minima illo aperiam nihil enim quis sequi doloribus quis quis nesciunt non soluta hic saepe quia vel soluta alias qui ullam dolores consectetur qui ipsum incidunt eum nostrum ut eligendi quia ut fuga ut rerum pariatur voluptatem rerum sunt excepturi illum dolor vel aut a sed hic expedita ipsa rerum exercitationem impedit quia dolores autem quam deserunt soluta sint sequi qui impedit quo delectus repudiandae minus maxime et est incidunt deleniti libero laudantium fugiat et ut porro aut animi aspernatur voluptatum quo repudiandae incidunt vel non voluptatem eos et quis quam ut possimus dolorem id porro sunt quas voluptatibus recusandae explicabo aspernatur repellat rerum repellat blanditiis hic.                                    </div>
+					                                    <form class="md-card-list-item-reply">
+					                                        <label for="mailbox_reply_2947">Reply to <span>Ana Paucek</span></label>
+					                                        <textarea class="md-input md-input-full" name="mailbox_reply_2947" id="mailbox_reply_2947" cols="30" rows="4"></textarea>
+					                                        <button class="md-btn md-btn-flat md-btn-flat-primary">Send</button>
+					                                    </form>
+					                                </div>
+					                            </li>
+					                            
 					                            <li>
 					                                <div class="md-card-list-item-menu" data-uk-dropdown="{mode:'click',pos:'bottom-right'}">
 					                                    <a href="#" class="md-icon material-icons">&#xE5D4;</a>
@@ -573,14 +716,42 @@ if($_POST['submit_reply']=="reply")
 											<div class="md-card-list-item-content">
 												<?php echo $userFaxDetails['message_body']; ?>											 
 											</div>
-											<form class="md-card-list-item-reply">
-												<label for="mailbox_reply_7254">Reply to <span><?php echo $userDetails['email_id']; ?></span></label>
-												<input type="text" name="to_id" id="to_id" value="<?php echo $userDetails['email_id'];?>">
-												<input type="text" name="from_id" id="from_id" value="<?php echo $_SESSION['userEmail'];?>">
-												<input type="text" name="replied" id="replied" value="1">
-												<input type="text" name="reply_fax_id" id="reply_fax_id" value="<?php echo $amonth_Faxs['fax_id']; ?>">
-												<textarea class="md-input md-input-full" name="mailbox_reply_7254" id="mailbox_reply_7254" cols="30" rows="4"></textarea>												
-											</form>
+
+											<!-- Reply Messages Section start -->
+												<?php 
+												$collection_fax_reply = $db->nf_fax_replys; 
+												$rfax_id2 = $amonth_Faxs['fax_id'];
+												$replyfaxs2 = $collection_fax_reply->find(array('fax_id' => "$rfax_id2"))->sort(array("created_date" => -1));
+
+												foreach ($replyfaxs2 as $reply2_faxs) {													
+												?>
+													<span class="md-card-list-item-date"><?php echo date('j M',strtotime($reply2_faxs['created_date'])); ?></span>
+													<div class="md-card-list-item-select">
+														<!-- <input type="checkbox" data-md-icheck /> -->
+													</div>
+													<?php $rplyUserDetails2 = $collection->findOne(array('_id' => new MongoId($reply2_faxs['from_id']))); 	?>
+													<div class="md-card-list-item-avatar-wrapper">
+														<span class="md-card-list-item-avatar md-bg-grey"><?php echo $rplyUserDetails2['first_name'][0].''.$rplyUserDetails2['last_name'][0]; ?></span>
+													</div>
+													<div class="md-card-list-item-sender">
+														<span><?php echo ucfirst($rplyUserDetails2['first_name']).' '.ucfirst($rplyUserDetails2['last_name']); ?></span>                                    
+													</div>																									
+													<div class="md-card-list-item-content">
+														<?php echo html_entity_decode($reply2_faxs['message_body']); ?>												
+													</div>
+													<br><br><br>
+												<?php } ?> 												
+											<!-- Reply Message Section End -->
+
+											<form class="md-card-list-item-reply" name="replyform" method="post">	
+												<label for="mailbox_reply_1895">Reply to <span><?php echo $userDetails['email_id']; ?></span></label>		
+												<input type="hidden" name="to_id" id="to_id" value="<?php echo $userDetails['_id'];?>">
+												<input type="hidden" name="from_id" id="from_id" value="<?php echo $_SESSION['user_id'];?>">												
+												<input type="hidden" name="reply_fax_id" id="reply_fax_id" value="<?php echo $amonth_Faxs['fax_id']; ?>">
+												<textarea class="md-input md-input-full" name="reply_message" id="reply_message" cols="30" rows="4" required></textarea>			
+												<input type="submit" name="submit_reply" id="submit_reply" class="uk-float-left md-btn md-btn-flat md-btn-flat-primary" value="reply">
+											</form>	
+
 										</div>
 									</li>
 								<?php }	} // foreach ?>
@@ -1167,10 +1338,40 @@ if($_POST['submit_reply']=="reply")
 															<div class="md-card-list-item-content">
 																<?php echo $userFaxDetails['message_body']; ?>
 															</div>
-															<form class="md-card-list-item-reply">
-																<label for="mailbox_reply_7254">Reply to <span><?php echo $userDetails['email_id']; ?></span></label>
-																<textarea class="md-input md-input-full" name="mailbox_reply_7254" id="mailbox_reply_7254" cols="30" rows="4"></textarea>												
-															</form>
+															<!-- Reply Messages Section start -->
+																<?php 
+																$collection_fax_reply = $db->nf_fax_replys; 
+																$rfax_id3 = $Oldmonth_Faxs['fax_id'];
+																$replyfaxs3 = $collection_fax_reply->find(array('fax_id' => "$rfax_id3"))->sort(array("created_date" => -1));
+
+																foreach ($replyfaxs3 as $reply3_faxs) {													
+																?>
+																	<span class="md-card-list-item-date"><?php echo date('j M',strtotime($reply3_faxs['created_date'])); ?></span>
+																	<div class="md-card-list-item-select">
+																		<!-- <input type="checkbox" data-md-icheck /> -->
+																	</div>
+																	<?php $rplyUserDetails3 = $collection->findOne(array('_id' => new MongoId($reply3_faxs['from_id']))); 	?>
+																	<div class="md-card-list-item-avatar-wrapper">
+																		<span class="md-card-list-item-avatar md-bg-grey"><?php echo $rplyUserDetails3['first_name'][0].''.$rplyUserDetails3['last_name'][0]; ?></span>
+																	</div>
+																	<div class="md-card-list-item-sender">
+																		<span><?php echo ucfirst($rplyUserDetails3['first_name']).' '.ucfirst($rplyUserDetails3['last_name']); ?></span>                                    
+																	</div>																									
+																	<div class="md-card-list-item-content">
+																		<?php echo html_entity_decode($reply3_faxs['message_body']); ?>												
+																	</div>
+																	<br><br><br>
+																<?php } ?> 												
+															<!-- Reply Message Section End -->
+
+															<form class="md-card-list-item-reply" name="replyform" method="post">	
+																<label for="mailbox_reply_1895">Reply to <span><?php echo $userDetails['email_id']; ?></span></label>		
+																<input type="hidden" name="to_id" id="to_id" value="<?php echo $userDetails['_id'];?>">
+																<input type="hidden" name="from_id" id="from_id" value="<?php echo $_SESSION['user_id'];?>">												
+																<input type="hidden" name="reply_fax_id" id="reply_fax_id" value="<?php echo $Oldmonth_Faxs['fax_id']; ?>">
+																<textarea class="md-input md-input-full" name="reply_message" id="reply_message" cols="30" rows="4" required></textarea>			
+																<input type="submit" name="submit_reply" id="submit_reply" class="uk-float-left md-btn md-btn-flat md-btn-flat-primary" value="reply">
+															</form>	
 														</div>
 													</li>
 										<?php	} } // foreach ?>
@@ -1906,7 +2107,7 @@ if($_POST['submit_reply']=="reply")
         	<?php 
         	 	$ri =1;
 				$collection_fax1 = $db->nf_fax_users; 			
-				$recentFaxs = $collection_fax1->find(array('from_id' => $_SESSION['user_id']))->sort(array("created_date" => -1))->limit(10);		
+				$recentFaxs = $collection_fax1->find(array('from_id' => $_SESSION['user_id']))->sort(array("created_date" => -1))->limit(4);		
 				foreach($recentFaxs as $recent_Faxs){							
 					if($recent_Faxs['to_id'] != $_SESSION['user_id'])
 					{
@@ -1940,6 +2141,7 @@ if($_POST['submit_reply']=="reply")
     	//$('#mail_new_to').focus();
     	document.getElementById('mail_new_to').value=usName+'('+mailId+')'+',';    	    	
     	document.getElementById('mail_new_to').focus();
+    	$('#mail_new_to').closest('div').addClass('md-input-filled');
     	return false;
     }
     </script>
@@ -2390,7 +2592,20 @@ if($_POST['submit_reply']=="reply")
 		 	// var txt = document.createTextNode(fax_body);
 		 	// obj.appendChild(txt);
 		 	$('.md-input-wrapper').addClass('md-input-filled');		    
-		}					
+		}	
+
+		// Adding Tags to faxs
+		function addingtags(tfaxid,tagId,tgName)
+		{
+			$.ajax({
+                url:"auto_complete.php",
+                type:"GET",
+                data: {"tagfaxs": tfaxid,"tagsId":tagId,"section":"tagsAdd"},
+                success:function(html){         
+                	alert('Successfully Added to "'+tgName+'" tag');
+                }
+            });   
+		}
 
 		$('.uk-close').click(function(){
 			$('#composeFrm')[0].reset();		

@@ -127,6 +127,16 @@
 			$collection->insert($reply_values);
 		}
 
+		// Updating the faxs to particular tags
+		public function update_fax_tags($mPost)
+		{			
+			$collection = $this->db->nf_fax_users;
+		
+			$Update_faxtag_vals = array("fax_tag" => $mPost['tagsId']);
+
+			$collection->update(array('_id' => new MongoId($mPost['tagfaxs'])), array('$set' => $Update_faxtag_vals));	
+		}
+
 	}
 	
 ?>
