@@ -112,6 +112,10 @@ if($_REQUEST['action'] == "delete")
 	                    <label for="grpName">Group Name</label>
 	                    <input type="text" class="md-input" name="grpName" id="grpName" required/>
 	                </div>
+	                <div class="uk-margin-medium-bottom">
+	                    <label for="grpName">Contact Name</label>
+	                    <input type="text" class="md-input" name="grpName" id="grpName" required/>
+	                </div>
 	                <div class="uk-modal-footer">       
 	                	<input type="button" class="uk-modal-close md-btn md-btn-flat md-btn-flat-primary pull-right" value="Cancel" />             
 	                    <input type="submit" class="uk-float-right md-btn md-btn-flat md-btn-flat-primary" name="submit" value="Save" />

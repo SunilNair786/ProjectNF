@@ -54,7 +54,7 @@
 			
 			$collection = $this->db->nf_fax;
 
-			$files_values = array("_id"=>$mPost['_id'],"from_id"=>$_SESSION['user_id'] ,"message_subject" => $mPost['message_subject'],"message_body" => $mPost['message_body'],"file_name"=>'',"file_size"=>'','file_attach_id'=>$mPost['attachment_id'],"status" => "A","created_date" =>$this->cfObj->createDate(),"modified_date" => "");
+			$files_values = array("_id"=>$mPost['_id'],"from_id"=>$_SESSION['user_id'] ,"message_subject" => $mPost['message_subject'],"message_body" => $mPost['message_body'],"file_name"=>'',"file_size"=>'','file_attach_id'=>$mPost['attachment_id'],"status" => "A","created_date" =>$this->cfObj->createDate(),"modified_date" => "","outbox" => "Y");
 
 			$collection->insert($files_values);
 
