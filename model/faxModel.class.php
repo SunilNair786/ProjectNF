@@ -72,6 +72,16 @@
 			
 		}
 
+		// checking tags duplicated		
+		public function check_tags_duplicate($mPost)
+		{				
+			$collection = $this->db->nf_company_tags;
+
+			$cTags = $collection->find(array("tag_name" => $mPost['tagNam']))->count(); 
+
+			return $cTags;
+		}
+
 		// updating Favorites
 		public function updFavorites($mFavId,$mFVal)
 		{
@@ -113,6 +123,17 @@
 			$Update_fax_vals = array("is_delete" => "1");
 
 			$collection->update(array('_id' => new MongoId($mPost)), array('$set' => $Update_fax_vals));	
+		}
+
+		// Deleting Outbox Faxs
+		public function deleteOutbox_Fax($mPost)
+		{
+			//print_r($mPost); exit;
+			$collection = $this->db->nf_fax;
+		
+			$Update_Outbox_fax = array("outbox" => "N");
+
+			$collection->update(array('_id' => new MongoId($mPost)), array('$set' => $Update_Outbox_fax));	
 		}
 
 

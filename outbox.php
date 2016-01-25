@@ -53,6 +53,13 @@ if(isset($_REQUEST['submit'])){
     }
     header("location:outbox.php");
 }
+
+// delete Outbox Faxs
+if(isset($_GET['action']) && ($_GET['action'] == "delete") && isset($_GET['faxsId']) && ($_GET['faxsId']!="" ))
+{   
+    $faxObjCon->deleteOutboxFax($_GET['faxsId']);
+    header("location:outbox.php");
+}
 ?>
 
 <style>
@@ -119,8 +126,8 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                     $collection_fax = $db->nf_fax;  
                     $collection_user = $db->nf_user;    
                     $sessId = $_SESSION['user_id'];
-                    $CntallOutfaxs = $collection_fax->find(array("from_id" => $sessId,"created_date" => array('$gt' => $startDate),"status" => "A"))->count();   
-                    $allOutfaxs = $collection_fax->find(array("from_id" => $sessId,"created_date" => array('$gt' => $startDate),"status" => "A"));   
+                    $CntallOutfaxs = $collection_fax->find(array("from_id" => $sessId,"created_date" => array('$gt' => $startDate),"status" => "A","outbox" => "Y"))->count();   
+                    $allOutfaxs = $collection_fax->find(array("from_id" => $sessId,"created_date" => array('$gt' => $startDate),"status" => "A","outbox" => "Y"))->sort(array("created_date" => -1));   
 
                     if($CntallOutfaxs > 0){
                     ?>
@@ -204,8 +211,8 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                     $startDate1 = date('Y-m-d 00:00:00',strtotime("-1 days"));
                     $endDate1 = date('Y-m-d 23:59:59',strtotime("-1 days"));
                     //$collection = $db->nf_fax_users; 
-                    $CntyesterdOutfaxs = $collection_fax->find(array("from_id"=>$_SESSION['user_id'],"created_date" => array('$gt' => $startDate1,'$lte' => $endDate1),"status" => "A"))->count();   
-                    $yesterdOutfaxs = $collection_fax->find(array("from_id"=>$_SESSION['user_id'],"created_date" => array('$gt' => $startDate1,'$lte' => $endDate1),"status" => "A"));   
+                    $CntyesterdOutfaxs = $collection_fax->find(array("from_id"=>$_SESSION['user_id'],"created_date" => array('$gt' => $startDate1,'$lte' => $endDate1),"status" => "A","outbox" => "Y"))->count();
+                    $yesterdOutfaxs = $collection_fax->find(array("from_id"=>$_SESSION['user_id'],"created_date" => array('$gt' => $startDate1,'$lte' => $endDate1),"status" => "A","outbox" => "Y"))->sort(array("created_date" => -1));   
                     if($CntyesterdOutfaxs > 0)
                     {
                     ?>
@@ -285,8 +292,8 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                     $M_startDate = date('Y-m-d 00:00:00',strtotime("-30 days"));
                     $M_endDate = date('Y-m-d 23:59:59',strtotime("-2 days"));
                     
-                    $CntlastMnthfaxs = $collection_fax->find(array("from_id"=>$_SESSION['user_id'],"created_date" => array('$gt' => $M_startDate,'$lte' => $M_endDate)))->count();   
-                    $lastMnthfaxs = $collection_fax->find(array("from_id"=>$_SESSION['user_id'],"created_date" => array('$gt' => $M_startDate,'$lte' => $M_endDate)));   
+                    $CntlastMnthfaxs = $collection_fax->find(array("from_id"=>$_SESSION['user_id'],"created_date" => array('$gt' => $M_startDate,'$lte' => $M_endDate),"outbox" => "Y","status"=>"A"))->count();   
+                    $lastMnthfaxs = $collection_fax->find(array("from_id"=>$_SESSION['user_id'],"created_date" => array('$gt' => $M_startDate,'$lte' => $M_endDate),"outbox" => "Y","status"=>"A"))->sort(array("created_date" => -1));   
                     if($CntlastMnthfaxs > 0)
                     {
                     ?>
@@ -294,12 +301,36 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                         <div class="md-card-list-header heading_list">This Month</div>
                         <ul class="hierarchical_slide">
                             <?php
-                            foreach ($lastMnthfaxs as $lastMnth_faxs) {    
-                                $faxInfo2 = $collection->find(array('fax_id' => $lastMnth_faxs['_id']));          
+                            foreach ($lastMnthfaxs as $lastMnth_faxs) {                                    
+                                // getting User and Contact Details
+                                $udetailemail2 = '';
+                                $udetail2 = '';
+                                $uIds2 = '';
+                                $faxInfo2 = $collection->find(array('fax_id' => $lastMnth_faxs['_id']));    
+                                foreach ($faxInfo2 as $fax2_Info) {               
+                                    $CoutUserDetail2 = $collection_user->find(array('_id' => new MongoId($fax2_Info['to_id'])))->count();
+                                    $outUserDetail2 = $collection_user->findOne(array('_id' => new MongoId($fax2_Info['to_id'])));     
+                                    // In Contacts
+                                    $UserDetailCount2 = $db->nf_user_contacts->find(array('_id' => new MongoId($fax2_Info['to_id'])))->count();
+                                    $contUserDetail2 = $db->nf_user_contacts->findOne(array('_id' => new MongoId($fax2_Info['to_id'])));
+                                    if($CoutUserDetail2 > 0)  
+                                    {
+                                        //$udetail1 .= $outUserDetail1['first_name'].$outUserDetail1['last_name'].",";
+                                        $udetailemail2 .= $outUserDetail2['first_name']." ".$outUserDetail2['last_name']." (".$outUserDetail2['email_id']."), ";
+                                        $udetail2 .= $outUserDetail2['first_name']." ".$outUserDetail2['last_name'].",";
+                                        $uIds2 .= $outUserDetail2['_id'].",";
+                                    }
+                                    else if($UserDetailCount2 > 0)
+                                    {
+                                        $udetailemail2 .= $contUserDetail2['contact_name']." (".$contUserDetail2['email']."), ";
+                                        $udetail2 .= $contUserDetail2['contact_name'].",";
+                                        $uIds2 .= $contUserDetail2['_id'].",";
+                                    }
+                                }
                             ?>
                             <li>                                
                                 <div class="md-card-list-item-menu margn">                                                                        
-                                    <a href="#mailbox_new_message" data-uk-modal="{center:true}" onClick="fwdmsg('<?php echo $lastMnth_faxs['message_subject'];?>','<?php echo $lastMnth_faxs['message_body'];?>')"><i class="fa fa-paper-plane"></i></a>                                    
+                                    <a href="#mailbox_new_message" data-uk-modal="{center:true}" onClick="fwdmsg('<?php echo substr($udetailemail2,0,-2);?>','<?php echo substr($uIds2,0,-1);?>','<?php echo $lastMnth_faxs['message_subject'];?>','<?php echo $lastMnth_faxs['message_body'];?>')"><i class="fa fa-paper-plane"></i></a>                                    
                                     <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location='outbox.php?action=delete&faxsId=<?php echo $lastMnth_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>                                                                             
                                 </div>
                                 <span class="md-card-list-item-date"><?php echo date('j M',strtotime($lastMnth_faxs['created_date'])); ?></span>
@@ -312,40 +343,18 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                                 </div>
                                 <div class="md-card-list-item-sender">
                                     <span>
-                                        <?php                                              
-                                        foreach ($faxInfo2 as $fax2_Info) {               
-                                            $CoutUserDetail2 = $collection_user->find(array('_id' => new MongoId($fax2_Info['to_id'])))->count();
-                                            $outUserDetail2 = $collection_user->findOne(array('_id' => new MongoId($fax2_Info['to_id'])));     
-                                            if($CoutUserDetail2 > 0)  
-                                            {
-                                                echo $outUserDetail2['first_name'].$outUserDetail2['last_name'].",";
-                                            }
-                                            else
-                                            {                                                    
-                                                $contUserDetail2 = $db->nf_user_contacts->findOne(array('_id' => new MongoId($fax2_Info['to_id'])));          
-                                                echo $contUserDetail2['contact_name'].",";
-                                            }
-                                        }
+                                        <?php                                                                                      
+                                        echo substr($udetail2, 0, -1); 
                                         ?>
                                     </span>
                                 </div>
                                 <div class="md-card-list-item-subject">
                                     <div class="md-card-list-item-sender-small">
-                                        <span><?php                                              
-                                        foreach ($faxInfo as $fax2_Info) {               
-                                            $CoutUserDetail2 = $collection_user->find(array('_id' => new MongoId($fax2_Info['to_id'])))->count();
-                                            $outUserDetail2 = $collection_user->findOne(array('_id' => new MongoId($fax2_Info['to_id'])));     
-                                            if($CoutUserDetail2 > 0)  
-                                            {
-                                                echo $outUserDetail2['first_name'].$outUserDetail2['last_name'].",";
-                                            }
-                                            else
-                                            {                                                    
-                                                $contUserDetail2 = $db->nf_user_contacts->findOne(array('_id' => new MongoId($fax2_Info['to_id'])));          
-                                                echo $contUserDetail2['contact_name'].",";
-                                            }
-                                        }
-                                        ?></span>
+                                        <span>
+                                            <?php                                                                                      
+                                            echo substr($udetail2, 0, -1); 
+                                            ?>
+                                        </span>
                                     </div>
                                     <span><?php echo substr($lastMnth_faxs['message_subject'],'0','20'); ?></span>
                                 </div>
@@ -367,8 +376,8 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                     $OldstartDate = date('Y-m-d 00:00:00',strtotime("-100 years"));
                     $OldendDate = date('Y-m-d 23:59:59',strtotime("-30 days"));
                     
-                    $CntOldmonthFaxs = $collection_fax->find(array("from_id"=>$_SESSION['user_id'],"created_date" => array('$gt' => $OldstartDate,'$lte' => $OldendDate)))->count();   
-                    $OldmonthFaxs = $collection_fax->find(array("from_id"=>$_SESSION['user_id'],"created_date" => array('$gt' => $OldstartDate,'$lte' => $OldendDate)));   
+                    $CntOldmonthFaxs = $collection_fax->find(array("from_id"=>$_SESSION['user_id'],"created_date" => array('$gt' => $OldstartDate,'$lte' => $OldendDate),"status"=>"A","outbox" => "Y"))->count();
+                    $OldmonthFaxs = $collection_fax->find(array("from_id"=>$_SESSION['user_id'],"created_date" => array('$gt' => $OldstartDate,'$lte' => $OldendDate),"status"=>"A","outbox" => "Y"))->sort(array("created_date" => -1));   
                     if($CntOldmonthFaxs > 0)
                     {
                     ?>
@@ -376,12 +385,36 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                         <div class="md-card-list-header heading_list">Older Messages</div>
                         <ul class="hierarchical_slide">
                             <?php
-                            foreach ($OldmonthFaxs as $CntOldmonth_Faxs) {    
-                                $faxInfo3 = $collection->find(array('fax_id' => $CntOldmonth_Faxs['_id']));          
+                            foreach ($OldmonthFaxs as $CntOldmonth_Faxs) {                                    
+                                // getting User and Contact Details
+                                $udetailemail3 = '';
+                                $udetail3 = '';
+                                $uIds3 = '';
+                                $faxInfo3 = $collection->find(array('fax_id' => $CntOldmonth_Faxs['_id']));    
+                                foreach ($faxInfo3 as $fax3_Info) {               
+                                    $CoutUserDetail3 = $collection_user->find(array('_id' => new MongoId($fax3_Info['to_id'])))->count();
+                                    $outUserDetail3 = $collection_user->findOne(array('_id' => new MongoId($fax3_Info['to_id'])));     
+                                    // In Contacts
+                                    $UserDetailCount3 = $db->nf_user_contacts->find(array('_id' => new MongoId($fax3_Info['to_id'])))->count();
+                                    $contUserDetail3 = $db->nf_user_contacts->findOne(array('_id' => new MongoId($fax3_Info['to_id'])));
+                                    if($CoutUserDetail3 > 0)  
+                                    {
+                                        //$udetail1 .= $outUserDetail1['first_name'].$outUserDetail1['last_name'].",";
+                                        $udetailemail3 .= $outUserDetail3['first_name']." ".$outUserDetail3['last_name']." (".$outUserDetail3['email_id']."), ";
+                                        $udetail3 .= $outUserDetail3['first_name']." ".$outUserDetail3['last_name'].",";
+                                        $uIds3 .= $outUserDetail3['_id'].",";
+                                    }
+                                    else if($UserDetailCount3 > 0)
+                                    {
+                                        $udetailemail3 .= $contUserDetail3['contact_name']." (".$contUserDetail3['email']."), ";
+                                        $udetail3 .= $contUserDetail3['contact_name'].",";
+                                        $uIds3 .= $contUserDetail3['_id'].",";
+                                    }
+                                }      
                             ?>
                             <li>                                
                                 <div class="md-card-list-item-menu margn">                                                                        
-                                    <a href="#mailbox_new_message" data-uk-modal="{center:true}" onClick="fwdmsg('<?php echo $CntOldmonth_Faxs['message_subject'];?>','<?php echo $CntOldmonth_Faxs['message_body'];?>')"><i class="fa fa-paper-plane"></i></a>                                    
+                                    <a href="#mailbox_new_message" data-uk-modal="{center:true}" onClick="fwdmsg('<?php echo substr($udetailemail3,0,-2);?>','<?php echo substr($uIds3,0,-1);?>''<?php echo $CntOldmonth_Faxs['message_subject'];?>','<?php echo $CntOldmonth_Faxs['message_body'];?>')"><i class="fa fa-paper-plane"></i></a>                                    
                                     <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location='outbox.php?action=delete&faxsId=<?php echo $CntOldmonth_Faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>                                                                             
                                 </div>
                                 <span class="md-card-list-item-date"><?php echo date('j M',strtotime($CntOldmonth_Faxs['created_date'])); ?></span>
@@ -394,40 +427,18 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                                 </div>
                                 <div class="md-card-list-item-sender">
                                     <span>
-                                        <?php  
-                                        foreach ($faxInfo3 as $fax3_Info) {    
-                                            $CoutUserDetail3 = $collection_user->find(array('_id' => new MongoId($fax3_Info['to_id'])))->count();
-                                            $outUserDetail3 = $collection_user->findOne(array('_id' => new MongoId($fax3_Info['to_id'])));     
-                                            if($CoutUserDetail3 > 0)  
-                                            {
-                                                echo $outUserDetail3['first_name'].$outUserDetail3['last_name'].",";
-                                            }
-                                            else
-                                            {                                                    
-                                                $contUserDetail3 = $db->nf_user_contacts->findOne(array('_id' => new MongoId($fax3_Info['to_id'])));          
-                                                echo $contUserDetail3['contact_name'].",";
-                                            }
-                                        }
+                                        <?php                                                                                      
+                                        echo substr($udetail3, 0, -1); 
                                         ?>
                                     </span>
                                 </div>
                                 <div class="md-card-list-item-subject">
                                     <div class="md-card-list-item-sender-small">
-                                        <span><?php                                              
-                                        foreach ($faxInfo3 as $fax3_Info) {               
-                                            $CoutUserDetail3 = $collection_user->find(array('_id' => new MongoId($fax3_Info['to_id'])))->count();
-                                            $outUserDetail3 = $collection_user->findOne(array('_id' => new MongoId($fax3_Info['to_id'])));     
-                                            if($CoutUserDetail3 > 0)  
-                                            {
-                                                echo $outUserDetail3['first_name'].$outUserDetail3['last_name'].",";
-                                            }
-                                            else
-                                            {                                                    
-                                                $contUserDetail3 = $db->nf_user_contacts->findOne(array('_id' => new MongoId($fax3_Info['to_id'])));          
-                                                echo $contUserDetail3['contact_name'].",";
-                                            }
-                                        }
-                                        ?></span>
+                                        <span>
+                                            <?php                                                                                      
+                                            echo substr($udetail3, 0, -1); 
+                                            ?>
+                                        </span>
                                     </div>
                                     <span><?php echo substr($CntOldmonth_Faxs['message_subject'],'0','20'); ?></span>
                                 </div>
@@ -830,6 +841,12 @@ a#tagging:hover + .dropdown , .dropdown:hover {
             // obj.appendChild(txt);
             $('.md-input-wrapper').addClass('md-input-filled');         
         }
+
+        // Emptying the fields in compose form
+        $('.uk-close').click(function(){
+            $('#composeFrm')[0].reset();        
+            $('.md-input-wrapper').removeClass('md-input-filled');      
+        });
     </script>
    
 </body>

@@ -66,8 +66,7 @@ class users{
 	{		
 		$collection = $this->db->nf_user_groups;
 
-		$group_values = array("user_id" => $_SESSION['user_id'] ,"group_name" => $_POST['grpName'],"status" => "A","created_date" => $this->cfObj->createDate(),"modified_date" => "");
-
+		$group_values = array("user_id" => $_SESSION['user_id'] ,"group_name" => $_POST['grpName'],"user_ids" => $post['hidd_values'],"status" => "A","created_date" => $this->cfObj->createDate(),"modified_date" => "");
 		$collection->insert($group_values);			
 	}
 	// Update Group

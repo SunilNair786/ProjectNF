@@ -26,6 +26,13 @@ if($_REQUEST['action'] == "delete")
     exit;
 }
 ?>
+
+<style type="text/css">
+.ui-widget-content
+{
+    z-index: 9999 !important;
+}
+</style>
 <div id="page_content">
 <div id="page_content_inner">
 <div class="uk-width-large-8-10 uk-container-center">
@@ -78,6 +85,40 @@ if($_REQUEST['action'] == "delete")
 									                    <input type="hidden" name="grpId" id="grpId" value="<?php echo $indGroup['_id']; ?>"/>
 									                    <input type="hidden" name="hidd_grpName" id="hidd_grpName" value="<?php echo $indGroup['group_name']; ?>"/>
 									                </div>
+									                <?php
+									                $userId_arr = explode(',',$indGroup['user_ids']);
+									                //print_r($userId_arr); exit;
+									                $udetailemail = '';
+									                $udetail = '';
+                                					$uIds = '';
+									                for($i = 0; $i < sizeof($userId_arr); $i++)
+									                {
+									                	$ws = $userId_arr[$i];
+									                	$collection_user = $db->nf_user;
+									                	$CoutUserDetail = $collection_user->find(array('_id' => new MongoId($userId_arr[$i])))->count();
+									                	$CoutContaUser = $db->nf_user_contacts->find(array('_id' => new MongoId($userId_arr[$i])))->count();
+									                	if($CoutUserDetail > 0)
+									                	{
+									                		$UserDetail = $collection_user->findOne(array('_id' => new MongoId($userId_arr[$i])));
+									                		$udetailemail .= $UserDetail['first_name']." ".$UserDetail['last_name']." (".$UserDetail['email_id']."), ";
+					                                        $udetail .= $UserDetail['first_name']." ".$UserDetail['last_name'].",";
+					                                        $uIds .= $UserDetail['_id'].",";
+									                	}
+									                	else
+									                	{
+									                		$ContactUser = $db->nf_user_contacts->find(array('_id' => new MongoId($userId_arr[$i])))->count();
+									                		$udetailemail .= $ContactUser['contact_name']." (".$ContactUser['email']."), ";
+					                                        $udetail .= $ContactUser['contact_name'].",";
+					                                        $uIds .= $ContactUser['_id'].",";
+									                	}
+									                }
+									                ?>
+
+									                <div class="uk-margin-medium-bottom">
+									                    <label for="grpName">Contact Name</label>
+									                    <input type="text" class="md-input" name="contactName" id="contactName" value="<?php echo $udetailemail; ?>" required/>									                    
+									                </div>
+
 									                <div class="uk-modal-footer">       
 									                	<input type="button" class="uk-modal-close md-btn md-btn-flat md-btn-flat-primary pull-right" value="Cancel" />             
 									                    <input type="submit" class="uk-float-right md-btn md-btn-flat md-btn-flat-primary" name="submit" value="Update" />
@@ -114,7 +155,9 @@ if($_REQUEST['action'] == "delete")
 	                </div>
 	                <div class="uk-margin-medium-bottom">
 	                    <label for="grpName">Contact Name</label>
-	                    <input type="text" class="md-input" name="grpName" id="grpName" required/>
+	                    <input type="text" class="md-input" name="contactName" id="contactName" required/>
+	                    <input type="hidden" name="hidd_labels" id="labels">   
+                    	<input type="hidden" name="hidd_values" id="values">    
 	                </div>
 	                <div class="uk-modal-footer">       
 	                	<input type="button" class="uk-modal-close md-btn md-btn-flat md-btn-flat-primary pull-right" value="Cancel" />             
@@ -323,6 +366,8 @@ if($_REQUEST['action'] == "delete")
 		});
 	</script>
 	 <!--  forms advanced functions -->
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">  
+    <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>    
     <script src="assets/js/pages/forms_advanced.min.js"></script>
     <script>
         $(function() {
@@ -419,6 +464,89 @@ if($_REQUEST['action'] == "delete")
                 });
 
 
+        });
+
+		// Auto complete for contact and user names
+		$(function() {
+            function split( val ) {
+            return val.split( /,\s*/ );
+            }
+            function extractLast( term ) {
+            return split( term ).pop();
+            }
+                 
+            var projects = [
+            <?php             
+                $collection = $db->nf_user_contacts;
+                $autoComp = $collection->find();
+                foreach ($autoComp as $keys) {?>
+                    {
+                        value: "<?php echo $keys['_id'];?>",
+                        label: "<?php echo $keys['contact_name'];?> (<?php echo $keys['email'];?>)"
+                    },                
+                <?php } ?>
+            // Showing Users
+            <?php             
+                $collection = $db->nf_user;
+                $usersAutoComp = $collection->find();
+                foreach ($usersAutoComp as $users_AutoComp) {?>
+                    {
+                        value: "<?php echo $users_AutoComp['_id'];?>",
+                        label: "<?php echo $users_AutoComp['first_name'];?> <?php echo $users_AutoComp['last_name'];?> (<?php echo $users_AutoComp['email_id'];?>)"
+                    },
+                <?php } ?>
+            ];
+                 
+            $( "#contactName" )         
+                .bind( "keydown", function( event ) {
+                    if ( event.keyCode === $.ui.keyCode.TAB &&
+                        $( this ).autocomplete( "instance" ).menu.active ) {
+                        event.preventDefault();
+                    }
+                })
+            .autocomplete({
+                minLength: 0,
+                source: function( request, response ) {
+                // delegate back to autocomplete, but extract the last term
+                response( $.ui.autocomplete.filter(
+                projects, extractLast( request.term ) ) );
+                },
+
+                //    source:projects,    
+                focus: function() {
+                // prevent value inserted on focus
+                return false;
+                },
+                select: function( event, ui ) {
+                var terms = split( this.value );
+                // remove the current input
+                terms.pop();
+                // add the selected item
+                terms.push( ui.item.label );
+                // add placeholder to get the comma-and-space at the end
+                terms.push( "" );
+                this.value = terms.join( ", " );
+                    
+                    var selected_label = ui.item.label;
+                    var selected_value = ui.item.value;
+                    
+                    var labels = $('#labels').val();
+                    var values = $('#values').val();
+                    
+                    if(labels == "")
+                    {
+                        $('#labels').val(selected_label);
+                        $('#values').val(selected_value);
+                    }
+                    else    
+                    {
+                        $('#labels').val(labels+","+selected_label);
+                        $('#values').val(values+","+selected_value);
+                    }   
+                    
+                return false;
+                }
+            });
         });
     </script> <!-- ionrangeslider -->
     <script src="bower_components/ion.rangeslider/js/ion.rangeSlider.min.js"></script>

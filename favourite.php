@@ -212,7 +212,7 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                     $startDate = date('Y-m-d 00:00:00',strtotime("-1 days"));
                     $endDate = date('Y-m-d 23:59:59',strtotime("-1 days"));
                     
-                    $yesterdfaxs = $collection_fax->find(array("favorites" => "Y",'to_id' => "$sessId","created_date" => array('$gt' => $startDate,'$lte' => $endDate),'is_delete'=>0))->sort(array("created_date" => 1));   
+                    $yesterdfaxs = $collection_fax->find(array("favorites" => "Y",'to_id' => "$sessId","created_date" => array('$gt' => $startDate,'$lte' => $endDate),'is_delete'=>0))->sort(array("created_date" => -1));   
                     $allWeekCnt = $collection_fax->find(array("favorites" => "Y",'to_id' => "$sessId","created_date" => array('$gt' => $startDate,'$lte' => $endDate),"is_delete"=>0))->count(); 
                     if($allWeekCnt > 0 ){   
                 ?>  
@@ -335,7 +335,7 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                     $startDate = date('Y-m-d 00:00:00',strtotime("-30 days"));
                     $endDate = date('Y-m-d 23:59:59',strtotime("-2 days"));
                         
-                    $amonthFaxs = $collection_fax->find(array('favorites' => "Y",'to_id' => "$sessId","created_date" => array('$gt' => $startDate,'$lte' => $endDate),'is_delete'=>0))->sort(array("created_date" => 1));   
+                    $amonthFaxs = $collection_fax->find(array('favorites' => "Y",'to_id' => "$sessId","created_date" => array('$gt' => $startDate,'$lte' => $endDate),'is_delete'=>0))->sort(array("created_date" => -1));   
                     $allMonthCnt = $collection_fax->find(array('favorites' => "Y",'to_id' => "$sessId","created_date" => array('$gt' => $startDate,'$lte' => $endDate),"is_delete"=>0))->count();  
                     if($allMonthCnt > 0 ){
                 ?>
@@ -455,7 +455,7 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                         $startDate = date('Y-m-d 00:00:00',strtotime("-100 years"));
                         $endDate = date('Y-m-d 23:59:59',strtotime("-30 days"));
                             
-                        $OldmonthFaxs = $collection_fax->find(array('to_id' => "$sessId","created_date" => array('$gt' => $startDate,'$lte' => $endDate),'is_delete'=>0))->sort(array("created_date" => 1));   
+                        $OldmonthFaxs = $collection_fax->find(array('to_id' => "$sessId","created_date" => array('$gt' => $startDate,'$lte' => $endDate),'is_delete'=>0))->sort(array("created_date" => -1));   
                         $allCnt = $collection_fax->find(array('to_id' => "$sessId","created_date" => array('$gt' => $startDate,'$lte' => $endDate),"is_delete"=>0))->count();   
                         
                         if($allCnt > 0 ){

@@ -55,18 +55,25 @@
                 <div>
                     <div class="md-card">
                         <div class="md-card-content">
+                            <?php
+                            $collection = $db->nf_fax;                             
+                            $CntyesterdOutfaxs = $collection->find(array("from_id"=>$_SESSION['user_id']))->count();?>
                             <div class="uk-float-right uk-margin-top uk-margin-small-right"><span class="peity_visitors peity_data">5,3,9,6,5,9,7</span></div>
-                            <span class="uk-text-muted uk-text-small">Visitors (last 7d)</span>
-                            <h2 class="uk-margin-remove"><span class="countUpMe">0<noscript>12456</noscript></span></h2>
+                            <span class="uk-text-muted uk-text-small">Total Fax Sent</span>
+                            <h2 class="uk-margin-remove"><span class="countUpMe">0<noscript><?php echo $CntyesterdOutfaxs; ?></noscript></span></h2>
                         </div>
                     </div>
                 </div>
                 <div>
                     <div class="md-card">
-                        <div class="md-card-content">
+                        <div class="md-card-content">                            
+                            <?php                            
+                            $collection1 = $db->nf_fax_users;                    
+                            $Sessid = $_SESSION['user_id'];
+                            $allReceivefaxs = $collection1->find()->count();?>
                             <div class="uk-float-right uk-margin-top uk-margin-small-right"><span class="peity_sale peity_data">5,3,9,6,5,9,7,3,5,2</span></div>
-                            <span class="uk-text-muted uk-text-small">Sale</span>
-                            <h2 class="uk-margin-remove">$<span class="countUpMe">0<noscript>142384</noscript></span></h2>
+                            <span class="uk-text-muted uk-text-small">Total Faxs Recieved</span>
+                            <h2 class="uk-margin-remove"><span class="countUpMe">0<noscript><?php echo $allReceivefaxs;?></noscript></span></h2>
                         </div>
                     </div>
                 </div>

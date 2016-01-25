@@ -49,4 +49,10 @@ if($_GET['section']=="tagsAdd" && isset($_GET['tagfaxs']))
 {
 	$faxObjCon->updateFaxTags($_GET);
 }
+
+// checking for duplicate tags
+if($_POST['Section'] == "tagsDup" && $_POST['tagNam'] != "")
+{
+	echo $rees = $faxObjCon->checktags($_POST);
+}
 ?>

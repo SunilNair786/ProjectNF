@@ -84,6 +84,20 @@ class faxController{
 		$tags_fax = $this->faxObj->update_fax_tags($Cpost);
 		return $tags_fax;
 	}
+
+	// checking Tags for duplication
+	public function checktags($Cpost)
+	{
+		$tags_dupl = $this->faxObj->check_tags_duplicate($Cpost);
+		return $tags_dupl;
+	}
+
+	// Deleting Outbox Faxs
+	public function deleteOutboxFax($Cpost)
+	{
+		$outbox_fax = $this->faxObj->deleteOutbox_Fax($Cpost);
+		return $outbox_fax;
+	}
 	
 }
 

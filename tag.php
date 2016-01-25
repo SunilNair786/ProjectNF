@@ -5,15 +5,15 @@
 <!-- main sidebar end -->
 <?php
 // add Tag
-if($_POST['submit'] == "Save")
-{
+if($_POST['tag_submit'] == "Save")
+{	
 	$tagIns = $userContObj->TagInsert($_POST);   
 	header('location:tag.php'); 
 	exit;
 }
 
 //  Tag
-if($_POST['submit'] == "Update")
+if($_POST['tag_submit'] == "Update")
 {	
 	$Edit_tagIns = $userContObj->TagEditing($_POST);   
     header('location:tag.php'); 
@@ -75,11 +75,12 @@ if($_POST['submit'] == "Update")
 		?>
             <div class="md-card-list">
                 <!-- <div class="md-card-list-header heading_list">Today</div> -->           
-                <div class="md-card-list-header md-card-list-header-combined heading_list">
+                <div class="md-card-list-header-combined heading_list"><!-- md-card-list-header  -->
                 	All Messages
 	                <?php if($_GET['tagged'] != ""){?>
+
 						<a class="pull-right" href="tag.php">
-							Clear
+							<i class="fa fa-times"></i> Clear
 						</a>
 					<?php } ?>	
 				</div>
@@ -233,17 +234,18 @@ if($_POST['submit'] == "Update")
 		<div class="uk-modal" id="New_tag">
 	        <div class="uk-modal-dialog">
 	        	<button class="uk-modal-close uk-close" type="button"></button>
-	            <form name="newTag" method="post">
+	            <form name="newTag" id="newTag" method="post" onsubmit="return checkDuplicate();">
 	                <div class="uk-modal-header">
 	                    <h3 class="uk-modal-title">Tag :</h3>	                    
 	                </div>
 	                <div class="uk-margin-medium-bottom">
 	                    <!-- <label for="tag_name">Tag Name</label> -->
-	                    <input type="text" class="md-input" name="tag_name" id="tag_name" placeholder="Enter your text.." required /><br><br>	                    
+	                    <input type="text" class="md-input" name="tag_name" id="tag_name" placeholder="Enter your text.." required /><br><br>	     
+	                    <input type="hidden" name="tag_submit" value="Save">
 						<div class="result" style="float:right">0 of 20 characters</div>
 	                </div>
 	                <div class="uk-modal-footer">                    	                    
-	                    <input type="submit" class="uk-float-right md-btn md-btn-flat md-btn-flat-primary" name="submit" value="Save" />	                    
+	                    <input type="submit" class="uk-float-right md-btn md-btn-flat md-btn-flat-primary" name="tag_submit" id="tag_submit" value="Save" />	                    
 	                </div>
 	            </form>
 	        </div>
@@ -271,7 +273,7 @@ if($_POST['submit'] == "Update")
 		                    <div class="result" style="float:right"><?php echo strlen($edit_tags_indv['tag_name']);?> of 20 characters</div>
 		                </div>
 		                <div class="uk-modal-footer">                    	                    
-		                    <input type="submit" class="uk-float-right md-btn md-btn-flat md-btn-flat-primary" name="submit" value="Update" />	                    
+		                    <input type="submit" class="uk-float-right md-btn md-btn-flat md-btn-flat-primary" name="tag_submit" value="Update" />	                    
 		                </div>
 		            </form>
 		        </div>
@@ -656,13 +658,36 @@ if($_POST['submit'] == "Update")
 			
         });
 		function deleteTag(values){				
-				if(confirm('Are you sure you want to remove ?')){
-					$.get("auto_complete.php?tagId="+values, function(data, status){
-						location.reload();
-					});							     
-				}else{
-					//return false;
-				}
+			if(confirm('Are you sure you want to remove ?')){
+				$.get("auto_complete.php?tagId="+values, function(data, status){
+					location.reload();
+				});							     
+			}else{
+				//return false;
+			}
+		}
+
+		// Duplicate Tags
+		function checkDuplicate() {			
+			var taVal = document.getElementById('tag_name').value;			
+			$.ajax({
+				url:"auto_complete.php",
+                type:"POST",
+                data: {"tagNam" : taVal,"Section" : "tagsDup"},
+                success:function(html){                	
+                	if(html > 0)
+                	{
+                		alert("Tag already Existed please change Tag Name");
+                		document.getElementById('tag_name').focus();                   		
+                		return true;                		
+                	}
+                	else
+                	{
+                		document.forms['newTag'].submit();
+                	}
+                }
+			});		
+			return false;
 		}
     </script> <!-- ionrangeslider -->
     <script src="bower_components/ion.rangeslider/js/ion.rangeSlider.min.js"></script>
