@@ -1,5 +1,7 @@
 <?php
+
 include_once('model/faxModel.class.php');
+
 class faxController{
 
 	public $faxObj;
@@ -10,8 +12,26 @@ class faxController{
 	}		
 	
 	public function copyFiles($post,$files){		
+		$upload_directory = 'upload_dir/files';
+		$x=0;
+		$userId = $_SESSION['user_id'];	
+		$timeStamp = $this->cfObj->getTimeStamp();
+		$newFileName = $userId."_".$timeStamp;	
+		$uploadfile = '';
+		foreach ( $_FILES['file']['name'] as $values ){  			   	
+			$fullFileName = $newFileName.'_'.$x.'_'. $_FILES["file"]["name"][$x]; 
+				move_uploaded_file($_FILES["file"]["tmp_name"][$x],$upload_directory.'/'.$fullFileName);	   	
+		   		$uploadfile .= $this->faxObj->uploadIndvFile($files['file']['size'][$x],$fullFileName).",";
+				
+		   	$x++;  
+		}
+		if($uploadfile !=''){
+			$post['attachment_id'] =  substr($uploadfile, 0 ,-1);
+		}else{
+			$post['attachment_id'] = '';
+		}		
 		$faxdata = $this->faxObj->insertFax($post);
-		return $faxdata;
+		return $faxdata ;
 	}
 	
 	public function fetchFaxInfo($faxId){

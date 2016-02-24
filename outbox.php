@@ -196,72 +196,7 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                                     <span><?php echo substr($allOut_faxs['message_subject'],'0','20'); ?></span>
                                 </div>
                                 <div class="md-card-list-item-content-wrapper">
-                                    <div class="md-card-list-item-content">
-                                        <?php echo $allOut_faxs['message_body'];echo "<br><br>";
-                                        $userId_arr = explode(',',$allOut_faxs['file_attach_id']);
-                                        
-                                        /*if($allOut_faxs['file_attach_id'] != "")
-                                        {
-
-                                            $userId_arr = explode(',',$allOut_faxs['file_attach_id']);                                            
-                                            foreach($userId_arr as $attachIds)
-                                            {
-                                                $collectionUpload = $db->nf_user_fileuploads;
-                                                $files12 = $collectionUpload->findOne(array('_id' => new MongoId($attachIds)));
-                                                echo $files12['file_name'];
-
-                                                $filType = explode(".", $files12['file_name']);
-                                                echo $filType[1];
-                                            }
-
-                                        }
-
-                                        if($allOut_faxs['file_attach_id'] != "")
-                                        {
-                                            $img = 1;
-                                            $attachments = explode(",",$allOut_faxs['file_attach_id']);                                                          
-                                            for($i = 0; $i< sizeof($attachments); $i++)
-                                            {
-                                                $collection_attach = $db->nf_user_fileuploads; 
-                                                $allattachments = $collection_attach->find(array("_id" => new MongoId($attachments[$i])))->sort(array("created_date" => -1));                                                       
-                                                foreach($allattachments as $all_attachments)
-                                                {
-                                                    $ftype = explode(".",$all_attachments['file_name']);
-                                                    if($ftype != "pdf")
-                                                    {?>
-                                                        <a href="#image_<?php echo $all_attachments['_id'];?>_popup<?php echo $img;?>" data-uk-modal="{center:true}">
-                                                            <img title="click to view image" src="upload_dir/files/<?php echo $all_attachments['file_name'];?>" id="img_atch" width="100" height="50">
-                                                        </a>                                                                
-                                                        <div class="uk-modal" id="image_<?php echo $all_attachments['_id'];?>_popup<?php echo $img;?>">
-                                                            <div class="uk-modal-dialog" style="width:1000px; height:600px;">       
-                                                                <button class="uk-modal-close uk-close" type="button"></button>
-                                                                <img src="upload_dir/files/<?php echo $all_attachments['file_name'];?>"/>
-                                                            </div>
-                                                        </div>
-                                                    <?php }else {?>
-                                                        <a href="upload_dir/files/<?php echo $all_attachments['file_name'];?>">View the attachment</a>
-                                                    <?php }
-                                                    $img++;
-                                                } 
-                                            }
-                                        }*/
-
-                                        if($allOut_faxs['saved_pdf_file'] != "")
-                                        {?>                                                 
-                                            <a href="#image_<?php echo $allOut_faxs['_id'];?>_popup<?php echo $img;?>" data-uk-modal="{center:true}">
-                                                <!-- <img title="click to view attachment" src="upload_dir/files/<?php echo $allOut_faxs['file_name'];?>" id="img_atch" width="100" height="50"> -->
-                                                <img title="click to view attachment" src="assets/img/attachmentpin.png" id="img_atch" width="50" height="25">
-                                            </a>                                                                
-                                            <div class="uk-modal" id="image_<?php echo $allOut_faxs['_id'];?>_popup">
-                                                <div class="uk-modal-dialog" style="width:90%; height:90%;">        
-                                                    <button class="uk-modal-close uk-close" type="button"></button>
-                                                    <iframe src="upload_dir/savedpdfs/<?php echo $allOut_faxs['saved_pdf_file'];?>" style="width:100%; height:100%;"></iframe>
-                                                    <a id="addButton" class="green-button" href="add_note.html">Add a note</a>    
-                                                </div>
-                                            </div>
-                                            <!-- <a href="upload_dir/savedpdfs/<?php echo $allOut_faxs['saved_pdf_file'];?>">View the attachment</a> -->      
-                                        <?php } ?>
-                                    </div>                                    
+                                    <div class="md-card-list-item-content"><?php echo $allOut_faxs['message_body'];?></div>                                    
                                 </div>
                             </li>
 
@@ -343,54 +278,7 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                                     <span><?php echo substr($yesterdOut_faxs['message_subject'],'0','20'); ?></span>
                                 </div>
                                 <div class="md-card-list-item-content-wrapper">
-                                    <div class="md-card-list-item-content">
-                                        <?php echo $yesterdOut_faxs['message_body']; echo "<br><br>";
-                                        /*if($yesterdOut_faxs['file_attach_id'] != "")
-                                        {
-                                            $img = 1;
-                                            $attachments1 = explode(",",$yesterdOut_faxs['file_attach_id']);                                                          
-                                            for($i = 0; $i< sizeof($attachments1); $i++)
-                                            {
-                                                $collection_attach = $db->nf_user_fileuploads; 
-                                                $allattachments1 = $collection_attach->find(array("_id" => new MongoId($attachments1[$i])))->sort(array("created_date" => -1));                                                       
-                                                foreach($allattachments1 as $all_attachments1)
-                                                {
-                                                    $ftype = explode(".",$all_attachments1['file_name']);
-                                                    if($ftype != "pdf")
-                                                    {?>
-                                                        <a href="#image_<?php echo $all_attachments1['_id'];?>_popup<?php echo $img;?>" data-uk-modal="{center:true}">
-                                                            <img title="click to view image" src="upload_dir/files/<?php echo $all_attachments1['file_name'];?>" id="img_atch" width="100" height="50">
-                                                        </a>                                                                
-                                                        <div class="uk-modal" id="image_<?php echo $all_attachments1['_id'];?>_popup<?php echo $img;?>">
-                                                            <div class="uk-modal-dialog" style="width:1000px; height:600px;">       
-                                                                <button class="uk-modal-close uk-close" type="button"></button>
-                                                                <img src="upload_dir/files/<?php echo $all_attachments1['file_name'];?>"/>
-                                                            </div>
-                                                        </div>
-                                                    <?php }else {?>
-                                                        <a href="upload_dir/files/<?php echo $all_attachments1['file_name'];?>">View the attachment</a>
-                                                    <?php }
-                                                    $img++;
-                                                } 
-                                            }
-                                        }*/
-
-                                        if($yesterdOut_faxs['saved_pdf_file'] != "")
-                                        {?>                                                 
-                                            <a href="#image_<?php echo $yesterdOut_faxs['_id'];?>_popup<?php echo $img;?>" data-uk-modal="{center:true}">
-                                                <!-- <img title="click to view attachment" src="upload_dir/files/<?php echo $yesterdOut_faxs['file_name'];?>" id="img_atch" width="100" height="50"> -->
-                                                <img title="click to view attachment" src="assets/img/attachmentpin.png" id="img_atch" width="50" height="25">
-                                            </a>                                                                
-                                            <div class="uk-modal" id="image_<?php echo $yesterdOut_faxs['_id'];?>_popup">
-                                                <div class="uk-modal-dialog" style="width:90%; height:90%;">        
-                                                    <button class="uk-modal-close uk-close" type="button"></button>
-                                                    <iframe src="upload_dir/savedpdfs/<?php echo $yesterdOut_faxs['saved_pdf_file'];?>" style="width:100%; height:100%;"></iframe>
-                                                    <a id="addButton" class="green-button" href="add_note.html">Add a note</a>    
-                                                </div>
-                                            </div>
-                                            <!-- <a href="upload_dir/savedpdfs/<?php echo $yesterdOut_faxs['saved_pdf_file'];?>">View the attachment</a> -->     
-                                        <?php } ?>
-                                    </div>                                    
+                                    <div class="md-card-list-item-content"><?php echo $yesterdOut_faxs['message_body'];?></div>                                    
                                 </div>
                             </li>
                             <?php  
@@ -471,54 +359,7 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                                     <span><?php echo substr($lastMnth_faxs['message_subject'],'0','20'); ?></span>
                                 </div>
                                 <div class="md-card-list-item-content-wrapper">
-                                    <div class="md-card-list-item-content">
-                                        <?php echo $lastMnth_faxs['message_body']; echo "<br><br>";
-                                        /*if($lastMnth_faxs['file_attach_id'] != "")
-                                        {
-                                            $img = 1;
-                                            $attachments2 = explode(",",$lastMnth_faxs['file_attach_id']);                                                          
-                                            for($i = 0; $i< sizeof($attachments2); $i++)
-                                            {
-                                                $collection_attach = $db->nf_user_fileuploads; 
-                                                $allattachments2 = $collection_attach->find(array("_id" => new MongoId($attachments2[$i])))->sort(array("created_date" => -1));                                                       
-                                                foreach($allattachments2 as $all_attachments2)
-                                                {
-                                                    $ftype = explode(".",$all_attachments2['file_name']);
-                                                    if($ftype != "pdf")
-                                                    {?>
-                                                        <a href="#image_<?php echo $all_attachments2['_id'];?>_popup<?php echo $img;?>" data-uk-modal="{center:true}">
-                                                            <img title="click to view image" src="upload_dir/files/<?php echo $all_attachments2['file_name'];?>" id="img_atch" width="100" height="50">
-                                                        </a>                                                                
-                                                        <div class="uk-modal" id="image_<?php echo $all_attachments2['_id'];?>_popup<?php echo $img;?>">
-                                                            <div class="uk-modal-dialog" style="width:1000px; height:600px;">       
-                                                                <button class="uk-modal-close uk-close" type="button"></button>
-                                                                <img src="upload_dir/files/<?php echo $all_attachments2['file_name'];?>"/>
-                                                            </div>
-                                                        </div>
-                                                    <?php }else {?>
-                                                        <a href="upload_dir/files/<?php echo $all_attachments2['file_name'];?>">View the attachment</a>
-                                                    <?php }
-                                                    $img++;
-                                                } 
-                                            }
-                                        }*/
-
-                                        if($lastMnth_faxs['saved_pdf_file'] != "")
-                                        {?>                                                 
-                                            <a href="#image_<?php echo $lastMnth_faxs['_id'];?>_popup<?php echo $img;?>" data-uk-modal="{center:true}">
-                                                <!-- <img title="click to view attachment" src="upload_dir/files/<?php echo $lastMnth_faxs['file_name'];?>" id="img_atch" width="100" height="50"> -->
-                                                <img title="click to view attachment" src="assets/img/attachmentpin.png" id="img_atch" width="50" height="25">
-                                            </a>                                                                
-                                            <div class="uk-modal" id="image_<?php echo $lastMnth_faxs['_id'];?>_popup">
-                                                <div class="uk-modal-dialog" style="width:90%; height:90%;">        
-                                                    <button class="uk-modal-close uk-close" type="button"></button>
-                                                    <iframe src="upload_dir/savedpdfs/<?php echo $lastMnth_faxs['saved_pdf_file'];?>" style="width:100%; height:100%;"></iframe>
-                                                    <a id="addButton" class="green-button" href="add_note.html">Add a note</a>    
-                                                </div>
-                                            </div>
-                                            <!-- <a href="upload_dir/savedpdfs/<?php echo $lastMnth_faxs['saved_pdf_file'];?>">View the attachment</a> -->     
-                                        <?php } ?>
-                                    </div>                                    
+                                    <div class="md-card-list-item-content"><?php echo $lastMnth_faxs['message_body'];?></div>                                    
                                 </div>
                             </li>
                             <?php } ?>
@@ -602,53 +443,7 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                                     <span><?php echo substr($CntOldmonth_Faxs['message_subject'],'0','20'); ?></span>
                                 </div>
                                 <div class="md-card-list-item-content-wrapper">
-                                    <div class="md-card-list-item-content">
-                                        <?php echo $CntOldmonth_Faxs['message_body']; echo "<br><br>";
-                                        /*if($CntOldmonth_Faxs['file_attach_id'] != "")
-                                        {
-                                            $img = 1;
-                                            $attachments3 = explode(",",$CntOldmonth_Faxs['file_attach_id']);                                                          
-                                            for($i = 0; $i< sizeof($attachments3); $i++)
-                                            {
-                                                $collection_attach = $db->nf_user_fileuploads; 
-                                                $allattachments3 = $collection_attach->find(array("_id" => new MongoId($attachments3[$i])))->sort(array("created_date" => -1));
-                                                foreach($allattachments3 as $all_attachments3)
-                                                {
-                                                    $ftype = explode(".",$all_attachments3['file_name']);
-                                                    if($ftype != "pdf")
-                                                    {?>
-                                                        <a href="#image_<?php echo $all_attachments3['_id'];?>_popup<?php echo $img;?>" data-uk-modal="{center:true}">
-                                                            <img title="click to view image" src="upload_dir/files/<?php echo $all_attachments3['file_name'];?>" id="img_atch" width="100" height="50">
-                                                        </a>
-                                                        <div class="uk-modal" id="image_<?php echo $all_attachments3['_id'];?>_popup<?php echo $img;?>">
-                                                            <div class="uk-modal-dialog" style="width:1000px; height:600px;">       
-                                                                <button class="uk-modal-close uk-close" type="button"></button>
-                                                                <img src="upload_dir/files/<?php echo $all_attachments3['file_name'];?>"/>
-                                                            </div>
-                                                        </div>
-                                                    <?php }else {?>
-                                                        <a href="upload_dir/files/<?php echo $all_attachments3['file_name'];?>">View the attachment</a>
-                                                    <?php }
-                                                    $img++;
-                                                } 
-                                            }
-                                        }*/
-                                        if($CntOldmonth_Faxs['saved_pdf_file'] != "")
-                                        {?>                                                 
-                                            <a href="#image_<?php echo $CntOldmonth_Faxs['_id'];?>_popup<?php echo $img;?>" data-uk-modal="{center:true}">
-                                                <!-- <img title="click to view attachment" src="upload_dir/files/<?php echo $CntOldmonth_Faxs['file_name'];?>" id="img_atch" width="100" height="50"> -->
-                                                <img title="click to view attachment" src="assets/img/attachmentpin.png" id="img_atch" width="50" height="25">
-                                            </a>                                                                
-                                            <div class="uk-modal" id="image_<?php echo $CntOldmonth_Faxs['_id'];?>_popup">
-                                                <div class="uk-modal-dialog" style="width:90%; height:90%;">        
-                                                    <button class="uk-modal-close uk-close" type="button"></button>
-                                                    <iframe src="upload_dir/savedpdfs/<?php echo $CntOldmonth_Faxs['saved_pdf_file'];?>" style="width:100%; height:100%;"></iframe>
-                                                    <a id="addButton" class="green-button" href="add_note.html">Add a note</a>    
-                                                </div>
-                                            </div>
-                                            <!-- <a href="upload_dir/savedpdfs/<?php echo $CntOldmonth_Faxs['saved_pdf_file'];?>">View the attachment</a> -->     
-                                        <?php } ?>
-                                    </div>                                    
+                                    <div class="md-card-list-item-content"><?php echo $CntOldmonth_Faxs['message_body'];?></div>                                    
                                 </div>
                             </li>
                             <?php } ?>
@@ -673,7 +468,7 @@ a#tagging:hover + .dropdown , .dropdown:hover {
     <div class="uk-modal" id="mailbox_new_message">
         <div class="uk-modal-dialog">
             <button class="uk-modal-close uk-close" type="button"></button>
-            <form name='composeFrm' id="composeFrm" action='tcpdf/examples/example_001.php' enctype="multipart/form-data" method='post'>
+            <form name='composeFrm' id="composeFrm" action='outbox.php' enctype="multipart/form-data" method='post'>
                 <div class="uk-modal-header">
                     <h3 class="uk-modal-title">Compose Message</h3>
                 </div>
@@ -686,7 +481,7 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                     <input type="hidden" name="hidd_values" id="values">    
 
                 </div>
-                <input type="hidden" name="hidd_userid" id="hidd_userid" value="<?php echo $_SESSION['user_id']?>" />
+                
                 <div class="uk-margin-large-bottom">
                     <label for="mail_new_message">Subject</label>
                     <input name="message_subject" id="message_subject" class="md-input" required />
@@ -912,28 +707,6 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                     location.reload(true);
                 });
         });
-
-        
-        var counterInt = 0;
-
-        function AddFileUpload(){ 
-               if(counterInt < 10){
-                    var div = document.createElement('DIV');
-                    div.innerHTML = '<input  id="file' + counterInt + '" name = "file[' + counterInt +
-                    ']" type="file" /> <i class="md-icon material-icons">&#xE226;</i>'  +
-                    '<input  class="uk-form-file md-btn" id="Button' + counterInt + '" type="button" ' +
-                    'value="Remove" onclick = "RemoveFileUpload(this)" /> ';
-                    document.getElementById("FileUploadContainer").appendChild(div);
-                    counterInt++;
-               }else{
-                   alert("You can attach, only 10 Files.");
-                   
-               }
-        }
-
-        function RemoveFileUpload(div){
-            document.getElementById("FileUploadContainer").removeChild(div.parentNode);
-        }
 
 
         // Auto Complete for compose message                

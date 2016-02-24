@@ -67,39 +67,10 @@ if($_REQUEST['action'] == "delete")
 										<span class="md-card-list-item-date"><?php $dates=strtotime($indGroup['created_date']); echo date("j M",$dates); ?></span>
 										<div class="md-card-list-item-select">
 											<input type="checkbox" name="groupCheck" data-md-icheck />
-										</div>		
-										<?php
-						                $userId_arr = explode(',',$indGroup['user_ids']);
-						                //print_r($userId_arr); exit;
-						                $udetailemail = '';
-						                $udetail = '';
-                    					$uIds = '';
-						                for($i = 0; $i < sizeof($userId_arr); $i++)
-						                {
-						                	$ws = $userId_arr[$i];
-						                	$collection_user = $db->nf_user;
-						                	$CoutUserDetail = $collection_user->find(array('_id' => new MongoId($userId_arr[$i])))->count();
-						                	$CoutContaUser = $db->nf_user_contacts->find(array('_id' => new MongoId($userId_arr[$i])))->count();
-						                	if($CoutUserDetail > 0)
-						                	{
-						                		$UserDetail = $collection_user->findOne(array('_id' => new MongoId($userId_arr[$i])));
-						                		$udetailemail .= $UserDetail['first_name']." ".$UserDetail['last_name']." (".$UserDetail['email_id']."), ";
-		                                        $udetail .= $UserDetail['first_name']." ".$UserDetail['last_name'].",";
-		                                        $uIds .= $UserDetail['_id'].",";
-						                	}
-						                	else
-						                	{
-						                		$ContactUser = $db->nf_user_contacts->find(array('_id' => new MongoId($userId_arr[$i])))->count();
-						                		$udetailemail .= $ContactUser['contact_name']." (".$ContactUser['email']."), ";
-		                                        $udetail .= $ContactUser['contact_name'].",";
-		                                        $uIds .= $ContactUser['_id'].",";
-						                	}
-						                }
-						                ?>
+										</div>										
 										<div class="md-card-list-item-sender">
 											<span><?php echo $indGroup['group_name']; ?></span>
 										</div>										
-										<br><?php echo substr($udetail,0,-1); ?>
 
 										<div class="uk-modal" id="Edit_Grp<?php echo $incc;?>">
 									        <div class="uk-modal-dialog">
@@ -114,6 +85,35 @@ if($_REQUEST['action'] == "delete")
 									                    <input type="hidden" name="grpId" id="grpId" value="<?php echo $indGroup['_id']; ?>"/>
 									                    <input type="hidden" name="hidd_grpName" id="hidd_grpName" value="<?php echo $indGroup['group_name']; ?>"/>
 									                </div>
+									                <?php
+									                $userId_arr = explode(',',$indGroup['user_ids']);
+									                //print_r($userId_arr); exit;
+									                $udetailemail = '';
+									                $udetail = '';
+                                					$uIds = '';
+									                for($i = 0; $i < sizeof($userId_arr); $i++)
+									                {
+									                	$ws = $userId_arr[$i];
+									                	$collection_user = $db->nf_user;
+									                	$CoutUserDetail = $collection_user->find(array('_id' => new MongoId($userId_arr[$i])))->count();
+									                	$CoutContaUser = $db->nf_user_contacts->find(array('_id' => new MongoId($userId_arr[$i])))->count();
+									                	if($CoutUserDetail > 0)
+									                	{
+									                		$UserDetail = $collection_user->findOne(array('_id' => new MongoId($userId_arr[$i])));
+									                		$udetailemail .= $UserDetail['first_name']." ".$UserDetail['last_name']." (".$UserDetail['email_id']."), ";
+					                                        $udetail .= $UserDetail['first_name']." ".$UserDetail['last_name'].",";
+					                                        $uIds .= $UserDetail['_id'].",";
+									                	}
+									                	else
+									                	{
+									                		$ContactUser = $db->nf_user_contacts->find(array('_id' => new MongoId($userId_arr[$i])))->count();
+									                		$udetailemail .= $ContactUser['contact_name']." (".$ContactUser['email']."), ";
+					                                        $udetail .= $ContactUser['contact_name'].",";
+					                                        $uIds .= $ContactUser['_id'].",";
+									                	}
+									                }
+									                ?>
+
 									                <div class="uk-margin-medium-bottom">
 									                    <label for="grpName">Contact Name</label>
 									                    <input type="text" class="md-input" name="contactName" id="contactName" value="<?php echo $udetailemail; ?>" required/>									                    

@@ -12,7 +12,7 @@ if($_POST['tag_submit'] == "Save")
 	exit;
 }
 
-// Edit Tag
+//  Tag
 if($_POST['tag_submit'] == "Update")
 {	
 	$Edit_tagIns = $userContObj->TagEditing($_POST);   
@@ -192,14 +192,8 @@ if($_POST['tag_submit'] == "Update")
 						</li>	
 					<?php }// foreach
 					}//If condition
-					else if($allTodayCnt == 0 && $_GET['tagged'] != "")
+					else
 					{?>
-						<li>							
-							<div class="md-card-list-item-subject" <?php echo $divSujClk; ?>>								
-								<span style="text-align:center;font-weight:bold;">No mails Tagged</span>
-							</div>	     									
-						</li>
-					<?php } else { ?>
 						<li>							
 							<div class="md-card-list-item-subject" <?php echo $divSujClk; ?>>								
 								<span style="text-align:center;font-weight:bold;">Please Select a Tag to show your faxes</span>
@@ -268,16 +262,15 @@ if($_POST['tag_submit'] == "Update")
 			<div class="uk-modal" id="edit_tag_<?php echo $Tinc; ?>">
 		        <div class="uk-modal-dialog">
 		        	<button class="uk-modal-close uk-close" type="button"></button>
-		            <form name="editTag<?php echo $Tinc;?>" id="editTag<?php echo $Tinc;?>" method="post" onsubmit="return checkDuplicateEdit(<?php echo $Tinc;?>);">
+		            <form name="editTag" method="post">
 		                <div class="uk-modal-header">
 		                    <h3 class="uk-modal-title">Tag :</h3>	     
 		                    <input type="hidden" name="hidd_tag_id" value="<?php echo $edit_tags_indv['_id']; ?>"> 
 		                </div>
 		                <div class="uk-margin-medium-bottom">
 		                    <!-- <label for="tag_name">Tag Name</label> -->
-		                    <input type="text" class="md-input" name="edit_tag_name" id="edit_tag_name_<?php echo $Tinc;?>" value="<?php echo $edit_tags_indv['tag_name']; ?>" required />
+		                    <input type="text" class="md-input" name="edit_tag_name" id="edit_tag_name" value="<?php echo $edit_tags_indv['tag_name']; ?>" required />
 		                    <div class="result" style="float:right"><?php echo strlen($edit_tags_indv['tag_name']);?> of 20 characters</div>
-		                    <input type="hidden" name="tag_submit" value="Update">
 		                </div>
 		                <div class="uk-modal-footer">                    	                    
 		                    <input type="submit" class="uk-float-right md-btn md-btn-flat md-btn-flat-primary" name="tag_submit" value="Update" />	                    
@@ -675,8 +668,7 @@ if($_POST['tag_submit'] == "Update")
 		}
 
 		// Duplicate Tags
-		function checkDuplicate() 
-		{				
+		function checkDuplicate() {			
 			var taVal = document.getElementById('tag_name').value;			
 			$.ajax({
 				url:"auto_complete.php",
@@ -692,29 +684,6 @@ if($_POST['tag_submit'] == "Update")
                 	else
                 	{
                 		document.forms['newTag'].submit();
-                	}
-                }
-			});		
-			return false;		
-		}
-
-		function checkDuplicateEdit(proctyp)
-		{
-			var taVal = document.getElementById('edit_tag_name_'+proctyp).value;					
-			$.ajax({
-				url:"auto_complete.php",
-                type:"POST",
-                data: {"tagNam" : taVal,"Section" : "tagsDup"},
-                success:function(html){                	
-                	if(html > 0)
-                	{
-                		alert("Tag already Existed please change Tag Name");
-                		document.getElementById('edit_tag_name_'+proctyp).focus();                   		
-                		return true;                		
-                	}
-                	else
-                	{
-                		document.forms['editTag'+proctyp].submit();
                 	}
                 }
 			});		
