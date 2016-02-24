@@ -1,42 +1,9 @@
-<!doctype html>
-<!--[if lte IE 9]> <html class="lte-ie9" lang="en"> <![endif]-->
-<!--[if gt IE 9]><!--> <html lang="en"> <!--<![endif]-->
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<!-- Remove Tap Highlight on Windows Phone IE -->
-	<meta name="msapplication-tap-highlight" content="no"/>
-
-	<link rel="icon" type="image/png" href="assets/img/favicon-16x16.png" sizes="16x16">
-	<link rel="icon" type="image/png" href="assets/img/favicon-32x32.png" sizes="32x32">
-
-	<title>NeXt FaX - Dashboard</title>
-
-
-	<!-- uikit -->
-	<link rel="stylesheet" href="bower_components/uikit/css/uikit.almost-flat.min.css" media="all">
-
-	<!-- flag icons -->
-	<link rel="stylesheet" href="assets/icons/flags/flags.min.css" media="all">
-
-	<!-- altair admin -->
-	<link rel="stylesheet" href="assets/css/main.min.css" media="all">
-
-	<!-- matchMedia polyfill for testing media queries in JS -->
-	<!--[if lte IE 9]>
-		<script type="text/javascript" src="bower_components/matchMedia/matchMedia.js"></script>
-		<script type="text/javascript" src="bower_components/matchMedia/matchMedia.addListener.js"></script>
-	<![endif]-->
-
-</head>
-<body class=" sidebar_main_open sidebar_main_swipe">
-		<!-- main header -->
-	<?php include_once('includes/header.php')?>
-	<!-- main header end -->
-	<!-- main sidebar -->
-	<?php include_once('includes/sidemenu.php')?>
-	<!-- main sidebar end -->
+<!-- main header -->
+<?php include_once('includes/header.php'); ?>
+<!-- main header end -->
+<!-- main sidebar -->
+<?php include_once('includes/sidemenu.php'); ?>
+<!-- main sidebar end -->
 
 <div id="page_content_inner" class="uk-height-1-1">
 <div class="uk-width-large-8-10 uk-container-center">
@@ -48,21 +15,21 @@
                         <div id="scrum_column_todo">
                             <div>
                                 <div class="scrum_task critical">
-                                    <h3 class="scrum_task_title"><a href="#task_info" data-uk-modal="{ center:true }">Altair-24</a></h3>
+                                    <h3 class="scrum_task_title"><a href="#task_info" data-uk-modal="{ center:true }">Smartfax-24</a></h3>
                                     <p class="scrum_task_description">Hic consequatur exercitationem totam ut aliquid.</p>
                                     <p class="scrum_task_info"><span class="uk-text-muted">Assignee:</span> <a href="#">General Yost</a></p>
                                 </div>
                             </div>
                             <div>
                                 <div class="scrum_task blocker">
-                                    <h3 class="scrum_task_title"><a href="#task_info" data-uk-modal="{ center:true }">Altair-39</a></h3>
+                                    <h3 class="scrum_task_title"><a href="#task_info" data-uk-modal="{ center:true }">Smartfax-39</a></h3>
                                     <p class="scrum_task_description">Sed voluptates nihil ratione quidem similique iure atque quibusdam debitis labore.</p>
                                     <p class="scrum_task_info"><span class="uk-text-muted">Assignee:</span> <a href="#">Santino Becker</a></p>
                                 </div>
                             </div>
                             <div>
                                 <div class="scrum_task blocker">
-                                    <h3 class="scrum_task_title"><a href="#task_info" data-uk-modal="{ center:true }">Altair-68</a></h3>
+                                    <h3 class="scrum_task_title"><a href="#task_info" data-uk-modal="{ center:true }">Smartfax-68</a></h3>
                                     <p class="scrum_task_description">Reiciendis quo voluptatum ab quas autem.</p>
                                     <p class="scrum_task_info"><span class="uk-text-muted">Assignee:</span> <a href="#">Ashleigh Kertzmann</a></p>
                                 </div>
@@ -76,35 +43,35 @@
                         <div id="scrum_column_inAnalysis">
                             <div>
                                 <div class="scrum_task minor">
-                                    <h3 class="scrum_task_title"><a href="#task_info" data-uk-modal="{ center:true }">Altair-87</a></h3>
+                                    <h3 class="scrum_task_title"><a href="#task_info" data-uk-modal="{ center:true }">Smartfax-87</a></h3>
                                     <p class="scrum_task_description">Aperiam ducimus rem perferendis repudiandae perferendis possimus qui suscipit.</p>
                                     <p class="scrum_task_info"><span class="uk-text-muted">Assignee:</span> <a href="#">Kenyon Schowalter</a></p>
                                 </div>
                             </div>
                             <div>
                                 <div class="scrum_task blocker">
-                                    <h3 class="scrum_task_title"><a href="#task_info" data-uk-modal="{ center:true }">Altair-126</a></h3>
+                                    <h3 class="scrum_task_title"><a href="#task_info" data-uk-modal="{ center:true }">Smartfax-126</a></h3>
                                     <p class="scrum_task_description">Consequatur perferendis aut illum excepturi adipisci rerum sapiente aspernatur.</p>
                                     <p class="scrum_task_info"><span class="uk-text-muted">Assignee:</span> <a href="#">Wyatt Koss</a></p>
                                 </div>
                             </div>
                             <div>
                                 <div class="scrum_task critical">
-                                    <h3 class="scrum_task_title"><a href="#task_info" data-uk-modal="{ center:true }">Altair-85</a></h3>
+                                    <h3 class="scrum_task_title"><a href="#task_info" data-uk-modal="{ center:true }">Smartfax-85</a></h3>
                                     <p class="scrum_task_description">Recusandae sint at eligendi quo qui non libero.</p>
                                     <p class="scrum_task_info"><span class="uk-text-muted">Assignee:</span> <a href="#">Cade Predovic</a></p>
                                 </div>
                             </div>
                             <div>
                                 <div class="scrum_task minor">
-                                    <h3 class="scrum_task_title"><a href="#task_info" data-uk-modal="{ center:true }">Altair-110</a></h3>
+                                    <h3 class="scrum_task_title"><a href="#task_info" data-uk-modal="{ center:true }">Smartfax-110</a></h3>
                                     <p class="scrum_task_description">Minima corporis dolor eos eum necessitatibus sunt omnis ad ut voluptatem.</p>
                                     <p class="scrum_task_info"><span class="uk-text-muted">Assignee:</span> <a href="#">Alene Wolff</a></p>
                                 </div>
                             </div>
                             <div>
                                 <div class="scrum_task critical">
-                                    <h3 class="scrum_task_title"><a href="#task_info" data-uk-modal="{ center:true }">Altair-115</a></h3>
+                                    <h3 class="scrum_task_title"><a href="#task_info" data-uk-modal="{ center:true }">Smartfax-115</a></h3>
                                     <p class="scrum_task_description">Ipsum vero omnis qui ut assumenda temporibus iste id.</p>
                                     <p class="scrum_task_info"><span class="uk-text-muted">Assignee:</span> <a href="#">Alivia Olson</a></p>
                                 </div>
@@ -118,14 +85,14 @@
                         <div id="scrum_column_inProgress">
                             <div>
                                 <div class="scrum_task blocker">
-                                    <h3 class="scrum_task_title"><a href="#task_info" data-uk-modal="{ center:true }">Altair-174</a></h3>
+                                    <h3 class="scrum_task_title"><a href="#task_info" data-uk-modal="{ center:true }">Smartfax-174</a></h3>
                                     <p class="scrum_task_description">Quidem hic velit est sit quasi eaque.</p>
                                     <p class="scrum_task_info"><span class="uk-text-muted">Assignee:</span> <a href="#">Geovanni Kozey</a></p>
                                 </div>
                             </div>
                             <div>
                                 <div class="scrum_task critical">
-                                    <h3 class="scrum_task_title"><a href="#task_info" data-uk-modal="{ center:true }">Altair-168</a></h3>
+                                    <h3 class="scrum_task_title"><a href="#task_info" data-uk-modal="{ center:true }">Smartfax-168</a></h3>
                                     <p class="scrum_task_description">Laborum officia ratione fuga nulla sint.</p>
                                     <p class="scrum_task_info"><span class="uk-text-muted">Assignee:</span> <a href="#">Beth Willms</a></p>
                                 </div>
@@ -139,28 +106,28 @@
                         <div id="scrum_column_done">
                             <div>
                                 <div class="scrum_task blocker">
-                                    <h3 class="scrum_task_title"><a href="#task_info" data-uk-modal="{ center:true }">Altair-300</a></h3>
+                                    <h3 class="scrum_task_title"><a href="#task_info" data-uk-modal="{ center:true }">Smartfax-300</a></h3>
                                     <p class="scrum_task_description">Id beatae qui reprehenderit omnis dolores molestiae voluptas eligendi quod eos.</p>
                                     <p class="scrum_task_info"><span class="uk-text-muted">Assignee:</span> <a href="#">Jesse Rau</a></p>
                                 </div>
                             </div>
                             <div>
                                 <div class="scrum_task critical">
-                                    <h3 class="scrum_task_title"><a href="#task_info" data-uk-modal="{ center:true }">Altair-291</a></h3>
+                                    <h3 class="scrum_task_title"><a href="#task_info" data-uk-modal="{ center:true }">Smartfax-291</a></h3>
                                     <p class="scrum_task_description">Impedit voluptate aut eveniet harum totam ratione.</p>
                                     <p class="scrum_task_info"><span class="uk-text-muted">Assignee:</span> <a href="#">Cletus Hills</a></p>
                                 </div>
                             </div>
                             <div>
                                 <div class="scrum_task blocker">
-                                    <h3 class="scrum_task_title"><a href="#task_info" data-uk-modal="{ center:true }">Altair-333</a></h3>
+                                    <h3 class="scrum_task_title"><a href="#task_info" data-uk-modal="{ center:true }">Smartfax-333</a></h3>
                                     <p class="scrum_task_description">Aliquam qui sunt deleniti non tenetur.</p>
                                     <p class="scrum_task_info"><span class="uk-text-muted">Assignee:</span> <a href="#">Tyshawn Kuvalis</a></p>
                                 </div>
                             </div>
                             <div>
                                 <div class="scrum_task blocker">
-                                    <h3 class="scrum_task_title"><a href="#task_info" data-uk-modal="{ center:true }">Altair-288</a></h3>
+                                    <h3 class="scrum_task_title"><a href="#task_info" data-uk-modal="{ center:true }">Smartfax-288</a></h3>
                                     <p class="scrum_task_description">Unde similique eaque rerum dolore nemo corrupti at recusandae non asperiores.</p>
                                     <p class="scrum_task_info"><span class="uk-text-muted">Assignee:</span> <a href="#">Dolly Zieme</a></p>
                                 </div>
@@ -183,7 +150,7 @@
     <div class="uk-modal" id="new_task">
         <div class="uk-modal-dialog">
             <div class="uk-modal-header">
-                <h3 class="uk-modal-title">ALTAIR-21</h3>
+                <h3 class="uk-modal-title">Smartfax-21</h3>
             </div>
             <form class="uk-form-stacked">
                 <div class="uk-margin-medium-bottom">
@@ -232,7 +199,7 @@
         <div class="uk-modal-dialog">
             <div class="uk-modal-header">
                 <span class="uk-badge uk-badge-danger uk-float-right">Blocker</span>
-                <h3 class="uk-modal-title">ALTAIR-61</h3>
+                <h3 class="uk-modal-title">Smartfax-61</h3>
             </div>
             <form class="uk-form-stacked">
                 <div class="uk-margin-medium-bottom">

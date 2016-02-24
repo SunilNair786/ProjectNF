@@ -43,6 +43,7 @@
 		}
 		$faxId = $faxObjCon->copyFiles($_POST,$_FILES);
 		
+		
 		if(is_array($finalUserToIds)){				
 			for($i=0;$i<count($finalUserToIds);$i++){
 				$faxObjCon->insertToFaxIds($finalUserToIds[$i],$faxId);	
@@ -171,7 +172,10 @@ a#tagging:hover + .dropdown , .dropdown:hover {
 												    	<?php 
 												    	$collection_tag = $db->nf_company_tags; 
 												    	$alltags = $collection_tag->find(array("user_id" => $_SESSION['user_id']))->sort(array("created_date" => -1));
-												    	foreach ($alltags as $all_tags) {?>
+												    	$Cntsalltags = $collection_tag->find(array("user_id" => $_SESSION['user_id']))->sort(array("created_date" => -1))->count();
+												    	if($Cntsalltags > 0)
+												    	{
+												    		foreach ($alltags as $all_tags) {?>
 												    		<li>
 												    			<?php if($all_faxs['fax_tag'] == $all_tags['_id']){?>
 												    				<a onClick="addingtags('<?php echo $all_faxs['_id'];?>','<?php echo $all_tags['_id'];?>','aa12')"><?php echo $all_tags['tag_name'];?></a>			
@@ -183,7 +187,10 @@ a#tagging:hover + .dropdown , .dropdown:hover {
 												    			<?php } ?>
 
 												    		</li>
-												    	<?php }?>										                
+												    	<?php }
+												    	} else {?>		
+												    		<li style="text-align:center;">No tags were added <br> to add <a href="tag.php">Click Here</a></li>
+												    	<?php } ?>
 										            </ul>
 									            </div>
 											<a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>                                         
@@ -204,7 +211,7 @@ a#tagging:hover + .dropdown , .dropdown:hover {
 											<span class="md-card-list-item-avatar md-bg-grey"><?php echo $userDetails['first_name'][0].''.$userDetails['last_name'][0]; ?></span>
 										</div>
 										<div class="md-card-list-item-sender" <?php echo $divUsrNameClk; ?>>
-											<span><?php echo ucfirst($userDetails['first_name']).' '.ucfirst($userDetails['last_name']); ?></span>                                    
+											<span><?php echo ucfirst($userDetails['first_name']).' '.ucfirst($userDetails['last_name']); ?></span>      
 										</div>
 										<div class="md-card-list-item-subject" <?php echo $divSujClk; ?>>
 											<div class="md-card-list-item-sender-small">
@@ -222,7 +229,23 @@ a#tagging:hover + .dropdown , .dropdown:hover {
 										</div>		
 										<div class="md-card-list-item-content-wrapper">
 											<div class="md-card-list-item-content">
-												<?php echo html_entity_decode($userFaxDetails['message_body']); ?>												
+												<?php echo html_entity_decode($userFaxDetails['message_body']); echo "<br><br>";
+												if($userFaxDetails['saved_pdf_file'] != "")
+												{?>													
+									    			<a href="#image_<?php echo $userFaxDetails['_id'];?>_popup<?php echo $img;?>" data-uk-modal="{center:true}">
+									    				<!-- <img title="click to view attachment" src="upload_dir/files/<?php echo $userFaxDetails['file_name'];?>" id="img_atch" width="100" height="50"> -->
+									    				<img title="click to view attachment" src="assets/img/attachmentpin.png" id="img_atch" width="50" height="25">
+									    			</a>												    			
+									    			<div class="uk-modal" id="image_<?php echo $userFaxDetails['_id'];?>_popup">
+									    				<div class="uk-modal-dialog" style="width:90%; height:90%;">		
+									    					<button class="uk-modal-close uk-close" type="button"></button>
+									    					<iframe src="upload_dir/savedpdfs/<?php echo $userFaxDetails['saved_pdf_file'];?>" style="width:100%; height:100%;"></iframe>
+									    					<a id="addButton" class="green-button" href="add_note.html">Add a note</a>    
+									    				</div>
+
+									    			</div>
+									    			<!-- <a href="upload_dir/savedpdfs/<?php echo $userFaxDetails['saved_pdf_file'];?>">View the attachment</a> -->									    			
+												<?php } ?>		
 											</div>
 
 											<!-- Reply Messages Section start -->
@@ -236,6 +259,7 @@ a#tagging:hover + .dropdown , .dropdown:hover {
 													<span class="md-card-list-item-date"><?php echo date('j M',strtotime($reply_faxs['created_date'])); ?></span>
 													<div class="md-card-list-item-select">
 														<!-- <input type="checkbox" data-md-icheck /> -->
+														&nbsp;&nbsp;&nbsp;&nbsp;
 													</div>
 													<?php $rplyUserDetails = $collection->findOne(array('_id' => new MongoId($reply_faxs['from_id']))); 	?>
 													<div class="md-card-list-item-avatar-wrapper">
@@ -276,7 +300,7 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                     $startDate = date('Y-m-d 00:00:00',strtotime("-1 days"));
                     $endDate = date('Y-m-d 23:59:59',strtotime("-1 days"));
                     	
-                    $yesterdfaxs = $collection_fax->find(array('to_id' => "$sessId","created_date" => array('$gt' => $startDate,'$lte' => $endDate),'is_delete'=>0))->sort(array("created_date" => 1));   
+                    $yesterdfaxs = $collection_fax->find(array('to_id' => "$sessId","created_date" => array('$gt' => $startDate,'$lte' => $endDate),'is_delete'=>0))->sort(array("created_date" => -1));   
 					$allWeekCnt = $collection_fax->find(array('to_id' => "$sessId","created_date" => array('$gt' => $startDate,'$lte' => $endDate),"is_delete"=>0))->count();	
 
 					if($allWeekCnt > 0 ){	
@@ -285,8 +309,8 @@ a#tagging:hover + .dropdown , .dropdown:hover {
 							<div class="md-card-list-header heading_list">Yesterday</div>
 							<ul class="hierarchical_slide">
 							<?php    											
-								foreach ($yesterdfaxs as $yesterd_faxs) {            										
-								// User Details										
+								foreach ($yesterdfaxs as $yesterd_faxs) {         
+								// User Details		
 									$userDetails = $collection->findOne(array('_id' => new MongoId($yesterd_faxs['from_id'])));													
 									// Fetch Fax subject information from nf_fax;
 									$userFaxDetails = $collection_fax_details->findOne(array('_id' =>new MongoId($yesterd_faxs['fax_id'])));		
@@ -296,25 +320,31 @@ a#tagging:hover + .dropdown , .dropdown:hover {
 									
 									<!-- <a href="#"><i class="fa fa-reply-all"></i> </a> -->
 									<a href="#mailbox_new_message" data-uk-modal="{center:true}" onClick="fwdmsg('<?php echo $userFaxDetails['message_subject'];?>','<?php echo $userFaxDetails['message_body'];?>')"><i class="fa fa-long-arrow-right"></i></a>															
-									<a href="#" id="tagging"><i class="fa fa-tags"></i></a>														
+									<a href="#" id="tagging"><i class="fa fa-tags"></i></a>			
 										<div class="dropdown">
 											<div class="arrow-up"></div>
 										    <ul>
 										    	<?php 
 										    	$collection_tag = $db->nf_company_tags; 
 										    	$alltags = $collection_tag->find(array("user_id" => $_SESSION['user_id']))->sort(array("created_date" => -1));
-										    	foreach ($alltags as $all_tags) {?>
-									    		<li>
-									    			<?php if($yesterd_faxs['fax_tag'] == $all_tags['_id']){?>
-									    				<a onClick="addingtags('<?php echo $yesterd_faxs['_id'];?>','<?php echo $all_tags['_id'];?>','aa12')"><?php echo $all_tags['tag_name'];?></a>
-									    				<span onClick="addingtags('<?php echo $yesterd_faxs['_id'];?>','','emptytt')" style="float:right;cursor:pointer;color:red;">
-									    					<i class="fa fa-times"></i>
-									    				</span>
-									    			<?php } else { ?>
-									    				<a onClick="addingtags('<?php echo $yesterd_faxs['_id'];?>','<?php echo $all_tags['_id'];?>','<?php echo $all_tags['tag_name'];?>')"><?php echo $all_tags['tag_name'];?></a>			
-									    			<?php } ?>
-									    		</li>
-										    	<?php }?>										                
+										    	$Cntsalltags = $collection_tag->find(array("user_id" => $_SESSION['user_id']))->sort(array("created_date" => -1))->count();
+										    	if($Cntsalltags > 0)
+										    	{
+										    		foreach ($alltags as $all_tags) {?>
+										    		<li>
+										    			<?php if($yesterd_faxs['fax_tag'] == $all_tags['_id']){?>
+										    				<a onClick="addingtags('<?php echo $yesterd_faxs['_id'];?>','<?php echo $all_tags['_id'];?>','aa12')"><?php echo $all_tags['tag_name'];?></a>
+										    				<span onClick="addingtags('<?php echo $yesterd_faxs['_id'];?>','','emptytt')" style="float:right;cursor:pointer;color:red;">
+										    					<i class="fa fa-times"></i>
+										    				</span>
+										    			<?php } else { ?>
+										    				<a onClick="addingtags('<?php echo $yesterd_faxs['_id'];?>','<?php echo $all_tags['_id'];?>','<?php echo $all_tags['tag_name'];?>')"><?php echo $all_tags['tag_name'];?></a>			
+										    			<?php } ?>
+										    		</li>
+										    	<?php }
+										    	}else {?>		
+										    		<li style="text-align:center;">No tags were added <br> to add <a href="tag.php">Click Here</a></li>
+										    	<?php } ?>		
 								            </ul>
 							            </div>
 									<a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $yesterd_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>	
@@ -353,7 +383,50 @@ a#tagging:hover + .dropdown , .dropdown:hover {
 								</div>
 								<div class="md-card-list-item-content-wrapper">
 									<div class="md-card-list-item-content">
-										<?php echo $userFaxDetails['message_body']; ?>
+										<?php echo $userFaxDetails['message_body']; echo "<br><br>";
+										/*if($userFaxDetails['file_attach_id'] != "")
+										{
+											$img = 1;
+											$attachments1 = explode(",",$userFaxDetails['file_attach_id']);		
+											for($i = 0; $i< sizeof($attachments1); $i++)
+											{
+												$collection_attach = $db->nf_user_fileuploads; 
+										    	$allattachments1 = $collection_attach->find(array("_id" => new MongoId($attachments1[$i])))->sort(array("created_date" => -1));										    	
+										    	foreach($allattachments1 as $all_attachments1)
+										    	{
+										    		$ftype = explode(".",$all_attachments1['file_name']);
+										    		if($ftype != "pdf")
+										    		{?>
+										    			<a href="#image_<?php echo $all_attachments1['_id'];?>_popup<?php echo $img;?>" data-uk-modal="{center:true}">
+										    				<img title="click to view image" src="upload_dir/files/<?php echo $all_attachments1['file_name'];?>" id="img_atch" width="100" height="50">
+										    			</a>												    			
+										    			<div class="uk-modal" id="image_<?php echo $all_attachments1['_id'];?>_popup<?php echo $img;?>">
+										    				<div class="uk-modal-dialog" style="width:1000px; height:600px;">		
+										    					<button class="uk-modal-close uk-close" type="button"></button>
+										    					<img src="upload_dir/files/<?php echo $all_attachments1['file_name'];?>"/>
+										    				</div>
+										    			</div>
+										    		<?php }else {?>
+										    			<a href="upload_dir/files/<?php echo $all_attachments1['file_name'];?>">View the attachment</a>
+										    		<?php }
+										    		$img++;
+										    	} 
+											}
+										}*/
+										if($userFaxDetails['saved_pdf_file'] != "")
+										{?>													
+							    			<a href="#image_<?php echo $userFaxDetails['_id'];?>_popup<?php echo $img;?>" data-uk-modal="{center:true}">
+							    				<!-- <img title="click to view attachment" src="upload_dir/files/<?php echo $userFaxDetails['file_name'];?>" id="img_atch" width="100" height="50"> -->
+							    				<img title="click to view attachment" src="assets/img/attachmentpin.png" id="img_atch" width="50" height="25">
+							    			</a>												    			
+							    			<div class="uk-modal" id="image_<?php echo $userFaxDetails['_id'];?>_popup">
+							    				<div class="uk-modal-dialog" style="width:100%; height:100%;">		
+							    					<button class="uk-modal-close uk-close" type="button"></button>
+							    					<iframe src="upload_dir/savedpdfs/<?php echo $userFaxDetails['saved_pdf_file'];?>" style="width:100%; height:100%;"></iframe>
+							    				</div>
+							    			</div>
+							    			<!-- <a href="upload_dir/savedpdfs/<?php echo $userFaxDetails['saved_pdf_file'];?>">View the attachment</a> -->		
+										<?php } ?>
 									</div>
 
 									<!-- Reply Messages Section start -->
@@ -367,6 +440,7 @@ a#tagging:hover + .dropdown , .dropdown:hover {
 											<span class="md-card-list-item-date"><?php echo date('j M',strtotime($reply1_faxs['created_date'])); ?></span>
 											<div class="md-card-list-item-select">
 												<!-- <input type="checkbox" data-md-icheck /> -->
+												&nbsp;&nbsp;&nbsp;&nbsp;
 											</div>
 											<?php $rplyUserDetails1 = $collection->findOne(array('_id' => new MongoId($reply1_faxs['from_id']))); 	?>
 											<div class="md-card-list-item-avatar-wrapper">
@@ -405,7 +479,7 @@ a#tagging:hover + .dropdown , .dropdown:hover {
 						$startDate = date('Y-m-d 00:00:00',strtotime("-30 days"));
 						$endDate = date('Y-m-d 23:59:59',strtotime("-2 days"));
 							
-						$amonthFaxs = $collection_fax->find(array('to_id' => "$sessId","created_date" => array('$gt' => $startDate,'$lte' => $endDate),'is_delete'=>0))->sort(array("created_date" => 1));   
+						$amonthFaxs = $collection_fax->find(array('to_id' => "$sessId","created_date" => array('$gt' => $startDate,'$lte' => $endDate),'is_delete'=>0))->sort(array("created_date" => -1));   
 						$allMonthCnt = $collection_fax->find(array('to_id' => "$sessId","created_date" => array('$gt' => $startDate,'$lte' => $endDate),"is_delete"=>0))->count();	
 						if($allMonthCnt > 0 ){
 					?>
@@ -432,7 +506,10 @@ a#tagging:hover + .dropdown , .dropdown:hover {
 											    	<?php 
 											    	$collection_tag = $db->nf_company_tags; 
 											    	$alltags = $collection_tag->find(array("user_id" => $_SESSION['user_id']))->sort(array("created_date" => -1));
-											    	foreach ($alltags as $all_tags) {?>
+											    	$Cntsalltags = $collection_tag->find(array("user_id" => $_SESSION['user_id']))->sort(array("created_date" => -1))->count();
+											    	if($Cntsalltags > 0)
+											    	{
+											    		foreach ($alltags as $all_tags) {?>
 											    		<li>
 											    			<?php if($amonth_Faxs['fax_tag'] == $all_tags['_id']){?>
 											    				<a onClick="addingtags('<?php echo $amonth_Faxs['_id'];?>','<?php echo $all_tags['_id'];?>','aa12')"><?php echo $all_tags['tag_name'];?></a>	
@@ -443,7 +520,10 @@ a#tagging:hover + .dropdown , .dropdown:hover {
 											    				<a onClick="addingtags('<?php echo $amonth_Faxs['_id'];?>','<?php echo $all_tags['_id'];?>','<?php echo $all_tags['tag_name'];?>')"><?php echo $all_tags['tag_name'];?></a>			
 											    			<?php } ?>
 											    		</li>
-											    	<?php }?>										                
+											    	<?php }
+											    	} else {?>		
+											    		<li style="text-align:center;">No tags were added <br> to add <a href="tag.php">Click Here</a></li>
+											    	<?php } ?>										                
 									            </ul>
 								            </div>
 										<a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $amonth_Faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
@@ -481,7 +561,51 @@ a#tagging:hover + .dropdown , .dropdown:hover {
 									</div>
 									<div class="md-card-list-item-content-wrapper">
 										<div class="md-card-list-item-content">
-											<?php echo $userFaxDetails['message_body']; ?>											 
+											<?php echo $userFaxDetails['message_body']; echo "<br><br>";
+											/*if($userFaxDetails['file_attach_id'] != "")
+											{
+												$img = 1;
+												$attachments2 = explode(",",$userFaxDetails['file_attach_id']);		
+												for($i = 0; $i< sizeof($attachments2); $i++)
+												{
+													$collection_attach = $db->nf_user_fileuploads; 
+											    	$allattachments2 = $collection_attach->find(array("_id" => new MongoId($attachments2[$i])))->sort(array("created_date" => -1));
+											    	foreach($allattachments2 as $all_attachments2)
+											    	{
+											    		$ftype = explode(".",$all_attachments2['file_name']);
+											    		if($ftype != "pdf")
+											    		{?>
+											    			<a href="#image_<?php echo $all_attachments2['_id'];?>_popup<?php echo $img;?>" data-uk-modal="{center:true}">
+											    				<img title="click to view image" src="upload_dir/files/<?php echo $all_attachments2['file_name'];?>" id="img_atch" width="100" height="50">
+											    			</a>												    			
+											    			<div class="uk-modal" id="image_<?php echo $all_attachments2['_id'];?>_popup<?php echo $img;?>">
+											    				<div class="uk-modal-dialog" style="width:1000px; height:600px;">		
+											    					<button class="uk-modal-close uk-close" type="button"></button>
+											    					<img src="upload_dir/files/<?php echo $all_attachments2['file_name'];?>"/>
+											    				</div>
+											    			</div>
+											    		<?php }else {?>
+											    			<a href="upload_dir/files/<?php echo $all_attachments2['file_name'];?>">View the attachment</a>
+											    		<?php }
+											    		$img++;
+											    	} 
+												}
+											}*/
+
+											if($userFaxDetails['saved_pdf_file'] != "")
+											{?>			
+								    			<a href="#image_<?php echo $userFaxDetails['_id'];?>_popup<?php echo $img;?>" data-uk-modal="{center:true}">
+								    				<img title="click to view attachment" src="assets/img/attachmentpin.png" id="img_atch" width="50" height="25">
+								    			</a>		
+								    			<div class="uk-modal" id="image_<?php echo $userFaxDetails['_id'];?>_popup">
+								    				<div class="uk-modal-dialog" style="width:90%; height:90%;">		
+								    					<button class="uk-modal-close uk-close" type="button"></button>
+								    					<iframe src="upload_dir/savedpdfs/<?php echo $userFaxDetails['saved_pdf_file'];?>" style="width:100%; height:100%;"></iframe>
+								    					<a id="addButton" class="green-button" href="add_note.html">Add a note</a> 
+								    				</div>
+								    			</div>
+								    			<!-- <a href="upload_dir/savedpdfs/<?php echo $userFaxDetails['saved_pdf_file'];?>">View the attachment</a> -->	
+											<?php } ?>
 										</div>
 
 										<!-- Reply Messages Section start -->
@@ -494,7 +618,7 @@ a#tagging:hover + .dropdown , .dropdown:hover {
 											?>
 												<span class="md-card-list-item-date"><?php echo date('j M',strtotime($reply2_faxs['created_date'])); ?></span>
 												<div class="md-card-list-item-select">
-													<!-- <input type="checkbox" data-md-icheck /> -->
+													&nbsp;&nbsp;&nbsp;&nbsp;
 												</div>
 												<?php $rplyUserDetails2 = $collection->findOne(array('_id' => new MongoId($reply2_faxs['from_id']))); 	?>
 												<div class="md-card-list-item-avatar-wrapper">
@@ -502,7 +626,7 @@ a#tagging:hover + .dropdown , .dropdown:hover {
 												</div>
 												<div class="md-card-list-item-sender">
 													<span><?php echo ucfirst($rplyUserDetails2['first_name']).' '.ucfirst($rplyUserDetails2['last_name']); ?></span>                                    
-												</div>																									
+												</div><br><br>
 												<div class="md-card-list-item-content">
 													<?php echo html_entity_decode($reply2_faxs['message_body']); ?>												
 												</div>
@@ -535,7 +659,7 @@ a#tagging:hover + .dropdown , .dropdown:hover {
 				$startDate = date('Y-m-d 00:00:00',strtotime("-100 years"));
 				$endDate = date('Y-m-d 23:59:59',strtotime("-30 days"));
 					
-				$OldmonthFaxs = $collection_fax->find(array('to_id' => "$sessId","created_date" => array('$gt' => $startDate,'$lte' => $endDate),'is_delete'=>0))->sort(array("created_date" => 1));   
+				$OldmonthFaxs = $collection_fax->find(array('to_id' => "$sessId","created_date" => array('$gt' => $startDate,'$lte' => $endDate),'is_delete'=>0))->sort(array("created_date" => -1));   
 				$allCnt = $collection_fax->find(array('to_id' => "$sessId","created_date" => array('$gt' => $startDate,'$lte' => $endDate),"is_delete"=>0))->count();	
 				
 				if($allCnt > 0 ){
@@ -564,20 +688,26 @@ a#tagging:hover + .dropdown , .dropdown:hover {
 										    	<?php 
 										    	$collection_tag = $db->nf_company_tags; 
 										    	$alltags = $collection_tag->find(array("user_id" => $_SESSION['user_id']))->sort(array("created_date" => -1));
-										    	foreach ($alltags as $all_tags) {?>
-									    		<li>
-								    			<?php if($Oldmonth_Faxs['fax_tag'] == $all_tags['_id']){	?>
-								    				<a onClick="addingtags('<?php echo $Oldmonth_Faxs['_id'];?>','<?php echo $all_tags['_id'];?>','aa12')"><?php echo $all_tags['tag_name'];?></a>
-								    				<span onClick="addingtags('<?php echo $Oldmonth_Faxs['_id'];?>','','emptytt')" style="float:right;cursor:pointer;color:red;">
-								    					<i class="fa fa-times"></i>
-								    				</span>
-								    			<?php } else { ?>
-								    				<a onClick="addingtags('<?php echo $Oldmonth_Faxs['_id'];?>','<?php echo $all_tags['_id'];?>','<?php echo $all_tags['tag_name'];?>')"><?php echo $all_tags['tag_name'];?></a>			
-								    			<?php } ?>
-									    		</li>
-										    	<?php }?>										                
+										    	$Cntsalltags = $collection_tag->find(array("user_id" => $_SESSION['user_id']))->sort(array("created_date" => -1))->count();
+										    	if($Cntsalltags > 0)
+										    	{
+										    		foreach ($alltags as $all_tags) {?>
+										    		<li>
+									    			<?php if($Oldmonth_Faxs['fax_tag'] == $all_tags['_id']){	?>
+									    				<a onClick="addingtags('<?php echo $Oldmonth_Faxs['_id'];?>','<?php echo $all_tags['_id'];?>','aa12')"><?php echo $all_tags['tag_name'];?></a>
+									    				<span onClick="addingtags('<?php echo $Oldmonth_Faxs['_id'];?>','','emptytt')" style="float:right;cursor:pointer;color:red;">
+									    					<i class="fa fa-times"></i>
+									    				</span>
+									    			<?php } else { ?>
+									    				<a onClick="addingtags('<?php echo $Oldmonth_Faxs['_id'];?>','<?php echo $all_tags['_id'];?>','<?php echo $all_tags['tag_name'];?>')"><?php echo $all_tags['tag_name'];?></a>			
+									    			<?php } ?>
+										    		</li>
+										    	<?php }
+										    	}else {?>		
+										    		<li style="text-align:center;">No tags were added <br> to add <a href="tag.php">Click Here</a></li>
+										    	<?php } ?>		
 										    </ul>
-										</div>s
+										</div>
 									<a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $Oldmonth_Faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
 									<span id="favs_sec_<?php echo $Oldmonth_Faxs['_id'];?>">
 										<?php if($Oldmonth_Faxs['favorites'] == "N"){?>
@@ -605,7 +735,51 @@ a#tagging:hover + .dropdown , .dropdown:hover {
 								</div>
 								<div class="md-card-list-item-content-wrapper">
 									<div class="md-card-list-item-content">
-										<?php echo $userFaxDetails['message_body']; ?>
+										<?php echo $userFaxDetails['message_body']; echo "<br><br>";
+										/*if($userFaxDetails['file_attach_id'] != "")
+										{
+											$attachments3 = explode(",",$userFaxDetails['file_attach_id']);		
+											for($i = 0; $i< sizeof($attachments3); $i++)
+											{
+												$img = 1;
+												$collection_attach = $db->nf_user_fileuploads; 
+										    	$allattachments3 = $collection_attach->find(array("_id" => new MongoId($attachments3[$i])))->sort(array("created_date" => -1));										    	
+										    	foreach($allattachments3 as $all_attachments3)
+										    	{
+										    		$ftype = explode(".",$all_attachments3['file_name']);
+										    		if($ftype != "pdf")
+										    		{?>
+										    			<a href="#image_<?php echo $all_attachments3['_id'];?>_popup<?php echo $img;?>" data-uk-modal="{center:true}">
+										    				<img title="click to view image" src="upload_dir/files/<?php echo $all_attachments3['file_name'];?>" id="img_atch" width="100" height="50">
+										    			</a>												    			
+										    			<div class="uk-modal" id="image_<?php echo $all_attachments3['_id'];?>_popup<?php echo $img;?>">
+										    				<div class="uk-modal-dialog" style="width:1000px; height:600px;">		
+										    					<button class="uk-modal-close uk-close" type="button"></button>
+										    					<img src="upload_dir/files/<?php echo $all_attachments3['file_name'];?>"/>
+										    				</div>
+										    			</div>
+										    		<?php }else {?>
+										    			<a href="upload_dir/files/<?php echo $all_attachments3['file_name'];?>">View the attachment</a>
+										    		<?php }
+										    		$img++;
+										    	} 
+											}
+										}*/
+
+										if($userFaxDetails['saved_pdf_file'] != "")
+											{?>													
+								    		<a href="#image_<?php echo $userFaxDetails['_id'];?>_popup<?php echo $img;?>" data-uk-modal="{center:true}">
+							    				<!-- <img title="click to view attachment" src="upload_dir/files/<?php echo $userFaxDetails['file_name'];?>" id="img_atch" width="100" height="50"> -->
+							    				<img title="click to view attachment" src="assets/img/attachmentpin.png" id="img_atch" width="50" height="25">
+							    			</a>												    			
+							    			<div class="uk-modal" id="image_<?php echo $userFaxDetails['_id'];?>_popup">
+							    				<div class="uk-modal-dialog" style="width:100%; height:100%;">		
+							    					<button class="uk-modal-close uk-close" type="button"></button>
+							    					<iframe src="upload_dir/savedpdfs/<?php echo $userFaxDetails['saved_pdf_file'];?>" style="width:100%; height:100%;"></iframe>
+							    				</div>
+							    			</div>
+							    			<!-- <a href="upload_dir/savedpdfs/<?php echo $userFaxDetails['saved_pdf_file'];?>">View the attachment</a> -->									    			
+										<?php }?>
 									</div>
 									<!-- Reply Messages Section start -->
 										<?php 
@@ -618,6 +792,7 @@ a#tagging:hover + .dropdown , .dropdown:hover {
 											<span class="md-card-list-item-date"><?php echo date('j M',strtotime($reply3_faxs['created_date'])); ?></span>
 											<div class="md-card-list-item-select">
 												<!-- <input type="checkbox" data-md-icheck /> -->
+												&nbsp;&nbsp;&nbsp;&nbsp;
 											</div>
 											<?php $rplyUserDetails3 = $collection->findOne(array('_id' => new MongoId($reply3_faxs['from_id']))); 	?>
 											<div class="md-card-list-item-avatar-wrapper">
@@ -674,7 +849,7 @@ a#tagging:hover + .dropdown , .dropdown:hover {
         	<?php 
         	 	$ri =1;
 				$collection_fax1 = $db->nf_fax_users; 			
-				$recentFaxs = $collection_fax1->find(array('from_id' => $_SESSION['user_id']))->sort(array("created_date" => -1))->limit(4);		
+				$recentFaxs = $collection_fax1->find(array('from_id' => $_SESSION['user_id']))->sort(array("created_date" => -1))->limit(3);		
 				foreach($recentFaxs as $recent_Faxs){							
 					if($recent_Faxs['to_id'] != $_SESSION['user_id'])
 					{
@@ -717,7 +892,7 @@ a#tagging:hover + .dropdown , .dropdown:hover {
     <div class="uk-modal" id="mailbox_new_message">
         <div class="uk-modal-dialog">
             <button class="uk-modal-close uk-close" type="button"></button>
-            <form name='composeFrm' id="composeFrm" action='inbox.php' enctype="multipart/form-data" method='post'>
+            <form name='composeFrm' id="composeFrm" action='tcpdf/examples/example_001.php' enctype="multipart/form-data" method='post'>
                 <div class="uk-modal-header">
                     <h3 class="uk-modal-title">Compose Message</h3>
                 </div>
