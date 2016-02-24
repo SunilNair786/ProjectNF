@@ -100,7 +100,7 @@ $cUrl = basename($_SERVER['REQUEST_URI']);
                     <span class="menu_icon"><!-- <i class="fa fa-commenting-o material-icons">&#xE158;</i> -->
                     <i class="fa fa-commenting-o fa-2x" style="color:#20bfd3;"></i>
                     </span>
-                    <span class="menu_title">Chat</span>
+                    <span class="menu_title">SMS</span>
                 </a>
             </li>
             <li title="Scrum Board">
@@ -108,7 +108,7 @@ $cUrl = basename($_SERVER['REQUEST_URI']);
                     <span class="menu_icon"><!-- <i class="material-icons">&#xE158;</i> -->
                         <i class="fa fa-bar-chart-o fa-2x" style="color:#a1887f;"></i>
                     </span>
-                    <span class="menu_title">Scrum Board</span>
+                    <span class="menu_title">Work Flow</span>
                 </a>
             </li>
             <li title="Report">

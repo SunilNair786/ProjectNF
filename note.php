@@ -1,34 +1,32 @@
 <!-- main header -->
-<?php include_once('includes/header.php')?>
-<!-- main header end -->
+<?php include_once('includes/header.php'); ?>
 <!-- main sidebar -->
-<?php include_once('includes/sidemenu.php')?>
+<?php include_once('includes/sidemenu.php'); ?>
 
 <!-- main sidebar end -->
 <?php
-
-	if(isset($_POST['note_title']) && !empty($_POST['note_title'])){		
-		$noteInfo = array();
-		$noteInfo['note_title'] = $_POST['note_title'];
-		$noteInfo['note_content'] = $_POST['note_content'];	
-		
-		if(isset($_POST['default_action']) && $_POST['default_action'] == 'update' ){		
-		
-			$noteInfo['note_id'] = 	$_POST['note_id'];
-			$userContObj->updateNote($noteInfo);
-		}else{				
-			$userContObj->insertNote($noteInfo);
-		}
-		header("location:note.php");	
-	}	
-	$arrAllNotes = $userContObj->fetchAllNotes();
-	$countAllNotes = $userContObj->fetchCountNotes($_SESSION['user_id']);
+if(isset($_POST['note_title']) && !empty($_POST['note_title'])){		
+	$noteInfo = array();
+	$noteInfo['note_title'] = $_POST['note_title'];
+	$noteInfo['note_content'] = $_POST['note_content'];	
 	
-	if(isset($_GET['delFlag'])){
-		$noteId = $_GET['noteId'];
-		$userContObj->deleteNote($noteId);	
-		header("location:note.php");			
+	if(isset($_POST['default_action']) && $_POST['default_action'] == 'update' ){		
+	
+		$noteInfo['note_id'] = 	$_POST['note_id'];
+		$userContObj->updateNote($noteInfo);
+	}else{				
+		$userContObj->insertNote($noteInfo);
 	}
+	header("location:note.php");	
+}	
+$arrAllNotes = $userContObj->fetchAllNotes();
+$countAllNotes = $userContObj->fetchCountNotes($_SESSION['user_id']);
+
+if(isset($_GET['delFlag'])){
+	$noteId = $_GET['noteId'];
+	$userContObj->deleteNote($noteId);	
+	header("location:note.php");			
+}
 ?>
  
  <style>
@@ -49,38 +47,63 @@
                             <ul class="md-list md-list-outside notes_list" id="notes_list">
             
                                 <li class="heading_list uk-text-danger">Notes</li>
-                                <?php
-									
-									if($countAllNotes > 0){
-										
-										$inti = 0;
-										foreach($arrAllNotes as $key=>$value){	
-										
-								?>
-								<li>
-                                    <a href="#" class="md-list-content note_link" data-note-id="<?php echo $inti; ?>">
-                                        <span class="md-list-heading uk-text-truncate"><?php echo $value['note_title'];?></span>
-										<input type='hidden' id='note_content_hidden' name='note_content_hidden' class='note_content_hid_class' value="<?php echo $value['note_content'	];?>"/>
-										<input type='hidden' id='note_id_hid_class' name='note_content_hidden' class='note_id_hid_class' value="<?php echo $value["_id"];?>"/>
-                                        <span class="uk-text-small uk-text-muted"><?php $dates=strtotime($value['created_date']); echo date("j M Y",$dates); ?></span>
-                                    </a>
-<div class="md-card-dropdown activedelete" >                                          
-                                            <i class="md-icon material-icons "  onclick='javscript:deleteNote("<?php echo $value["_id"];?>");'>&#xE872;</i> 
+                                <?php									
+								/*if($countAllNotes > 0){										
+									$inti = 0;
+									foreach($arrAllNotes as $key=>$value){	?>
+    								<li>
+                                        <a href="#" class="md-list-content note_link" data-note-id="<?php echo $inti; ?>">
+                                            <span class="md-list-heading uk-text-truncate"><?php echo $value['note_title'];?></span>
+    										<input type='hidden' id='note_content_hidden' name='note_content_hidden' class='note_content_hid_class' value="<?php echo $value['note_content'	];?>"/>
+    										<input type='hidden' id='note_id_hid_class' name='note_content_hidden' class='note_id_hid_class' value="<?php echo $value["_id"];?>"/>
+                                            <span class="uk-text-small uk-text-muted"><?php $dates=strtotime($value['created_date']); echo date("j M Y",$dates); ?></span>
+                                        </a>
+                                        <div class="md-card-dropdown activedelete">     
+                                            <i class="md-icon material-icons" onclick='javscript:deleteNote("<?php echo $value["_id"];?>");'>&#xE872;</i> 
                                         </div>
-                                </li>
-								                                        
-								<?php 	
-											$inti++;
-										}
-									}else{
-								?>		
-										<li>
-											<span class="md-list-heading uk-text-truncate" style="padding-left:100px;">No notes found.</span>
-										</li>
-										
-								<?php
+                                    </li>								                                        
+								<?php 	$inti++;
 									}
-								?>
+								}else{
+								?>		
+									<li>
+										<span class="md-list-heading uk-text-truncate" style="padding-left:100px;">No notes found.</span>
+									</li>									
+								<?php
+								}*/
+
+                                $collection_fax1 = $db->nf_fax;           
+                                    $allFaxs = $collection_fax1->find(array('from_id' => $_SESSION['user_id'],"status" => "A","outbox" => "Y"))->sort(array("created_date" => -1));        
+                                    foreach($allFaxs as $recent_Faxs){ ?>       
+                                        <li>
+                                            <?php
+                                            $collection_fax_user = $db->nf_fax_users;                                                   
+                                            $userFaxs = $collection_fax_user->find(array('fax_id' => $recent_Faxs['_id'],"status" => "A"))->sort(array("created_date" => -1));        
+                                            $allUser = "";
+                                            foreach($userFaxs as $user_Faxs)
+                                            {
+                                                $collection_user = $db->nf_user; 
+                                                $collection_cont_user = $db->nf_user_contacts;           
+                                                $CuserDetails = $collection_user->find(array('_id' => new MongoId($user_Faxs['to_id'])))->count();   
+                                                if($CuserDetails > 0)
+                                                {
+                                                    $userDetails = $collection_user->findOne(array('_id' => new MongoId($user_Faxs['to_id'])));   
+                                                    $allUser .= $userDetails['first_name'].",";
+                                                }
+                                                else
+                                                {
+                                                    $userDetails = $collection_cont_user->findOne(array('_id' => new MongoId($user_Faxs['to_id'])));   
+                                                    $allUser .= $userDetails['contact_name'].",";
+                                                }
+                                                
+                                            }
+                                            echo substr($allUser, 0, -1); 
+                                            ?><br>
+                                            <a href="#image_<?php echo $recent_Faxs['_id'];?>_popup<?php echo $img;?>" data-uk-modal="{center:true}">
+                                                <img title="click to view attachment" src="upload_dir/files/<?php echo $recent_Faxs['file_name'];?>" id="img_atch" width="100" height="50">
+                                            </a>
+                                        </li>                                        
+                                <?php }?>
                             </ul>
                         </div>
                     </div>

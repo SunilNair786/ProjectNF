@@ -8,7 +8,7 @@ session_start();
 include("model/commonFunctions.php");
 include("controller/userController.php");
 include("controller/faxController.php");
-
+include_once('model/faxModel.class.php');
 
 $userContObj = new userController();
 $cfObj = new commonFunctions();
@@ -63,7 +63,7 @@ if($_SESSION['user_id']=="")
                     <span class="sSwitchIcon"></span>
                  </a>
 				
-				<p class="logo pull-left">Next Fax</p>
+				<p class="logo pull-left">Smart Fax</p>
 				
                 
                 <!-- secondary sidebar switch -->
