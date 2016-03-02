@@ -50,9 +50,27 @@ if($_GET['section']=="tagsAdd" && isset($_GET['tagfaxs']))
 	$faxObjCon->updateFaxTags($_GET);
 }
 
+// adding tags to Outbox faxs
+if($_GET['section']=="Outbox_tagsAdd" && isset($_GET['tagfaxs']))
+{
+	$faxObjCon->updateOutboxTags($_GET);
+}
+
 // checking for duplicate tags
 if($_POST['Section'] == "tagsDup" && $_POST['tagNam'] != "")
 {
 	echo $rees = $faxObjCon->checktags($_POST);
+}
+
+// Inbox Delete
+if($_GET['section'] == "inboxdel" && $_GET['inb_fax_id'] != "")
+{
+	$faxObjCon->deleteFax($_GET['inb_fax_id']);
+}
+
+// checking for Contact Names
+if($_POST['Section'] == "grpContactCheck" && $_POST['ContName'] != "")
+{
+	echo $grpres = $faxObjCon->checkEmail($_POST);
 }
 ?>

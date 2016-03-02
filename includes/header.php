@@ -119,10 +119,9 @@ if($_SESSION['user_id']=="")
                         </div>
                     </div> -->
                 
-                <div class="header_main_search_form" style="opacity: 1; display: block; transform: translateY(0px);">
-            
+                <div class="header_main_search_form" style="opacity: 1; display: block; transform: translateY(0px);">            
             <form class="uk-form">
-                <input type="text" class="header_main_search_input" placeholder="Search" name="name_2" id="name_2">
+                <input type="text" class="header_main_search_input" placeholder="Search" name="name_2" id="name_2" value="<?php echo $_GET['name_2'];?>" required>
                 <button class="header_main_search_btn uk-button-link"><i class="md-icon material-icons"></i></button>
             </form>
         </div>

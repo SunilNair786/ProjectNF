@@ -17,7 +17,7 @@ $mC = new MongoClient();
 $db = $mC->nextfax;
 
 if(isset($_REQUEST['submit'])){      	
-    $toIds = $_POST['mail_new_to']; 
+    $toIds = $_POST['mail_new_to'];  //exit;
     if(isset($toIds)){
         if(strpos($toIds, ',')){    
             $finalUserIds =  array();
@@ -26,8 +26,8 @@ if(isset($_REQUEST['submit'])){
                 $userIds = substr(trim($toIds),0,-1);   
             }else{
                 $userIds = $toIds;  
-            }           
-            $arrToUserIds = explode(",",$userIds);          
+            }                       
+            $arrToUserIds = explode(",",$userIds);                      
             if(is_array($arrToUserIds)){
                 foreach($arrToUserIds as $key=>$val){                   
                     if(is_numeric($val)){                       
@@ -38,7 +38,7 @@ if(isset($_REQUEST['submit'])){
                 if(is_numeric($arrToUserIds)){
                     $finalUserIds[] = $arrToUserIds;
                 }
-            }           
+            }                       
         }else{          
             if(is_numeric($toIds)){
                 $finalUserIds[] = $toIds;
@@ -47,8 +47,8 @@ if(isset($_REQUEST['submit'])){
     }
 
     if(isset($_POST['hidd_values']) && !empty($_POST['hidd_values'])){      
-        $arrHidIds = explode(",",$_POST['hidd_values']);            
-        $finalUserToIds = array_merge($finalUserIds,$arrHidIds);                        
+        $arrHidIds = explode(",",$_POST['hidd_values']);                    
+        $finalUserToIds = array_merge($finalUserIds,$arrHidIds);                                
     }else{      
         $finalUserToIds = $finalUserIds;
     }
@@ -76,10 +76,10 @@ if(isset($_REQUEST['submit'])){
     $faxId = $faxObjCon->copyFiles($_POST,$_FILES);
     
     if(is_array($finalUserToIds)){              
-        for($i=0;$i<count($finalUserToIds);$i++){
+        for($i=0;$i<count($finalUserToIds);$i++){            
             $faxObjCon->insertToFaxIds($finalUserToIds[$i],$faxId); 
         }
-    }else{
+    }else{        
             $arrToId = $finalUserToIds;
             $faxObjCon->insertToFaxIds($arrToId,$faxId);    
     }

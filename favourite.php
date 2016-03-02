@@ -52,14 +52,14 @@ if(isset($_REQUEST['submit'])){
             $arrToId = $finalUserToIds;
             $faxObjCon->insertToFaxIds($arrToId,$faxId);    
     }
-    header("location:favorite.php");
+    header("location:favourite.php");
 }
 
 // Delete Favorite Faxs
 if(isset($_GET['action']) && ($_GET['action'] == "delete") && isset($_GET['faxsId']) && ($_GET['faxsId']!="" ))
 {   
     $faxObjCon->deleteFax($_GET['faxsId']);
-    header("location:inbox.php");
+    header("location:favourite.php");
 }
 
 ?>
@@ -145,8 +145,8 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                                 <li>
                                     <div class="md-card-list-item-menu margn">
                                         <!-- <a href="#"><i class="fa fa-reply-all"></i> </a> -->
-                                        <a href="#mailbox_new_message" data-uk-modal="{center:true}" onClick="fwdmsg('<?php echo $userFaxDetails['message_subject'];?>','<?php echo $userFaxDetails['message_body'];?>')"><i class="fa fa-long-arrow-right"></i></a>
-                                        <a href="#" id="tagging"><i class="fa fa-tags"></i></a>                                                     
+                                        <a href="#mailbox_new_message" data-uk-modal="{center:true}" onClick="fwdmsg('<?php echo $userFaxDetails['message_subject'];?>','<?php echo $userFaxDetails['message_body'];?>')" title="forward"><i class="fa fa-long-arrow-right"></i></a>
+                                        <!-- <a href="#" id="tagging"><i class="fa fa-tags"></i></a>                                                     
                                             <div class="dropdown">
                                                 <div class="arrow-up"></div>
                                                 <ul>
@@ -166,15 +166,15 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                                                         </li>
                                                     <?php }?>                                                       
                                                 </ul>
-                                            </div>
-                                        <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'favorite.php?action=delete&faxsId=<?php echo $fav_Faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>                                         
-                                        <span id="favs_sec_<?php echo $fav_Faxs['_id'];?>">
+                                            </div> -->
+                                        <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'favorite.php?action=delete&faxsId=<?php echo $fav_Faxs['_id'];?>'; return false;}" title="delete"><i class="fa fa-trash"></i></a>                                         
+                                        <!-- <span id="favs_sec_<?php echo $fav_Faxs['_id'];?>">
                                             <?php if($fav_Faxs['favorites'] == "N"){?>
                                                 <a id="Fav_id" onClick="gFavorites('<?php echo $fav_Faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
                                             <?php } else { ?>
                                                 <a id="Fav_id" onClick="gFavorites('<?php echo $fav_Faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary" style="color:#94940C"></i> </a>
                                             <?php } ?> 
-                                        </span>
+                                        </span> -->
                                     </div>
                                     <span class="md-card-list-item-date"><?php echo date('j M',strtotime($fav_Faxs['created_date'])); ?></span>
                                     <div class="md-card-list-item-select">
@@ -189,16 +189,60 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                                     <div class="md-card-list-item-subject">
                                         <div class="md-card-list-item-sender-small">
                                             <span><?php echo $indUserDetails['first_name'][0]."".$indUserDetails['last_name'][0];?></span>
-                                        </div>                                        
+                                        </div>                
+                                        <span><?php echo substr($userFaxDetails['message_subject'],0,30);?></span>                        
                                     </div>
                                     <div class="md-card-list-item-content-wrapper">
                                         <div class="md-card-list-item-content">
-                                            <?php echo $userFaxDetails['message_body']; ?>
-                                        <form class="md-card-list-item-reply">
-                                            <label for="mailbox_reply_1895">Reply to <span><?php echo $indUserDetails['email_id']; ?></span></label>
-                                            <textarea class="md-input md-input-full" name="mailbox_reply_1895" id="mailbox_reply_1895" cols="30" rows="4"></textarea>
-                                            <button class="md-btn md-btn-flat md-btn-flat-primary">Send</button>
-                                        </form>
+                                            <?php echo $userFaxDetails['message_body']; echo "<br><br>";
+                                            if($userFaxDetails['saved_pdf_file'] != "")
+                                                {?>                                                 
+                                                <a href="#image_<?php echo $userFaxDetails['_id'];?>_popup<?php echo $img;?>" data-uk-modal="{center:true}">
+                                                    <!-- <img title="click to view attachment" src="upload_dir/files/<?php echo $userFaxDetails['file_name'];?>" id="img_atch" width="100" height="50"> -->
+                                                    <img title="click to view attachment" src="assets/img/attachmentpin.png" id="img_atch" width="50" height="25">
+                                                </a>        
+                                                <div class="uk-modal" id="image_<?php echo $userFaxDetails['_id'];?>_popup">
+                                                    <div class="uk-modal-dialog" style="width:90%; height:90%;">        
+                                                        <button class="uk-modal-close uk-close" type="button"></button>
+                                                        <iframe src="upload_dir/savedpdfs/<?php echo $userFaxDetails['saved_pdf_file'];?>" style="width:100%; height:100%;"></iframe>
+                                                        <a id="addButton" class="green-button" href="add_note.html">Add a note</a>    
+                                                    </div>
+                                                </div>
+                                                <!-- <a href="upload_dir/savedpdfs/<?php echo $userFaxDetails['saved_pdf_file'];?>">View the attachment</a> -->
+                                            <?php } ?>
+                                        <!-- Reply Messages Section start -->
+                                        <?php 
+                                            $collection_fax_reply = $db->nf_fax_replys; 
+                                            $rfax_id1 = $yesterd_faxs['fax_id'];
+                                            $replyfaxs1 = $collection_fax_reply->find(array('fax_id' => "$rfax_id1"))->sort(array("created_date" => -1));
+
+                                            foreach ($replyfaxs1 as $reply1_faxs) {                                                 
+                                            ?>
+                                                <span class="md-card-list-item-date"><?php echo date('j M',strtotime($reply1_faxs['created_date'])); ?></span>
+                                                <div class="md-card-list-item-select">
+                                                    <!-- <input type="checkbox" data-md-icheck /> -->
+                                                </div>
+                                                <?php $rplyUserDetails1 = $collection->findOne(array('_id' => new MongoId($reply1_faxs['from_id'])));   ?>
+                                                <div class="md-card-list-item-avatar-wrapper">
+                                                    <span class="md-card-list-item-avatar md-bg-grey"><?php echo $rplyUserDetails1['first_name'][0].''.$rplyUserDetails1['last_name'][0]; ?></span>
+                                                </div>
+                                                <div class="md-card-list-item-sender">
+                                                    <span><?php echo ucfirst($rplyUserDetails1['first_name']).' '.ucfirst($rplyUserDetails1['last_name']); ?></span>                                    
+                                                </div>                                                                                                  
+                                                <div class="md-card-list-item-content">
+                                                    <?php echo html_entity_decode($reply1_faxs['message_body']); ?>                                             
+                                                </div>
+                                                <br><br><br>
+                                            <?php } ?>                                              
+                                        <!-- Reply Message Section End -->                                        
+                                        <form class="md-card-list-item-reply" name="replyform" method="post">   
+                                            <label for="mailbox_reply_1895">Reply to <span><?php echo $indUserDetails['email_id']; ?></span></label>       
+                                            <input type="hidden" name="to_id" id="to_id" value="<?php echo $indUserDetails['_id'];?>">
+                                            <input type="hidden" name="from_id" id="from_id" value="<?php echo $_SESSION['user_id'];?>">                                                
+                                            <input type="hidden" name="reply_fax_id" id="reply_fax_id" value="<?php echo $yesterd_faxs['fax_id']; ?>">
+                                            <textarea class="md-input md-input-full" name="reply_message" id="reply_message" cols="30" rows="4" required></textarea>            
+                                            <input type="submit" name="submit_reply" id="submit_reply" class="uk-float-left md-btn md-btn-flat md-btn-flat-primary" value="reply">
+                                        </form>  
                                     </div>
                                 </li>
                                 <?php } ?>                            
@@ -231,8 +275,8 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                                 <div class="md-card-list-item-menu margn">
                                     
                                     <!-- <a href="#"><i class="fa fa-reply-all"></i> </a> -->
-                                    <a href="#mailbox_new_message" data-uk-modal="{center:true}" onClick="fwdmsg('<?php echo $userFaxDetails['message_subject'];?>','<?php echo $userFaxDetails['message_body'];?>')"><i class="fa fa-long-arrow-right"></i></a>                                                            
-                                    <a href="#" id="tagging"><i class="fa fa-tags"></i></a>                                                     
+                                    <a href="#mailbox_new_message" data-uk-modal="{center:true}" onClick="fwdmsg('<?php echo $userFaxDetails['message_subject'];?>','<?php echo $userFaxDetails['message_body'];?>')" title="forward"><i class="fa fa-long-arrow-right"></i></a>                                                            
+                                    <!-- <a href="#" id="tagging"><i class="fa fa-tags"></i></a>                                                     
                                         <div class="dropdown">
                                             <div class="arrow-up"></div>
                                             <ul>
@@ -252,15 +296,15 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                                                 </li>
                                                 <?php }?>                                                       
                                             </ul>
-                                        </div>
-                                    <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $yesterd_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>   
-                                    <span id="favs_sec_<?php echo $yesterd_faxs['_id'];?>">
+                                        </div> -->
+                                    <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'favourite.php?action=delete&faxsId=<?php echo $yesterd_faxs['_id'];?>'; return false;}" title="delete"><i class="fa fa-trash"></i></a>   
+                                    <!-- <span id="favs_sec_<?php echo $yesterd_faxs['_id'];?>">
                                         <?php if($yesterd_faxs['favorites'] == "N"){?>
                                             <a id="Fav_id" onClick="gFavorites('<?php echo $yesterd_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
                                         <?php } else { ?>
                                             <a id="Fav_id" onClick="gFavorites('<?php echo $yesterd_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary" style="color:#94940C"></i> </a>
                                         <?php } ?> 
-                                    </span>                                                     
+                                    </span>  -->                                                    
                                 </div>
                                 <span class="md-card-list-item-date"><?php echo date('j M',strtotime($yesterd_faxs['created_date'])); ?></span>
                                 <div class="md-card-list-item-select">
@@ -282,7 +326,22 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                                 </div>
                                 <div class="md-card-list-item-content-wrapper">
                                     <div class="md-card-list-item-content">
-                                        <?php echo $userFaxDetails['message_body']; ?>
+                                        <?php echo $userFaxDetails['message_body']; echo "<br><br>";
+                                        if($userFaxDetails['saved_pdf_file'] != "")
+                                            {?>                                                 
+                                            <a href="#image_<?php echo $userFaxDetails['_id'];?>_popup<?php echo $img;?>" data-uk-modal="{center:true}">
+                                                <!-- <img title="click to view attachment" src="upload_dir/files/<?php echo $userFaxDetails['file_name'];?>" id="img_atch" width="100" height="50"> -->
+                                                <img title="click to view attachment" src="assets/img/attachmentpin.png" id="img_atch" width="50" height="25">
+                                            </a>        
+                                            <div class="uk-modal" id="image_<?php echo $userFaxDetails['_id'];?>_popup">
+                                                <div class="uk-modal-dialog" style="width:90%; height:90%;">        
+                                                    <button class="uk-modal-close uk-close" type="button"></button>
+                                                    <iframe src="upload_dir/savedpdfs/<?php echo $userFaxDetails['saved_pdf_file'];?>" style="width:100%; height:100%;"></iframe>
+                                                    <a id="addButton" class="green-button" href="add_note.html">Add a note</a>    
+                                                </div>
+                                            </div>
+                                            <!-- <a href="upload_dir/savedpdfs/<?php echo $userFaxDetails['saved_pdf_file'];?>">View the attachment</a> -->
+                                        <?php } ?>
                                     </div>
 
                                     <!-- Reply Messages Section start -->
@@ -354,8 +413,8 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                                 <div class="md-card-list-item-menu margn">
                                     
                                     <!-- <a href="#"><i class="fa fa-reply-all"></i> </a> -->
-                                    <a href="#mailbox_new_message" data-uk-modal="{center:true}" onClick="fwdmsg('<?php echo $userFaxDetails['message_subject'];?>','<?php echo $userFaxDetails['message_body'];?>')"><i class="fa fa-long-arrow-right"></i></a>
-                                    <a href="#" id="tagging"><i class="fa fa-tags"></i></a>                                                     
+                                    <a href="#mailbox_new_message" data-uk-modal="{center:true}" onClick="fwdmsg('<?php echo $userFaxDetails['message_subject'];?>','<?php echo $userFaxDetails['message_body'];?>')" title="forward"><i class="fa fa-long-arrow-right"></i></a>
+                                    <!-- <a href="#" id="tagging"><i class="fa fa-tags"></i></a>                                                     
                                         <div class="dropdown">
                                             <div class="arrow-up"></div>
                                             <ul>
@@ -375,15 +434,15 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                                                     </li>
                                                 <?php }?>                                                       
                                             </ul>
-                                        </div>
-                                    <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $amonth_Faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
-                                    <span id="favs_sec_<?php echo $amonth_Faxs['_id'];?>">
+                                        </div> -->
+                                    <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'favourite.php?action=delete&faxsId=<?php echo $amonth_Faxs['_id'];?>'; return false;}" title="delete"><i class="fa fa-trash"></i></a>
+                                    <!-- <span id="favs_sec_<?php echo $amonth_Faxs['_id'];?>">
                                         <?php if($amonth_Faxs['favorites'] == "N"){?>
                                             <a id="Fav_id" onClick="gFavorites('<?php echo $amonth_Faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
                                         <?php } else { ?>
                                             <a id="Fav_id" onClick="gFavorites('<?php echo $amonth_Faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary" style="color:#94940C"></i> </a>
                                         <?php } ?> 
-                                    </span>
+                                    </span> -->
                                 </div>
                                 <span class="md-card-list-item-date"><?php echo date('j M',strtotime($amonth_Faxs['created_date'])); ?></span>
                                 <div class="md-card-list-item-select">
@@ -403,7 +462,22 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                                 </div>
                                 <div class="md-card-list-item-content-wrapper">
                                     <div class="md-card-list-item-content">
-                                        <?php echo $userFaxDetails['message_body']; ?>                                           
+                                        <?php echo $userFaxDetails['message_body']; echo "<br><br>";
+                                        if($userFaxDetails['saved_pdf_file'] != "")
+                                            {?>                                                 
+                                            <a href="#image_<?php echo $userFaxDetails['_id'];?>_popup<?php echo $img;?>" data-uk-modal="{center:true}">
+                                                <!-- <img title="click to view attachment" src="upload_dir/files/<?php echo $userFaxDetails['file_name'];?>" id="img_atch" width="100" height="50"> -->
+                                                <img title="click to view attachment" src="assets/img/attachmentpin.png" id="img_atch" width="50" height="25">
+                                            </a>        
+                                            <div class="uk-modal" id="image_<?php echo $userFaxDetails['_id'];?>_popup">
+                                                <div class="uk-modal-dialog" style="width:90%; height:90%;">        
+                                                    <button class="uk-modal-close uk-close" type="button"></button>
+                                                    <iframe src="upload_dir/savedpdfs/<?php echo $userFaxDetails['saved_pdf_file'];?>" style="width:100%; height:100%;"></iframe>
+                                                    <a id="addButton" class="green-button" href="add_note.html">Add a note</a>    
+                                                </div>
+                                            </div>
+                                            <!-- <a href="upload_dir/savedpdfs/<?php echo $userFaxDetails['saved_pdf_file'];?>">View the attachment</a> -->
+                                        <?php } ?>                                           
                                     </div>
 
                                     <!-- Reply Messages Section start -->
@@ -476,8 +550,8 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                                     <div class="md-card-list-item-menu margn">
                                         
                                         <!-- <a href="#"><i class="fa fa-reply-all"></i> </a> -->
-                                        <a href="#mailbox_new_message" data-uk-modal="{center:true}" onClick="fwdmsg('<?php echo $userFaxDetails['message_subject'];?>','<?php echo $userFaxDetails['message_body'];?>')"><i class="fa fa-long-arrow-right"></i></a>
-                                        <a href="#" id="tagging"><i class="fa fa-tags"></i></a>                                                     
+                                        <a href="#mailbox_new_message" data-uk-modal="{center:true}" onClick="fwdmsg('<?php echo $userFaxDetails['message_subject'];?>','<?php echo $userFaxDetails['message_body'];?>')" title="forward"><i class="fa fa-long-arrow-right"></i></a>
+                                        <!-- <a href="#" id="tagging"><i class="fa fa-tags"></i></a>                                                     
                                             <div class="dropdown">
                                                 <div class="arrow-up"></div>
                                                 <ul>
@@ -497,15 +571,15 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                                                     </li>
                                                     <?php }?>                                                       
                                                 </ul>
-                                            </div>s
-                                        <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $Oldmonth_Faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
-                                        <span id="favs_sec_<?php echo $Oldmonth_Faxs['_id'];?>">
+                                            </div> -->
+                                        <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'favourite.php?action=delete&faxsId=<?php echo $Oldmonth_Faxs['_id'];?>'; return false;}" title="delete"><i class="fa fa-trash"></i></a>
+                                        <!-- <span id="favs_sec_<?php echo $Oldmonth_Faxs['_id'];?>">
                                             <?php if($Oldmonth_Faxs['favorites'] == "N"){?>
                                                 <a id="Fav_id" onClick="gFavorites('<?php echo $Oldmonth_Faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
                                             <?php } else { ?>
                                                 <a id="Fav_id" onClick="gFavorites('<?php echo $Oldmonth_Faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
                                             <?php } ?> 
-                                        </span>
+                                        </span> -->
                                     </div>
                                     <span class="md-card-list-item-date"><?php echo date('j M',strtotime($Oldmonth_Faxs['created_date'])); ?></span>
                                     <div class="md-card-list-item-select">
@@ -525,7 +599,22 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                                     </div>
                                     <div class="md-card-list-item-content-wrapper">
                                         <div class="md-card-list-item-content">
-                                            <?php echo $userFaxDetails['message_body']; ?>
+                                            <?php echo $userFaxDetails['message_body']; echo "<br><br>";
+                                            if($userFaxDetails['saved_pdf_file'] != "")
+                                                {?>                                                 
+                                                <a href="#image_<?php echo $userFaxDetails['_id'];?>_popup<?php echo $img;?>" data-uk-modal="{center:true}">
+                                                    <!-- <img title="click to view attachment" src="upload_dir/files/<?php echo $userFaxDetails['file_name'];?>" id="img_atch" width="100" height="50"> -->
+                                                    <img title="click to view attachment" src="assets/img/attachmentpin.png" id="img_atch" width="50" height="25">
+                                                </a>        
+                                                <div class="uk-modal" id="image_<?php echo $userFaxDetails['_id'];?>_popup">
+                                                    <div class="uk-modal-dialog" style="width:90%; height:90%;">        
+                                                        <button class="uk-modal-close uk-close" type="button"></button>
+                                                        <iframe src="upload_dir/savedpdfs/<?php echo $userFaxDetails['saved_pdf_file'];?>" style="width:100%; height:100%;"></iframe>
+                                                        <a id="addButton" class="green-button" href="add_note.html">Add a note</a>    
+                                                    </div>
+                                                </div>
+                                                <!-- <a href="upload_dir/savedpdfs/<?php echo $userFaxDetails['saved_pdf_file'];?>">View the attachment</a> -->
+                                            <?php } ?>
                                         </div>
                                         <!-- Reply Messages Section start -->
                                             <?php 
@@ -609,8 +698,8 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                     <textarea name="message_body" id="message_body" cols="30" rows="6" class="md-input"></textarea>
                 </div>
                 <div id="mail_upload-drop" class="uk-file-upload">
-                     <input id="Button1" type="button" value="Add File" onclick = "AddFileUpload()" class="uk-form-file md-btn" />
-                     <div id = "FileUploadContainer">
+                    <input id="Button1" type="button" value="Add File" onclick = "AddFileUpload()" class="uk-form-file md-btn" />
+                    <div id = "FileUploadContainer">
                             <!--FileUpload Controls will be added here -->
 
                     </div>
@@ -848,6 +937,27 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                     }                    
                 }
             });        
+        }
+
+        var counterInt = 0;
+
+        function AddFileUpload(){ 
+               if(counterInt < 10){
+                    var div = document.createElement('DIV');
+                    div.innerHTML = '<i class="md-icon material-icons">&#xE226;</i>&nbsp;<input  id="file' + counterInt + '" name = "file[' + counterInt +
+                    ']" type="file" /> '  +
+                    '<input  class="uk-form-file md-btn" id="Button' + counterInt + '" type="button" ' +
+                    'value="Remove" onclick = "RemoveFileUpload(this)" /> ';
+                    document.getElementById("FileUploadContainer").appendChild(div);
+                    counterInt++;
+               }else{
+                   alert("You can attach, only 10 Files.");
+                   
+               }
+        }
+
+        function RemoveFileUpload(div){
+            document.getElementById("FileUploadContainer").removeChild(div.parentNode);
         }
 
         // Forwarded Message

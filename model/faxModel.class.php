@@ -82,6 +82,16 @@
 			return $cTags;
 		}
 
+		// checking Contact Name
+		public function check_contactName($mPost)
+		{				
+			$collection1 = $this->db->nf_user_contacts;
+
+			$cntName = $collection1->find(array("contact_name" => $mPost['ContName']))->count(); 
+
+			return $cntName;
+		}
+
 		// updating Favorites
 		public function updFavorites($mFavId,$mFVal)
 		{
@@ -157,6 +167,16 @@
 
 			$collection->update(array('_id' => new MongoId($mPost['tagfaxs'])), array('$set' => $Update_faxtag_vals));	
 		}
+
+		// Updating the Outbox faxs to particular tags
+		public function update_outbox_tags($mPost)
+		{			
+			$collection = $this->db->nf_fax;
+		
+			$Update_faxtag_vals = array("outbox_fax_tag" => $mPost['tagsId']);
+
+			$collection->update(array('_id' => new MongoId($mPost['tagfaxs'])), array('$set' => $Update_faxtag_vals));	
+		}		
 
 	}
 	

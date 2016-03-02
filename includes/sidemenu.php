@@ -67,7 +67,7 @@ $cUrl = basename($_SERVER['REQUEST_URI']);
                     <span class="menu_title">Tags</span>
                 </a>
             </li>
-            <li title="Notes">
+            <?php /*<li title="Notes">
                 <a href="note.php" <?php if($cUrl == "note.php"){ ?> class="active"<?php } ?>>
                     <span class="menu_icon"><!-- <i class="material-icons">&#xE158;</i> -->
                         <i class="fa fa-clipboard fa-2x" style="color:#3f51b5;"></i>
@@ -75,7 +75,7 @@ $cUrl = basename($_SERVER['REQUEST_URI']);
                     <span class="menu_title">Notes</span>
                 </a>
             </li>
-            <?php 
+            <?php */
 			 if($_SESSION['userType'] == 'AU'){
 			?>
             <li title="User Management">

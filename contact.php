@@ -206,7 +206,7 @@ if(isset($_GET['searchParam'])){
     <div class="uk-modal" id="mailbox_new_message">
         <div class="uk-modal-dialog">
         <button class="uk-modal-close uk-close" type="button"></button>
-            <form name="newContact" method="post">
+            <form name="newContact" method="post" onsubmit="return InvalidMsg()">
                 <div class="uk-modal-header">
                     <h3 class="uk-modal-title">New Contact</h3>
                 </div>
@@ -216,7 +216,7 @@ if(isset($_GET['searchParam'])){
                 </div>
                 <div class="uk-margin-medium-bottom">
                     <label for="contact_email">Email</label>
-                    <input type="text" class="md-input" name="contact_email" id="contact_email" required/>
+                    <input type="text" class="md-input" name="contact_email" id="contact_email" title="example@yourdomain.com" required/>
                 </div>
                 <div class="uk-margin-medium-bottom">
                     <label for="Group_name">Group Name</label>
@@ -232,11 +232,11 @@ if(isset($_GET['searchParam'])){
                 </div>
                 <div class="uk-margin-medium-bottom">
                     <label for="contact_phone">Phone No</label>
-                    <input type="text" class="md-input" name="contact_phone" id="contact_phone" required/>
+                    <input type="text" class="md-input" name="contact_phone" id="contact_phone" maxlength="20" pattern="\d*" title="Phone Number(Only Numbers)" required/>
                 </div>
                 <div class="uk-margin-medium-bottom">
                     <label for="contact_faxNo">Fax No</label>
-                    <input type="text" class="md-input" name="contact_faxNo" id="contact_faxNo" />
+                    <input type="text" class="md-input" name="contact_faxNo" id="contact_faxNo" maxlength="20" pattern="\d*" title="Fax Number(Only Numbers)" />
                 </div>
                 <div class="uk-margin-large-bottom">
                     <label for="contact_info">Info</label>
@@ -249,6 +249,38 @@ if(isset($_GET['searchParam'])){
         </div>
     </div>
     <!-- End New Contact -->
+
+    <script type="text/javascript">
+    function InvalidMsg()
+    {
+        var regexEmail = /\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
+        var email = document.getElementById("contact_email");
+
+        if (regexEmail.test(email.value)) {
+            // alert("It's Okay")
+        } else {
+            alert("Please Enter A Valid Email Address")
+            document.getElementById("contact_email").focus();
+            return false;
+        }    
+        return true;
+    }
+
+    function InvalidMsg1()
+    {
+        var regexEmail = /\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
+        var email = document.getElementById("contact_email1");
+
+        if (regexEmail.test(email.value)) {
+            // alert("It's Okay")
+        } else {
+            alert("Please Enter A Valid Email Address")
+            document.getElementById("contact_email1").focus();
+            return false;
+        }    
+        return true;
+    }
+    </script>
 
 
     <?php 
@@ -264,7 +296,7 @@ if(isset($_GET['searchParam'])){
     <div class="uk-modal" id="Edit_contact_<?php echo $Cinc1;?>">
         <div class="uk-modal-dialog">
         <button class="uk-modal-close uk-close" type="button"></button>
-            <form name="newContact" method="post">
+            <form name="newContact" method="post" onsubmit="return InvalidMsg1()">
                 <div class="uk-modal-header">
                     <h3 class="uk-modal-title"><?php echo $contactList1['name']; ?></h3>
                     <input type="hidden" name="hidd_contact_id" id="hidd_contact_id" value="<?php echo $contactList1['_id']; ?>"/>
@@ -275,7 +307,7 @@ if(isset($_GET['searchParam'])){
                 </div>
                 <div class="uk-margin-medium-bottom">
                     <label for="contact_email">Email</label>
-                    <input type="text" class="md-input" name="contact_email" id="contact_email" value="<?php echo $contactList1['email']; ?>" required/>
+                    <input type="text" class="md-input" name="contact_email" id="contact_email1" value="<?php echo $contactList1['email']; ?>" required/>
                 </div>
                 <div class="uk-margin-medium-bottom">
                     <label for="Group_name">Group Name</label>
@@ -301,11 +333,11 @@ if(isset($_GET['searchParam'])){
                 </div>
                 <div class="uk-margin-medium-bottom">
                     <label for="contact_phone">Phone No</label>
-                    <input type="text" class="md-input" name="contact_phone" id="contact_phone" value="<?php echo $contactList1['phone']; ?>" required/>
+                    <input type="text" class="md-input" name="contact_phone" id="contact_phone" maxlength="20" pattern="\d*" title="Phone Number(Only Numbers)" value="<?php echo $contactList1['phone']; ?>" required/>
                 </div>
                 <div class="uk-margin-medium-bottom">
                     <label for="contact_faxNo">Fax No</label>
-                    <input type="text" class="md-input" name="contact_faxNo" id="contact_faxNo" value="<?php echo $contactList1['fax']; ?>" />
+                    <input type="text" class="md-input" name="contact_faxNo" id="contact_faxNo" maxlength="20" pattern="\d*" title="Fax Number(Only Numbers)" value="<?php echo $contactList1['fax']; ?>" />
                 </div>
                 <div class="uk-margin-large-bottom">
                     <label for="contact_info">Info</label>

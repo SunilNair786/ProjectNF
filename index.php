@@ -225,7 +225,7 @@
                     </div>
                 </div>
                 <div>
-                    <div class="md-card md-card-hover md-card-overlay md-card-overlay-active">
+                    <div class="md-card md-card-hover md-card-overlay"><!--  md-card-overlay-active -->
                         <div class="md-card-content" id="canvas_1">
                             <div class="epc_chart" data-percent="37" data-bar-color="#9c27b0">
                                 <span class="epc_chart_icon"><i class="material-icons">&#xE85D;</i></span>

@@ -61,8 +61,8 @@ if($_REQUEST['action'] == "delete")
 									?>
 									<li>
 		                            	<ul class="options">
-											<li><a href="#Edit_Grp<?php echo $incc;?>" data-uk-modal="{center:true}"><i class="fa fa-edit"></i> </a></li> 		
-											<li><a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'groups.php?action=delete&id=<?php echo $indGroup['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a></li>				
+											<li><a href="#Edit_Grp<?php echo $incc;?>" data-uk-modal="{center:true}" title="Edit"><i class="fa fa-edit"></i> </a></li> 		
+											<li><a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'groups.php?action=delete&id=<?php echo $indGroup['_id'];?>'; return false;}" title="Delete"><i class="fa fa-trash"></i></a></li>				
 										</ul>
 										<span class="md-card-list-item-date"><?php $dates=strtotime($indGroup['created_date']); echo date("j M",$dates); ?></span>
 										<div class="md-card-list-item-select">
@@ -78,8 +78,9 @@ if($_REQUEST['action'] == "delete")
 						                {
 						                	$ws = $userId_arr[$i];
 						                	$collection_user = $db->nf_user;
+						                	$collection_contact_user = $db->nf_user_contacts;
 						                	$CoutUserDetail = $collection_user->find(array('_id' => new MongoId($userId_arr[$i])))->count();
-						                	$CoutContaUser = $db->nf_user_contacts->find(array('_id' => new MongoId($userId_arr[$i])))->count();
+						                	$CoutContaUser = $collection_contact_user->find(array('_id' => new MongoId($userId_arr[$i])))->count();
 						                	if($CoutUserDetail > 0)
 						                	{
 						                		$UserDetail = $collection_user->findOne(array('_id' => new MongoId($userId_arr[$i])));
@@ -89,7 +90,7 @@ if($_REQUEST['action'] == "delete")
 						                	}
 						                	else
 						                	{
-						                		$ContactUser = $db->nf_user_contacts->find(array('_id' => new MongoId($userId_arr[$i])))->count();
+						                		$ContactUser = $collection_contact_user->findOne(array('_id' => new MongoId($userId_arr[$i])));						                		
 						                		$udetailemail .= $ContactUser['contact_name']." (".$ContactUser['email']."), ";
 		                                        $udetail .= $ContactUser['contact_name'].",";
 		                                        $uIds .= $ContactUser['_id'].",";
@@ -104,7 +105,7 @@ if($_REQUEST['action'] == "delete")
 										<div class="uk-modal" id="Edit_Grp<?php echo $incc;?>">
 									        <div class="uk-modal-dialog">
 									        <button class="uk-modal-close uk-close" type="button"></button>
-									            <form name="newGroup" method="post">
+									            <form name="EditnewGroup" method="post">
 									                <div class="uk-modal-header">
 									                    <h3 class="uk-modal-title">Group</h3>
 									                </div>
@@ -116,7 +117,9 @@ if($_REQUEST['action'] == "delete")
 									                </div>
 									                <div class="uk-margin-medium-bottom">
 									                    <label for="grpName">Contact Name</label>
-									                    <input type="text" class="md-input" name="contactName" id="contactName" value="<?php echo $udetailemail; ?>" required/>									                    
+									                    <input type="text" class="md-input" name="contactName" id="contactName1" value="<?php echo $udetailemail; ?>" required/>		
+									                    <input type="hidden" name="hidd_labels" id="labels1" value="<?php echo $udetailemail;?>">   
+									                    <input type="hidden" name="hidd_values" id="values1" value="<?php echo $uIds; ?>"> 							                    
 									                </div>
 
 									                <div class="uk-modal-footer">       
@@ -145,7 +148,7 @@ if($_REQUEST['action'] == "delete")
 	    <div class="uk-modal" id="Groups_new">
 	        <div class="uk-modal-dialog">
 	        <button class="uk-modal-close uk-close" type="button"></button>
-	            <form name="newGroup" method="post">
+	            <form name="newGroup" method="post" onsubmit="return checkcontacts();">
 	                <div class="uk-modal-header">
 	                    <h3 class="uk-modal-title">New Group</h3>
 	                </div>
@@ -155,7 +158,8 @@ if($_REQUEST['action'] == "delete")
 	                </div>
 	                <div class="uk-margin-medium-bottom">
 	                    <label for="grpName">Contact Name</label>
-	                    <input type="text" class="md-input" name="contactName" id="contactName" required/>
+	                    <input type="text" class="md-input" name="contactName" id="contactName" required/><br>
+	                    <small>*Please Add people from your Contacts only.</small>
 	                    <input type="hidden" name="hidd_labels" id="labels">   
                     	<input type="hidden" name="hidd_values" id="values">    
 	                </div>
@@ -166,6 +170,36 @@ if($_REQUEST['action'] == "delete")
 	            </form>
 	        </div>
 	    </div>
+	    <script type="text/javascript">
+	    function checkcontacts()
+	    {
+	    	var taVal = document.getElementById('contactName').value;	
+	    	var hidItems = document.getElementById('labels').value;	
+
+	    	if(hidItems == "")
+	    	{
+
+				$.ajax({
+					url:"auto_complete.php",
+	                type:"POST",
+	                data: {"ContName" : taVal,"Section" : "grpContactCheck"},
+	                success:function(html){                	
+	                	if(html > 0)
+	                	{
+	                		//document.forms['newGroup'].submit();
+	                	}
+	                	else
+	                	{
+	                		alert("Contact Name Does not exist");
+	                		document.getElementById('contactName').focus();                   		
+	                		return true;                		
+	                	}
+	                }
+				});		
+				return false;
+
+			}
+	    }</script>
 	    <!-- End New Group -->
 	</div>
     
@@ -497,7 +531,7 @@ if($_REQUEST['action'] == "delete")
                 <?php } ?>
             ];
                  
-            $( "#contactName" )         
+            $( "#contactName , #contactName1" )         
                 .bind( "keydown", function( event ) {
                     if ( event.keyCode === $.ui.keyCode.TAB &&
                         $( this ).autocomplete( "instance" ).menu.active ) {
@@ -532,16 +566,25 @@ if($_REQUEST['action'] == "delete")
                     
                     var labels = $('#labels').val();
                     var values = $('#values').val();
+
+                    var labels1 = $('#labels1').val();
+                    var values1 = $('#values1').val();
                     
                     if(labels == "")
                     {
                         $('#labels').val(selected_label);
                         $('#values').val(selected_value);
+
+                        $('#labels1').val(labels1+selected_label);
+                        $('#values1').val(values1+selected_value);
                     }
                     else    
                     {
                         $('#labels').val(labels+","+selected_label);
                         $('#values').val(values+","+selected_value);
+
+                        $('#labels1').val(labels1+","+selected_label);
+                        $('#values1').val(values1+","+selected_value);
                     }   
                     
                 return false;
@@ -549,13 +592,12 @@ if($_REQUEST['action'] == "delete")
             });
         });
     </script> <!-- ionrangeslider -->
-    <script src="bower_components/ion.rangeslider/js/ion.rangeSlider.min.js"></script>
+    <?php /*<script src="bower_components/ion.rangeslider/js/ion.rangeSlider.min.js"></script>
     <!-- htmleditor (codeMirror) -->
     <script src="assets/js/uikit_htmleditor_custom.min.js"></script>
     <!-- inputmask-->
     <script src="bower_components/jquery.inputmask/dist/jquery.inputmask.bundle.js"></script>
-
     <!--  forms advanced functions -->
-    <script src="assets/js/pages/forms_advanced.min.js"></script>
+    <script src="assets/js/pages/forms_advanced.min.js"></script>*/?>
 </body>
 </html>

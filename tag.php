@@ -41,6 +41,7 @@ if($_POST['tag_submit'] == "Update")
 					<div class="uk-grid" data-uk-grid-margin>
 						<div class="uk-width-large-1">
 							<select id="selec_adv_1" name="selec_adv_1" multiple>
+								<option value="all" selected>All</option>
 								<?php 
 	                            $collection = $db->nf_company_tags; 
 	                            $alltags = $collection->find(array("user_id" => $_SESSION['user_id']));                            
@@ -106,23 +107,7 @@ if($_POST['tag_submit'] == "Update")
 							$userFaxDetails = $collection_fax_details->findOne(array('_id' =>new MongoId($all_tagfaxs['fax_id'])));															
 							?>           
 						<li <?php if($all_tagfaxs['is_read'] == "0"){?>onClick="seenAjax('<?php echo $all_tagfaxs['_id'];?>')"<?php } ?>>
-							<div class="md-card-list-item-menu margn">                                    
-								<a href="#"><i class="fa fa-reply-all"></i> </a>
-								<a href="#mailbox_new_message" data-uk-modal="{center:true}" onClick="fwdmsg('<?php echo $userFaxDetails['message_subject'];?>','<?php echo $userFaxDetails['message_body'];?>')"><i class="fa fa-long-arrow-right"></i></a>
-								<!-- <a href="#" id="tagging"><i class="fa fa-tags"></i></a>														
-									<div class="dropdown">
-										<div class="arrow-up"></div>
-									    <ul>
-									    	<?php 
-									    	$collection_tag = $db->nf_company_tags; 
-									    	$alltags = $collection_tag->find()->sort(array("created_date" => -1));
-									    	foreach ($alltags as $all_tags) {?>
-									    		<li onClick="addingtags('<?php echo $all_tagfaxs['_id'];?>','<?php echo $all_tags['_id'];?>','<?php echo $all_tags['tag_name'];?>')">
-									    			<a><?php echo $all_tags['tag_name'];?></a>
-									    		</li>
-									    	<?php }?>										                
-							            </ul>
-						            </div> -->
+							<div class="md-card-list-item-menu margn">                                    								
 								<a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_tagfaxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>                                         
 								<span id="favs_sec_<?php echo $all_tagfaxs['_id'];?>">
 									<?php if($all_tagfaxs['favorites'] == "N"){?>
@@ -131,7 +116,7 @@ if($_POST['tag_submit'] == "Update")
 										<a id="Fav_id" onClick="gFavorites('<?php echo $all_tagfaxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
 									<?php } ?> 
 								</span>
-							</div>
+							</div>							
 							
 							<span class="md-card-list-item-date"><?php echo date('j M',strtotime($all_tagfaxs['created_date'])); ?></span>
 							<div class="md-card-list-item-select">
@@ -147,7 +132,14 @@ if($_POST['tag_submit'] == "Update")
 								<div class="md-card-list-item-sender-small">
 									<span><?php echo $userDetails['first_name'][0].''.$userDetails['last_name'][0]; ?></span>
 								</div>
-								<span><?php echo substr($userFaxDetails['message_subject'],0,30);?></span>
+								<span>
+									<?php echo substr($userFaxDetails['message_subject'],0,30);?>
+									<span id="favs_sec1_<?php echo $amonth_Faxs['_id'];?>" style="float:right;">
+										<?php if($all_tagfaxs['favorites'] == "Y") { ?>
+											<a id="Fav_id" onClick="gFavorites('<?php echo $all_tagfaxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+										<?php } ?>
+									</span>
+								</span>
 							</div>		
 							<div class="md-card-list-item-content-wrapper">
 								<div class="md-card-list-item-content">
@@ -325,7 +317,8 @@ if($_POST['tag_submit'] == "Update")
 	<script src="assets/js/uikit_custom.min.js"></script>
 	<!-- altair common functions/helpers -->
 	<script src="assets/js/altair_admin_common.min.js"></script>
-
+	<!--  mailbox functions -->
+    <script src="assets/js/pages/page_mailbox.min.js"></script>
 
 	<script>
 		$(function() {
@@ -489,10 +482,89 @@ if($_POST['tag_submit'] == "Update")
 				});
 
 
+			// Select Dropdown Script
+            $('#selec_adv_1').selectize({
+	            options: [
+	            		
+	            	{id: "all" , title: 'All', url: '#jhghjgjhk' ,user_id:'alls'},
+	            	<?php 
+	            		$EdTinc = 1;
+                       	$collection = $db->nf_company_tags; 
+                        $alltags2 = $collection->find(array("user_id" => $_SESSION['user_id']));  
+						$sessUserId = $_SESSION['user_id'];
+						
+                        foreach($alltags2 as $all_tags2){
+							$userId =  $all_tags2["user_id"];	
+							if($sessUserId == $userId){								
+								$urlTag = "#edit_tag_$EdTinc";
+								$EdTinc++;
+							}else{
+								$urlTag = '';
+							}
+					?>							 
+	                		{id: "<?php echo $all_tags2['_id']?>" , title: '<?php echo $all_tags2["tag_name"]; ?>', url: '<?php echo $urlTag; ?>' ,user_id:'<?php echo $all_tags2["user_id"]; ?>'},
+	                <?php  } ?>	                	                
+	            ],
+	            maxItems: null,
+	            valueField: 'id',
+	            labelField: 'title',
+	            searchField: 'title',
+	            create: false,
+	            render: {
+	                option: function(data, escape) {
+	                    return  '<div class="option">' +
+	                            '<span class="title">' + escape(data.title) + '</span>' +
+	                            '</div>';
+	                },
+	                item: function(data, escape) {
+						var urlVal = "javascript:deleteTag('"+escape(data.id)+"')";
+						var userSesId =   "<?php echo $_SESSION['user_id'];?>" ;
+						
+						if(userSesId == data.user_id){
+							
+								var closeBtn = '</a>&nbsp;&nbsp;<a href="' + escape(data.url) + '" data-uk-modal="{center:true}"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp; <a href ='+urlVal+'>X</a>';
+						}else{
+							var closeBtn = '';
+						}
+						
+						
+	                    return '<div class="item"><a href="?tagged='+escape(data.id)+'">' + escape(data.title) + closeBtn +'</div>';
+	                }
+	            }
+				/*,
+	            onDropdownOpen: function($dropdown) {
+	                $dropdown
+	                    .hide()
+	                    .velocity('slideDown', {
+	                        begin: function() {
+	                            $dropdown.css({'margin-top':'0'})
+	                        },
+	                        duration: 200,
+	                        easing: easing_swiftOut
+	                    })
+	            },
+	            onDropdownClose: function($dropdown) {
+	                $dropdown
+	                    .show()
+	                    .velocity('slideUp', {
+	                        complete: function() {
+	                            $dropdown.css({'margin-top':''})
+	                        },
+	                        duration: 200,
+	                        easing: easing_swiftOut
+	                    })
+	            }*/
+	        });
+			// End Select Dropdown
+
+
 		});
 	</script>
 	 <!--  forms advanced functions -->
-    <!--<script src="assets/js/pages/forms_advanced.min.js"></script>-->
+    <!--<script src="assets/js/pages/forms_advanced.min.js"></script>-->    
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">  
+    <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>    
+    <script src="assets/js/pages/forms_advanced.min.js"></script>
     <script>
         $(function() {
             var $switcher = $('#style_switcher'),
@@ -587,82 +659,7 @@ if($_POST['tag_submit'] == "Update")
                     location.reload(true);
                 });
 				
-			
-
-            // Select Dropdown Script
-            $('#selec_adv_1').selectize({
-	            options: [
-	            	<?php 
-	            		$EdTinc = 1;
-                       	$collection = $db->nf_company_tags; 
-                        $alltags2 = $collection->find();                            
-						$sessUserId = $_SESSION['user_id'];
 						
-                        foreach($alltags2 as $all_tags2){
-							$userId =  $all_tags2["user_id"];	
-							if($sessUserId == $userId){								
-								$urlTag = "#edit_tag_$EdTinc";
-								$EdTinc++;
-							}else{
-								$urlTag = '';
-							}
-					?>							 
-	                		{id: "<?php echo $all_tags2['_id']?>" , title: '<?php echo $all_tags2["tag_name"]; ?>', url: '<?php echo $urlTag; ?>' ,user_id:'<?php echo $all_tags2["user_id"]; ?>'},
-	                <?php  } ?>	                
-	            ],
-	            maxItems: null,
-	            valueField: 'id',
-	            labelField: 'title',
-	            searchField: 'title',
-	            create: false,
-	            render: {
-	                option: function(data, escape) {
-	                    return  '<div class="option">' +
-	                            '<span class="title">' + escape(data.title) + '</span>' +
-	                            '</div>';
-	                },
-	                item: function(data, escape) {
-						var urlVal = "javascript:deleteTag('"+escape(data.id)+"')";
-						var userSesId =   "<?php echo $_SESSION['user_id'];?>" ;
-						
-						if(userSesId == data.user_id){
-							
-								var closeBtn = '</a>&nbsp;&nbsp;<a href="' + escape(data.url) + '" data-uk-modal="{center:true}"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp; <a href ='+urlVal+'>X</a>';
-						}else{
-							var closeBtn = '';
-						}
-						
-						
-	                    return '<div class="item"><a href="?tagged='+escape(data.id)+'">' + escape(data.title) + closeBtn +'</div>';
-	                }
-	            }
-				/*,
-	            onDropdownOpen: function($dropdown) {
-	                $dropdown
-	                    .hide()
-	                    .velocity('slideDown', {
-	                        begin: function() {
-	                            $dropdown.css({'margin-top':'0'})
-	                        },
-	                        duration: 200,
-	                        easing: easing_swiftOut
-	                    })
-	            },
-	            onDropdownClose: function($dropdown) {
-	                $dropdown
-	                    .show()
-	                    .velocity('slideUp', {
-	                        complete: function() {
-	                            $dropdown.css({'margin-top':''})
-	                        },
-	                        duration: 200,
-	                        easing: easing_swiftOut
-	                    })
-	            }*/
-	        });
-			// End Select Dropdown
-			
-			
         });
 		function deleteTag(values){				
 			if(confirm('Are you sure you want to remove ?')){
@@ -720,14 +717,38 @@ if($_POST['tag_submit'] == "Update")
 			});		
 			return false;
 		}
+
+		// Adding favorites
+		function gFavorites(faxId,fVal)
+        {
+            $.ajax({
+                url:"auto_complete.php",
+                type:"GET",
+                data: {"fax_id": faxId,"fav_val":fVal},
+                success:function(html){    
+                    if(fVal == 'Y')      
+                    {
+                        alert('Successfully added to favorites'); 
+                        $('#favs_sec_'+faxId).load(location.href + " #favs_sec_"+faxId);
+                        $('#favs_sec1_'+faxId).load(location.href + " #favs_sec1_"+faxId);
+                    }
+                    else
+                    {
+                        alert('Successfully removed from favorites');      
+                        $('#favs_sec_'+faxId).load(location.href + " #favs_sec_"+faxId);
+                        $('#favs_sec1_'+faxId).load(location.href + " #favs_sec1_"+faxId);
+                    }                    
+                }
+            });        
+        }
     </script> <!-- ionrangeslider -->
-    <script src="bower_components/ion.rangeslider/js/ion.rangeSlider.min.js"></script>
+    <?php /*<script src="bower_components/ion.rangeslider/js/ion.rangeSlider.min.js"></script>
     <!-- htmleditor (codeMirror) -->
     <script src="assets/js/uikit_htmleditor_custom.min.js"></script>
     <!-- inputmask-->
     <script src="bower_components/jquery.inputmask/dist/jquery.inputmask.bundle.js"></script>
 
     <!--  forms advanced functions -->
-    <script src="assets/js/pages/forms_advanced.min.js"></script>
+    <script src="assets/js/pages/forms_advanced.min.js"></script>*/?>
 </body>
 </html>

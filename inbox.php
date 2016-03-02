@@ -55,11 +55,11 @@
 		header("location:inbox.php");
 	}	
 
-if(isset($_GET['action']) && ($_GET['action'] == "delete") && isset($_GET['faxsId']) && ($_GET['faxsId']!="" ))
-{	
-    $faxObjCon->deleteFax($_GET['faxsId']);
-    header("location:inbox.php");
-}
+// if(isset($_GET['action']) && ($_GET['action'] == "delete") && isset($_GET['faxsId']) && ($_GET['faxsId']!="" ))
+// {	
+//     $faxObjCon->deleteFax($_GET['faxsId']);
+//     header("location:inbox.php");
+// }
 
 if($_POST['submit_reply']=="reply")
 {	
@@ -75,7 +75,7 @@ if($_POST['submit_reply']=="reply")
     z-index: 9999 !important;
 }
 .dropdown{
-    min-width: 150px;     
+    min-width: 167px;     
     display: none;
     position: absolute;
     z-index: 999;
@@ -121,9 +121,212 @@ a#tagging:hover + .dropdown , .dropdown:hover {
 </style>
 
 <div id="page_content">
-        <div id="page_content_inner">
-            <div class="md-card-list-wrapper" id="mailbox">
-                <div class="uk-width-large-8-10 uk-container-center">
+    <div id="page_content_inner">
+        <div class="md-card-list-wrapper" id="mailbox">
+
+        <?php 
+        // Search Functionality
+        if($_REQUEST['name_2'] != "")
+        {?>
+
+    		<div class="uk-width-large-8-10 uk-container-center">
+	    		<?php 			
+				$collection_fax = $db->nf_fax_users; 
+				$collection_fax_details = $db->nf_fax;
+				$collection = $db->nf_user; 
+				$sessId = $_SESSION['user_id'];
+
+				// $db->users->find(array("name" => new MongoRegex("/Joe/")));
+
+				// $db->users->find(array('$or' => array(array("a" => 1), array("b" => 2))));'to_id' => "$sessId"
+				
+				$searchfaxs = $collection_fax_details->find(array('$or' => array(array("message_subject" => new MongoRegex("/".$_REQUEST['name_2']."/")),array("message_body" => new MongoRegex("/".$_REQUEST['name_2']."/")))))->sort(array("created_date" => -1));	
+				$searchfaxsCnt = $collection_fax_details->find(array('$or' => array(array("message_subject" => new MongoRegex("/".$_REQUEST['name_2']."/")),array("message_body" => new MongoRegex("/".$_REQUEST['name_2']."/")))))->count();					
+
+				if($searchfaxsCnt > 0 ){		
+				?>
+	            <div class="md-card-list" id="searcht">
+	                <!-- <div class="md-card-list-header heading_list">Today</div>                         -->
+	                <div class="md-card-list-header md-card-list-header-combined heading_list" style="display: none">All Messages</div>
+	                <ul class="hierarchical_slide">
+	                   <?php	 
+	                    $srch = 1;
+						foreach ($searchfaxs as $search_faxs){ 								
+							$Srchallfaxs = $collection_fax->find(array('fax_id'=>$search_faxs['_id'],'to_id' => "$sessId",'is_delete'=> 0))->sort(array("created_date" => -1));
+							$Cntallfaxs = $collection_fax->find(array('fax_id'=>$search_faxs['_id'],'to_id' => "$sessId",'is_delete'=> 0))->sort(array("created_date" => -1))->count();
+							if($Cntallfaxs > 0)
+							{
+
+								foreach($Srchallfaxs as $Srchall_faxs)
+								{							
+								// User Details										
+								$userDetails = $collection->findOne(array('_id' => new MongoId($search_faxs['from_id'])));											
+								// Fetch Fax subject information from nf_fax;
+								$userFaxDetails = $collection_fax_details->findOne(array('_id' =>new MongoId($Srchall_faxs['fax_id'])));															
+								?>           
+							<li <?php if($Srchall_faxs['is_read'] == "0"){?>onClick="seenAjax('<?php echo $Srchall_faxs['_id'];?>')"<?php } ?>>
+								<div class="md-card-list-item-menu margn" id="<?php echo $search_faxs['_id'];?>">                                    
+									<!-- <a href="#"><i class="fa fa-reply-all"></i> </a> -->
+									<a href="#mailbox_new_message" data-uk-modal="{center:true}" onClick="fwdmsg('<?php echo $userFaxDetails['message_subject'];?>','<?php echo $userFaxDetails['message_body'];?>')" title="forward"><i class="fa fa-long-arrow-right"></i></a>
+									<a href="#" id="tagging" title="tags"><i class="fa fa-tags"></i></a>														
+										<div class="dropdown">
+											<div class="arrow-up"></div>
+										    <ul>
+										    	<?php 
+										    	$collection_tag = $db->nf_company_tags; 
+										    	$alltags = $collection_tag->find(array("user_id" => $_SESSION['user_id']))->sort(array("created_date" => -1));
+										    	$Cntsalltags = $collection_tag->find(array("user_id" => $_SESSION['user_id']))->sort(array("created_date" => -1))->count();
+										    	if($Cntsalltags > 0)
+										    	{
+										    		foreach ($alltags as $all_tags) {?>
+										    		<li>
+
+										    			<?php if($search_faxs['fax_tag'] == $all_tags['_id']){?>
+										    				<a title="tag" onClick="addingtags('<?php echo $search_faxs['_id'];?>','<?php echo $all_tags['_id'];?>','aa12')"><?php echo $all_tags['tag_name'];?></a>			
+										    				<span onClick="addingtags('<?php echo $search_faxs['_id'];?>','','emptytt')" style="float:right;cursor:pointer;color:red;">
+										    					<i class="fa fa-times"></i>
+										    				</span>
+										    			<?php } else { ?>
+										    				<a title="click to add this tag" onClick="addingtags('<?php echo $search_faxs['_id'];?>','<?php echo $all_tags['_id'];?>','<?php echo $all_tags['tag_name'];?>')"><?php echo $all_tags['tag_name'];?></a>			
+										    			<?php } ?>
+										    		</li>
+										    	<?php }
+										    	} else {?>		
+										    		<li style="text-align:center;">No tags were added <br> to add <a href="tag.php">Click Here</a></li>
+										    	<?php } ?>
+								            </ul>
+							            </div>
+									<!-- <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $search_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a> -->                                         
+									<a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { inboxdelete('<?php echo $search_faxs['_id'];?>','searcht'); return false;}" title="delete"><i class="fa fa-trash"></i></a>
+									<span id="favs_sec_<?php echo $search_faxs['_id'];?>">
+										<?php if($Srchall_faxs['favorites'] == "N"){?>
+											<a id="Fav_id" onClick="gFavorites('<?php echo $search_faxs['_id'];?>','Y')" title="favorites"><i class="fa fa-star"></i> </a>
+										<?php } else { ?>
+											<a id="Fav_id" onClick="gFavorites('<?php echo $search_faxs['_id']; ?>','N')" title="favorites"><i class="fa fa-star md-btn-flat-primary" style="color:#94940C"></i> </a>
+										<?php } ?> 
+									</span>
+								</div>
+								
+								<span class="md-card-list-item-date"><?php echo date('j M',strtotime($search_faxs['created_date'])); ?></span>
+								<div class="md-card-list-item-select">
+									<input type="checkbox" data-md-icheck />
+								</div>
+								<div class="md-card-list-item-avatar-wrapper" <?php //echo $divClk; ?>>
+									<span class="md-card-list-item-avatar md-bg-grey"><?php echo $userDetails['first_name'][0].''.$userDetails['last_name'][0]; ?></span>
+								</div>
+								<div class="md-card-list-item-sender" <?php //echo $divUsrNameClk; ?>>
+									<span><?php echo ucfirst($userDetails['first_name']).' '.ucfirst($userDetails['last_name']); ?></span>      
+								</div>
+								<div class="md-card-list-item-subject" <?php //echo $divSujClk; ?>>
+									<div class="md-card-list-item-sender-small">
+										<span><?php echo $userDetails['first_name'][0].''.$userDetails['last_name'][0]; ?></span>
+									</div>
+									<span><?php echo substr($search_faxs['message_subject'],0,30);?>
+										<span id="favs_sec1_<?php echo $search_faxs['_id'];?>" style="float:right;">
+											<?php if($Srchall_faxs['favorites'] == "N"){?>
+												<!-- <a id="Fav_id" onClick="gFavorites('<?php echo $search_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a> -->
+											<?php } else { ?>
+												<a id="Fav_id" onClick="gFavorites('<?php echo $search_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary" style="color:#94940C"></i> </a>
+											<?php } ?> 
+										</span>
+									</span>
+								</div>		
+								<div class="md-card-list-item-content-wrapper">
+									<div class="md-card-list-item-content">
+										<?php echo html_entity_decode($search_faxs['message_body']); echo "<br><br>";
+										if($search_faxs['saved_pdf_file'] != "")
+										{?>													
+							    			<a href="#image_<?php echo $search_faxs['_id'];?>_popup<?php echo $img;?>" data-uk-modal="{center:true}">
+							    				<!-- <img title="click to view attachment" src="upload_dir/files/<?php echo $search_faxs['file_name'];?>" id="img_atch" width="100" height="50"> -->
+							    				<img title="click to view attachment" src="assets/img/attachmentpin.png" id="img_atch" width="50" height="25">
+							    			</a>		
+							    			<div class="uk-modal" id="image_<?php echo $search_faxs['_id'];?>_popup">
+							    				<div class="uk-modal-dialog" style="width:90%; height:90%;">		
+							    					<button class="uk-modal-close uk-close" type="button"></button>
+							    					<iframe src="upload_dir/savedpdfs/<?php echo $search_faxs['saved_pdf_file'];?>" style="width:100%; height:100%;"></iframe>
+							    					<a id="addButton" class="green-button" href="add_note.html">Add a note</a>    
+							    				</div>
+							    			</div>
+							    			<!-- <a href="upload_dir/savedpdfs/<?php echo $search_faxs['saved_pdf_file'];?>">View the attachment</a> -->
+										<?php } ?>		
+									</div>
+
+									<!-- Reply Messages Section start -->
+										<?php 
+										$collection_fax_reply = $db->nf_fax_replys; 
+										$rfax_id = $Srchall_faxs['fax_id'];
+										$replyfaxs = $collection_fax_reply->find(array('fax_id' => "$rfax_id"))->sort(array("created_date" => -1));
+
+										foreach ($replyfaxs as $reply_faxs) {													
+										?>
+											<span class="md-card-list-item-date"><?php echo date('j M',strtotime($reply_faxs['created_date'])); ?></span>
+											<div class="md-card-list-item-select">
+												<!-- <input type="checkbox" data-md-icheck /> -->
+												&nbsp;&nbsp;&nbsp;&nbsp;
+											</div>
+											<?php $rplyUserDetails = $collection->findOne(array('_id' => new MongoId($reply_faxs['from_id']))); 	?>
+											<div class="md-card-list-item-avatar-wrapper">
+												<span class="md-card-list-item-avatar md-bg-grey"><?php echo $rplyUserDetails['first_name'][0].''.$rplyUserDetails['last_name'][0]; ?></span>
+											</div>
+											<div class="md-card-list-item-sender">
+												<span><?php echo ucfirst($rplyUserDetails['first_name']).' '.ucfirst($rplyUserDetails['last_name']); ?></span>                                    
+											</div>																									
+											<div class="md-card-list-item-content">
+												<?php echo html_entity_decode($reply_faxs['message_body']); ?>												
+											</div>
+											<br><br><br>
+										<?php } ?> 												
+									<!-- Reply Message Section End -->
+
+									<form class="md-card-list-item-reply" name="replyform" method="post">	
+										<label for="mailbox_reply_1895">Reply to <span><?php echo $userDetails['email_id']; ?></span></label>		
+										<input type="hidden" name="to_id" id="to_id" value="<?php echo $userDetails['_id'];?>">
+										<input type="hidden" name="from_id" id="from_id" value="<?php echo $_SESSION['user_id'];?>">												
+										<input type="hidden" name="reply_fax_id" id="reply_fax_id" value="<?php echo $search_faxs['fax_id']; ?>">
+										<textarea class="md-input md-input-full" name="reply_message" id="reply_message" cols="30" rows="4" required></textarea>			
+										<input type="submit" name="submit_reply" id="submit_reply" class="uk-float-left md-btn md-btn-flat md-btn-flat-primary" value="reply">
+										<img src="assets/img/attach_file_48.png" height="25" width="23" style="margin-top:12px; margin-bottom:-10px;">
+									</form>
+								</div>
+							</li>	
+					  	  <?php }//user foreach
+
+					  	  	} //user if condition End
+					  	  	else if($Cntallfaxs == "0" && $srch == $searchfaxsCnt)
+					  	  	{?>
+					  	  		<li>
+					  	  			<div class="md-card-list-item-subject">								
+										<span>No Faxs Found for "<?php echo $_GET['name_2'];?>"</span>
+									</div>				  	  			
+					  	  		</li>
+					  <?php }//goto a;}
+					  $srch++; } //}// foreach	?>                           	
+	                    
+	                </ul>
+	            </div>
+				<?php }// if $allfaxsTodayCnt close 
+
+				else
+				{ ?>
+					<div class="md-card-list" id="searcht">
+	                    <!-- <div class="md-card-list-header heading_list">Today</div>                         -->
+	                    <div class="md-card-list-header md-card-list-header-combined heading_list" style="display: none">All Messages</div>
+	                    <ul class="hierarchical_slide">
+	                    	<li>
+	                    		<div class="md-card-list-item-subject">								
+									<span>No Faxs Found for "<?php echo $_GET['name_2'];?>"</span>
+								</div>
+	                    	</li>
+	                    </ul>
+	                </div>
+				<?php } //a: //else End?>
+    		</div>
+
+        <?php }
+        else
+        {        	
+        ?>
+            <div class="uk-width-large-8-10 uk-container-center">
 				<?php 
 					$startDate = date('Y-m-d 00:00:00');  						   
 					//$endDate = date('Y-m-d H:i:s');
@@ -138,7 +341,7 @@ a#tagging:hover + .dropdown , .dropdown:hover {
 
 					if($allTodayCnt > 0 ){		
 				?>
-                    <div class="md-card-list">
+                    <div class="md-card-list" id="today">
                         <div class="md-card-list-header heading_list">Today</div>                        
                         <div class="md-card-list-header md-card-list-header-combined heading_list" style="display: none">All Messages</div>
                         <ul class="hierarchical_slide">
@@ -162,10 +365,10 @@ a#tagging:hover + .dropdown , .dropdown:hover {
 										$userFaxDetails = $collection_fax_details->findOne(array('_id' =>new MongoId($all_faxs['fax_id'])));															
 										?>           
 									<li <?php if($all_faxs['is_read'] == "0"){?>onClick="seenAjax('<?php echo $all_faxs['_id'];?>')"<?php } ?>>
-										<div class="md-card-list-item-menu margn">                                    
+										<div class="md-card-list-item-menu margn" id="<?php echo $all_faxs['_id'];?>">                                    
 											<!-- <a href="#"><i class="fa fa-reply-all"></i> </a> -->
-											<a href="#mailbox_new_message" data-uk-modal="{center:true}" onClick="fwdmsg('<?php echo $userFaxDetails['message_subject'];?>','<?php echo $userFaxDetails['message_body'];?>')"><i class="fa fa-long-arrow-right"></i></a>
-											<a href="#" id="tagging"><i class="fa fa-tags"></i></a>														
+											<a href="#mailbox_new_message" data-uk-modal="{center:true}" onClick="fwdmsg('<?php echo $userFaxDetails['message_subject'];?>','<?php echo $userFaxDetails['message_body'];?>')" title="forward"><i class="fa fa-long-arrow-right"></i></a>
+											<a href="#" id="tagging" title="tags"><i class="fa fa-tags"></i></a>														
 												<div class="dropdown">
 													<div class="arrow-up"></div>
 												    <ul>
@@ -178,14 +381,13 @@ a#tagging:hover + .dropdown , .dropdown:hover {
 												    		foreach ($alltags as $all_tags) {?>
 												    		<li>
 												    			<?php if($all_faxs['fax_tag'] == $all_tags['_id']){?>
-												    				<a onClick="addingtags('<?php echo $all_faxs['_id'];?>','<?php echo $all_tags['_id'];?>','aa12')"><?php echo $all_tags['tag_name'];?></a>			
+												    				<a title="tag" onClick="addingtags('<?php echo $all_faxs['_id'];?>','<?php echo $all_tags['_id'];?>','aa12')"><?php echo $all_tags['tag_name'];?></a>			
 												    				<span onClick="addingtags('<?php echo $all_faxs['_id'];?>','','emptytt')" style="float:right;cursor:pointer;color:red;">
 												    					<i class="fa fa-times"></i>
 												    				</span>
 												    			<?php } else { ?>
-												    				<a onClick="addingtags('<?php echo $all_faxs['_id'];?>','<?php echo $all_tags['_id'];?>','<?php echo $all_tags['tag_name'];?>')"><?php echo $all_tags['tag_name'];?></a>			
+												    				<a title="click to add this tag" onClick="addingtags('<?php echo $all_faxs['_id'];?>','<?php echo $all_tags['_id'];?>','<?php echo $all_tags['tag_name'];?>')"><?php echo $all_tags['tag_name'];?></a>			
 												    			<?php } ?>
-
 												    		</li>
 												    	<?php }
 												    	} else {?>		
@@ -193,12 +395,13 @@ a#tagging:hover + .dropdown , .dropdown:hover {
 												    	<?php } ?>
 										            </ul>
 									            </div>
-											<a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>                                         
+											<!-- <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $all_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a> -->                                         
+											<a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { inboxdelete('<?php echo $all_faxs['_id'];?>','today'); return false;}" title="delete"><i class="fa fa-trash"></i></a>
 											<span id="favs_sec_<?php echo $all_faxs['_id'];?>">
 												<?php if($all_faxs['favorites'] == "N"){?>
-													<a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+													<a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id'];?>','Y')" title="favorites"><i class="fa fa-star"></i> </a>
 												<?php } else { ?>
-													<a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary" style="color:#94940C"></i> </a>
+													<a id="Fav_id" onClick="gFavorites('<?php echo $all_faxs['_id']; ?>','N')" title="favorites"><i class="fa fa-star md-btn-flat-primary" style="color:#94940C"></i> </a>
 												<?php } ?> 
 											</span>
 										</div>
@@ -235,16 +438,15 @@ a#tagging:hover + .dropdown , .dropdown:hover {
 									    			<a href="#image_<?php echo $userFaxDetails['_id'];?>_popup<?php echo $img;?>" data-uk-modal="{center:true}">
 									    				<!-- <img title="click to view attachment" src="upload_dir/files/<?php echo $userFaxDetails['file_name'];?>" id="img_atch" width="100" height="50"> -->
 									    				<img title="click to view attachment" src="assets/img/attachmentpin.png" id="img_atch" width="50" height="25">
-									    			</a>												    			
+									    			</a>		
 									    			<div class="uk-modal" id="image_<?php echo $userFaxDetails['_id'];?>_popup">
 									    				<div class="uk-modal-dialog" style="width:90%; height:90%;">		
 									    					<button class="uk-modal-close uk-close" type="button"></button>
 									    					<iframe src="upload_dir/savedpdfs/<?php echo $userFaxDetails['saved_pdf_file'];?>" style="width:100%; height:100%;"></iframe>
 									    					<a id="addButton" class="green-button" href="add_note.html">Add a note</a>    
 									    				</div>
-
 									    			</div>
-									    			<!-- <a href="upload_dir/savedpdfs/<?php echo $userFaxDetails['saved_pdf_file'];?>">View the attachment</a> -->									    			
+									    			<!-- <a href="upload_dir/savedpdfs/<?php echo $userFaxDetails['saved_pdf_file'];?>">View the attachment</a> -->
 												<?php } ?>		
 											</div>
 
@@ -276,13 +478,31 @@ a#tagging:hover + .dropdown , .dropdown:hover {
 											<!-- Reply Message Section End -->
 
 											<form class="md-card-list-item-reply" name="replyform" method="post">	
-												<label for="mailbox_reply_1895">Reply to <span><?php echo $userDetails['email_id']; ?></span></label>		
+												<label for="mailbox_reply_1895">Reply to <span><?php echo $userDetails['email_id']; ?></span></label>															
 												<input type="hidden" name="to_id" id="to_id" value="<?php echo $userDetails['_id'];?>">
 												<input type="hidden" name="from_id" id="from_id" value="<?php echo $_SESSION['user_id'];?>">												
 												<input type="hidden" name="reply_fax_id" id="reply_fax_id" value="<?php echo $all_faxs['fax_id']; ?>">
-												<textarea class="md-input md-input-full" name="reply_message" id="reply_message" cols="30" rows="4" required></textarea>			
+												<textarea class="md-input md-input-full" name="reply_message" id="reply_message" cols="30" rows="4" required></textarea>	<br>
+												<label class="fileUpload">
+												    <input id="uploadBtn" type="file" class="upload" />
+												    <span class="uploadBtn"><img src="assets/img/attach_file_48.png" height="25" width="23" style="cursor:pointer;"></span>
+												</label>
+												<span id="uploadFile"></span>
+
+												<br><br>
 												<input type="submit" name="submit_reply" id="submit_reply" class="uk-float-left md-btn md-btn-flat md-btn-flat-primary" value="reply">
 											</form>
+											<style type="text/css">
+											.fileUpload input.upload {
+												position: absolute;	
+												opacity: 0;
+											}
+											</style>
+											<script type="text/javascript">
+											document.getElementById("uploadBtn").onchange = function () {
+												document.getElementById("uploadFile").innerHTML = this.value.replace(/^.*\\/, "");;
+											};
+											</script>
 										</div>
 									</li>	
 							<?php } //}// foreach	
@@ -305,7 +525,7 @@ a#tagging:hover + .dropdown , .dropdown:hover {
 
 					if($allWeekCnt > 0 ){	
 					?>	
-						<div class="md-card-list">
+						<div class="md-card-list" id="yesterday">
 							<div class="md-card-list-header heading_list">Yesterday</div>
 							<ul class="hierarchical_slide">
 							<?php    											
@@ -316,11 +536,11 @@ a#tagging:hover + .dropdown , .dropdown:hover {
 									$userFaxDetails = $collection_fax_details->findOne(array('_id' =>new MongoId($yesterd_faxs['fax_id'])));		
 								?>
 							<li <?php if($yesterd_faxs['is_read'] == "0"){?>onClick="seenAjax('<?php echo $yesterd_faxs['_id'];?>')"<?php } ?>>
-								<div class="md-card-list-item-menu margn">
+								<div class="md-card-list-item-menu margn" id="<?php echo $yesterd_faxs['_id'];?>">
 									
 									<!-- <a href="#"><i class="fa fa-reply-all"></i> </a> -->
-									<a href="#mailbox_new_message" data-uk-modal="{center:true}" onClick="fwdmsg('<?php echo $userFaxDetails['message_subject'];?>','<?php echo $userFaxDetails['message_body'];?>')"><i class="fa fa-long-arrow-right"></i></a>															
-									<a href="#" id="tagging"><i class="fa fa-tags"></i></a>			
+									<a href="#mailbox_new_message" data-uk-modal="{center:true}" onClick="fwdmsg('<?php echo $userFaxDetails['message_subject'];?>','<?php echo $userFaxDetails['message_body'];?>')" title="forward"><i class="fa fa-long-arrow-right"></i></a>															
+									<a href="#" id="tagging" title=""><i class="fa fa-tags"></i></a>			
 										<div class="dropdown">
 											<div class="arrow-up"></div>
 										    <ul>
@@ -333,12 +553,12 @@ a#tagging:hover + .dropdown , .dropdown:hover {
 										    		foreach ($alltags as $all_tags) {?>
 										    		<li>
 										    			<?php if($yesterd_faxs['fax_tag'] == $all_tags['_id']){?>
-										    				<a onClick="addingtags('<?php echo $yesterd_faxs['_id'];?>','<?php echo $all_tags['_id'];?>','aa12')"><?php echo $all_tags['tag_name'];?></a>
+										    				<a title="tagged" onClick="addingtags('<?php echo $yesterd_faxs['_id'];?>','<?php echo $all_tags['_id'];?>','aa12')"><?php echo $all_tags['tag_name'];?></a>
 										    				<span onClick="addingtags('<?php echo $yesterd_faxs['_id'];?>','','emptytt')" style="float:right;cursor:pointer;color:red;">
 										    					<i class="fa fa-times"></i>
 										    				</span>
 										    			<?php } else { ?>
-										    				<a onClick="addingtags('<?php echo $yesterd_faxs['_id'];?>','<?php echo $all_tags['_id'];?>','<?php echo $all_tags['tag_name'];?>')"><?php echo $all_tags['tag_name'];?></a>			
+										    				<a title="click to add this tag" onClick="addingtags('<?php echo $yesterd_faxs['_id'];?>','<?php echo $all_tags['_id'];?>','<?php echo $all_tags['tag_name'];?>')"><?php echo $all_tags['tag_name'];?></a>			
 										    			<?php } ?>
 										    		</li>
 										    	<?php }
@@ -347,12 +567,13 @@ a#tagging:hover + .dropdown , .dropdown:hover {
 										    	<?php } ?>		
 								            </ul>
 							            </div>
-									<a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $yesterd_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>	
+									<!-- <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $yesterd_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>	 -->
+									<a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { inboxdelete('<?php echo $yesterd_faxs['_id'];?>','yesterday'); return false;}" title="delete"><i class="fa fa-trash"></i></a>
 									<span id="favs_sec_<?php echo $yesterd_faxs['_id'];?>">
 										<?php if($yesterd_faxs['favorites'] == "N"){?>
-											<a id="Fav_id" onClick="gFavorites('<?php echo $yesterd_faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+											<a id="Fav_id" onClick="gFavorites('<?php echo $yesterd_faxs['_id'];?>','Y')" title="favorites"><i class="fa fa-star"></i> </a>
 										<?php } else { ?>
-											<a id="Fav_id" onClick="gFavorites('<?php echo $yesterd_faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary" style="color:#94940C"></i> </a>
+											<a id="Fav_id" onClick="gFavorites('<?php echo $yesterd_faxs['_id']; ?>','N')" title="favorites"><i class="fa fa-star md-btn-flat-primary" style="color:#94940C"></i> </a>
 										<?php } ?> 
 									</span>														
 								</div>
@@ -483,7 +704,7 @@ a#tagging:hover + .dropdown , .dropdown:hover {
 						$allMonthCnt = $collection_fax->find(array('to_id' => "$sessId","created_date" => array('$gt' => $startDate,'$lte' => $endDate),"is_delete"=>0))->count();	
 						if($allMonthCnt > 0 ){
 					?>
-					<div class="md-card-list">
+					<div class="md-card-list" id="month">
                         <div class="md-card-list-header heading_list">This Month</div>
                         <ul class="hierarchical_slide">
                         	<?php								
@@ -495,11 +716,11 @@ a#tagging:hover + .dropdown , .dropdown:hover {
 									$userFaxDetails = $collection_fax_details->findOne(array('_id' =>new MongoId($amonth_Faxs['fax_id'])));															
 							?>
 								<li <?php if($amonth_Faxs['is_read'] == "0"){?>onClick="seenAjax('<?php echo $amonth_Faxs['_id'];?>')"<?php } ?>>
-									<div class="md-card-list-item-menu margn">
+									<div class="md-card-list-item-menu margn" id="<?php echo $amonth_Faxs['_id'];?>">
 										
 										<!-- <a href="#"><i class="fa fa-reply-all"></i> </a> -->
-										<a href="#mailbox_new_message" data-uk-modal="{center:true}" onClick="fwdmsg('<?php echo $userFaxDetails['message_subject'];?>','<?php echo $userFaxDetails['message_body'];?>')"><i class="fa fa-long-arrow-right"></i></a>
-										<a href="#" id="tagging"><i class="fa fa-tags"></i></a>														
+										<a href="#mailbox_new_message" data-uk-modal="{center:true}" onClick="fwdmsg('<?php echo $userFaxDetails['message_subject'];?>','<?php echo $userFaxDetails['message_body'];?>')" title="forward"><i class="fa fa-long-arrow-right"></i></a>
+										<a href="#" id="tagging" title="tags"><i class="fa fa-tags"></i></a>														
 											<div class="dropdown">
 												<div class="arrow-up"></div>
 											    <ul>
@@ -512,12 +733,12 @@ a#tagging:hover + .dropdown , .dropdown:hover {
 											    		foreach ($alltags as $all_tags) {?>
 											    		<li>
 											    			<?php if($amonth_Faxs['fax_tag'] == $all_tags['_id']){?>
-											    				<a onClick="addingtags('<?php echo $amonth_Faxs['_id'];?>','<?php echo $all_tags['_id'];?>','aa12')"><?php echo $all_tags['tag_name'];?></a>	
+											    				<a onClick="addingtags('<?php echo $amonth_Faxs['_id'];?>','<?php echo $all_tags['_id'];?>','aa12')" title="tagged"><?php echo $all_tags['tag_name'];?></a>	
 											    				<span onClick="addingtags('<?php echo $amonth_Faxs['_id'];?>','','emptytt')" style="float:right;cursor:pointer;color:red;">
 											    					<i class="fa fa-times"></i>
 											    				</span>
 											    			<?php } else { ?>
-											    				<a onClick="addingtags('<?php echo $amonth_Faxs['_id'];?>','<?php echo $all_tags['_id'];?>','<?php echo $all_tags['tag_name'];?>')"><?php echo $all_tags['tag_name'];?></a>			
+											    				<a onClick="addingtags('<?php echo $amonth_Faxs['_id'];?>','<?php echo $all_tags['_id'];?>','<?php echo $all_tags['tag_name'];?>')" title="click to add this"><?php echo $all_tags['tag_name'];?></a>			
 											    			<?php } ?>
 											    		</li>
 											    	<?php }
@@ -526,12 +747,13 @@ a#tagging:hover + .dropdown , .dropdown:hover {
 											    	<?php } ?>										                
 									            </ul>
 								            </div>
-										<a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $amonth_Faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+										<!-- <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $amonth_Faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a> -->
+										<a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { inboxdelete('<?php echo $amonth_Faxs['_id'];?>','month'); return false;}" title="delete"><i class="fa fa-trash"></i></a>
 										<span id="favs_sec_<?php echo $amonth_Faxs['_id'];?>">
 											<?php if($amonth_Faxs['favorites'] == "N"){?>
-												<a id="Fav_id" onClick="gFavorites('<?php echo $amonth_Faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+												<a id="Fav_id" onClick="gFavorites('<?php echo $amonth_Faxs['_id'];?>','Y')" title="favorites"><i class="fa fa-star"></i> </a>
 											<?php } else { ?>
-												<a id="Fav_id" onClick="gFavorites('<?php echo $amonth_Faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary" style="color:#94940C"></i> </a>
+												<a id="Fav_id" onClick="gFavorites('<?php echo $amonth_Faxs['_id']; ?>','N')" title="favorites"><i class="fa fa-star md-btn-flat-primary" style="color:#94940C"></i> </a>
 											<?php } ?> 
 										</span>
 									</div>
@@ -664,7 +886,7 @@ a#tagging:hover + .dropdown , .dropdown:hover {
 				
 				if($allCnt > 0 ){
 				?>
-					<div class="md-card-list">
+					<div class="md-card-list" id="Oldmonth">
 						<div class="md-card-list-header heading_list">Older Messages</div>
 						<ul class="hierarchical_slide">
 						   <?php
@@ -677,11 +899,11 @@ a#tagging:hover + .dropdown , .dropdown:hover {
 								$userFaxDetails = $collection_fax_details->findOne(array('_id' =>new MongoId($Oldmonth_Faxs['fax_id'])));															
 							?>
 							<li <?php if($Oldmonth_Faxs['is_read'] == "0"){?>onClick="seenAjax('<?php echo $Oldmonth_Faxs['_id'];?>')"<?php } ?>>
-								<div class="md-card-list-item-menu margn">
+								<div class="md-card-list-item-menu margn" id="<?php echo $Oldmonth_Faxs['_id'];?>">
 									
 									<!-- <a href="#"><i class="fa fa-reply-all"></i> </a> -->
-									<a href="#mailbox_new_message" data-uk-modal="{center:true}" onClick="fwdmsg('<?php echo $userFaxDetails['message_subject'];?>','<?php echo $userFaxDetails['message_body'];?>')"><i class="fa fa-long-arrow-right"></i></a>
-									<a href="#" id="tagging"><i class="fa fa-tags"></i></a>														
+									<a href="#mailbox_new_message" data-uk-modal="{center:true}" onClick="fwdmsg('<?php echo $userFaxDetails['message_subject'];?>','<?php echo $userFaxDetails['message_body'];?>')" title="forward"><i class="fa fa-long-arrow-right"></i></a>
+									<a href="#" id="tagging" title="tags"><i class="fa fa-tags"></i></a>														
 										<div class="dropdown">
 											<div class="arrow-up"></div>
 										    <ul>
@@ -694,12 +916,12 @@ a#tagging:hover + .dropdown , .dropdown:hover {
 										    		foreach ($alltags as $all_tags) {?>
 										    		<li>
 									    			<?php if($Oldmonth_Faxs['fax_tag'] == $all_tags['_id']){	?>
-									    				<a onClick="addingtags('<?php echo $Oldmonth_Faxs['_id'];?>','<?php echo $all_tags['_id'];?>','aa12')"><?php echo $all_tags['tag_name'];?></a>
+									    				<a onClick="addingtags('<?php echo $Oldmonth_Faxs['_id'];?>','<?php echo $all_tags['_id'];?>','aa12')" title="tagged"><?php echo $all_tags['tag_name'];?></a>
 									    				<span onClick="addingtags('<?php echo $Oldmonth_Faxs['_id'];?>','','emptytt')" style="float:right;cursor:pointer;color:red;">
 									    					<i class="fa fa-times"></i>
 									    				</span>
 									    			<?php } else { ?>
-									    				<a onClick="addingtags('<?php echo $Oldmonth_Faxs['_id'];?>','<?php echo $all_tags['_id'];?>','<?php echo $all_tags['tag_name'];?>')"><?php echo $all_tags['tag_name'];?></a>			
+									    				<a onClick="addingtags('<?php echo $Oldmonth_Faxs['_id'];?>','<?php echo $all_tags['_id'];?>','<?php echo $all_tags['tag_name'];?>')" title="tagged"><?php echo $all_tags['tag_name'];?></a>			
 									    			<?php } ?>
 										    		</li>
 										    	<?php }
@@ -708,12 +930,13 @@ a#tagging:hover + .dropdown , .dropdown:hover {
 										    	<?php } ?>		
 										    </ul>
 										</div>
-									<a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $Oldmonth_Faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>
+									<!-- <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'inbox.php?action=delete&faxsId=<?php echo $Oldmonth_Faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a> -->
+									<a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { inboxdelete('<?php echo $Oldmonth_Faxs['_id'];?>','Oldmonth'); return false;}" title="delete"><i class="fa fa-trash"></i></a>
 									<span id="favs_sec_<?php echo $Oldmonth_Faxs['_id'];?>">
 										<?php if($Oldmonth_Faxs['favorites'] == "N"){?>
-											<a id="Fav_id" onClick="gFavorites('<?php echo $Oldmonth_Faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a>
+											<a id="Fav_id" onClick="gFavorites('<?php echo $Oldmonth_Faxs['_id'];?>','Y')" title="favorites"><i class="fa fa-star"></i> </a>
 										<?php } else { ?>
-											<a id="Fav_id" onClick="gFavorites('<?php echo $Oldmonth_Faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary"></i> </a>
+											<a id="Fav_id" onClick="gFavorites('<?php echo $Oldmonth_Faxs['_id']; ?>','N')" title="favorites"><i class="fa fa-star md-btn-flat-primary" style="color:#94940C"></i> </a>
 										<?php } ?> 
 									</span>
 								</div>
@@ -731,7 +954,16 @@ a#tagging:hover + .dropdown , .dropdown:hover {
 									<div class="md-card-list-item-sender-small">
 										<span><?php echo $userDetails['first_name'][0].''.$userDetails['last_name'][0]; ?></span>
 									</div>
-									<span><?php echo substr($userFaxDetails['message_subject'],'0','20'); ?></span>
+									<span>
+										<?php echo substr($userFaxDetails['message_subject'],'0','20'); ?>
+										<span id="favs_sec1_<?php echo $Oldmonth_Faxs['_id'];?>" style="float:right;">
+											<?php if($Oldmonth_Faxs['favorites'] == "N"){?>
+												<!-- <a id="Fav_id" onClick="gFavorites('<?php echo $Oldmonth_Faxs['_id'];?>','Y')"><i class="fa fa-star"></i> </a> -->
+											<?php } else { ?>
+												<a id="Fav_id" onClick="gFavorites('<?php echo $Oldmonth_Faxs['_id']; ?>','N')"><i class="fa fa-star md-btn-flat-primary" style="color:#94940C"></i> </a>
+											<?php } ?> 
+										</span>
+									</span>
 								</div>
 								<div class="md-card-list-item-content-wrapper">
 									<div class="md-card-list-item-content">
@@ -824,11 +1056,14 @@ a#tagging:hover + .dropdown , .dropdown:hover {
 						</ul>
 					</div>
 				<?php 	}   // if loop $allCnt ?>
-                </div>
             </div>
+
+        <?php } //Main Serach Else End?>
+
 
         </div>
     </div>
+</div>
 
 
 <!--<div class="md-fab-wrapper md-fab-speed-dial">
@@ -850,8 +1085,8 @@ a#tagging:hover + .dropdown , .dropdown:hover {
         	 	$ri =1;
 				$collection_fax1 = $db->nf_fax_users; 			
 				$recentFaxs = $collection_fax1->find(array('from_id' => $_SESSION['user_id']))->sort(array("created_date" => -1))->limit(3);		
-				foreach($recentFaxs as $recent_Faxs){							
-					if($recent_Faxs['to_id'] != $_SESSION['user_id'])
+				foreach($recentFaxs as $recent_Faxs){																	
+					if($recent_Faxs['to_id'] != $_SESSION['user_id'] && strlen($recent_Faxs['to_id']) == "24")
 					{
 						// User Details		
 						$RUserDetailsCnt = $collection->find(array('_id' => new MongoId($recent_Faxs['to_id'])))->count();
@@ -870,7 +1105,12 @@ a#tagging:hover + .dropdown , .dropdown:hover {
 	              		}
 
 	             	}
-            }?>
+	             	else if($recent_Faxs['to_id'] != $_SESSION['user_id'])
+	             	{ ?>
+	             		<li class="clr<?php echo $ri;?>"><a href="#mailbox_new_message" title="<?php echo $recent_Faxs['to_id']; ?>" data-uk-modal="{center:true}" data-uk-tooltip="{cls:'uk-tooltip-small',pos:'left'}" onClick="appdmail('','','<?php echo $recent_Faxs['to_id'];?>')"><?php echo ucfirst(substr($recent_Faxs['to_id'],0,1)); ?></a></li>
+	             	<?php $ri++;
+	             	}
+            	}?>
             <!-- <li class="clr2"><a href="#" title="Javved Shaik" data-uk-tooltip="{cls:'uk-tooltip-small',pos:'left'}">J</a></li>
             <li class="clr3"><a href="#" title="mohd khalil" data-uk-tooltip="{cls:'uk-tooltip-small',pos:'left'}">K</a></li> -->
         </ul>
@@ -916,9 +1156,9 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                     <textarea name="message_body" id="message_body" cols="30" rows="6" class="md-input"></textarea>
                 </div>
                 <div id="mail_upload-drop" class="uk-file-upload">
-					 <input id="Button1" type="button" value="Add File" onclick = "AddFileUpload()" class="uk-form-file md-btn" />
-					 <div id = "FileUploadContainer">
-							<!--FileUpload Controls will be added here -->
+					<input id="Button1" type="button" value="Add File" onclick = "AddFileUpload()" class="uk-form-file md-btn" />
+					<div id = "FileUploadContainer">
+					<!--FileUpload Controls will be added here -->
 
 					</div>
                     <!--p class="uk-text-muted uk-text-small uk-margin-small-bottom">or</p>
@@ -1139,8 +1379,8 @@ a#tagging:hover + .dropdown , .dropdown:hover {
 		function AddFileUpload(){ 
 		       if(counterInt < 10){
 					var div = document.createElement('DIV');
-					div.innerHTML = '<input  id="file' + counterInt + '" name = "file[' + counterInt +
-					']" type="file" /> <i class="md-icon material-icons">&#xE226;</i>'  +
+					div.innerHTML = '<i class="md-icon material-icons">&#xE226;</i>&nbsp;<input  id="file' + counterInt + '" name = "file[' + counterInt +
+					']" type="file" /> '  +
 					'<input  class="uk-form-file md-btn" id="Button' + counterInt + '" type="button" ' +
 					'value="Remove" onclick = "RemoveFileUpload(this)" /> ';
 					document.getElementById("FileUploadContainer").appendChild(div);
@@ -1153,6 +1393,7 @@ a#tagging:hover + .dropdown , .dropdown:hover {
 
 		function RemoveFileUpload(div){
 			document.getElementById("FileUploadContainer").removeChild(div.parentNode);
+			counterInt--;
 		}
 
         function gFavorites(faxId,fVal)
@@ -1176,6 +1417,18 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                     }                    
                 }
             });        
+        }
+
+        function inboxdelete(infaxId,divId)
+        {
+            $.ajax({
+                url:"auto_complete.php",
+                type:"GET",
+                data: {"inb_fax_id": infaxId,"section":"inboxdel"},
+                success:function(html){                                            
+                    $('#'+divId).load(location.href + " #"+divId);                    
+                }
+            });
         }
 
         function seenAjax(Fids)
@@ -1362,7 +1615,13 @@ a#tagging:hover + .dropdown , .dropdown:hover {
 	                    }
 	                }
 	            });   
-	            window.location.reload();
+	            //window.location.reload();
+	            $('#'+tfaxid).load(location.href + " #"+tfaxid);                
+                setInterval(function()
+                {
+                    $('#'+tfaxid).removeClass('md-card-list-item-menu margn');
+                    $('#'+tfaxid).removeClass('margn');                     
+                }, 100);
 	        }
 		}
 
@@ -1371,7 +1630,6 @@ a#tagging:hover + .dropdown , .dropdown:hover {
 			$('.md-input-wrapper').removeClass('md-input-filled');		
 		});		
 	</script>
-   
-	
+   	
 </body>
 </html>

@@ -71,10 +71,10 @@ class users{
 	}
 	// Update Group
 	public function updateGrpRecord($post)
-	{
+	{		
 		$collection = $this->db->nf_user_groups;
 
-		$Update_Group = array("group_name" => $post['grpName'],"modified_date" => $this->cfObj->createDate());
+		$Update_Group = array("group_name" => $post['grpName'],"user_ids" => $post['hidd_values'],"modified_date" => $this->cfObj->createDate());
 
 		$collection->update(array('_id' => new MongoId($post['grpId'])), array('$set' => $Update_Group));		
 	}

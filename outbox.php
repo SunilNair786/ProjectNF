@@ -69,7 +69,7 @@ if(isset($_GET['action']) && ($_GET['action'] == "delete") && isset($_GET['faxsI
     z-index: 9999 !important;
 }
 .dropdown{
-    min-width: 150px;     
+    min-width: 135px;     
     display: none;
     position: absolute;
     z-index: 999;
@@ -112,6 +112,111 @@ if(isset($_GET['action']) && ($_GET['action'] == "delete") && isset($_GET['faxsI
 a#tagging:hover + .dropdown , .dropdown:hover {
     display: block;
 }
+.file {
+  width: 180px;
+  height: 130px;
+  background: #aaa;
+  position: relative;
+  overflow: hidden;
+}
+
+.file .title, .file .download-btn {
+  width: 100%;
+  height: 40px;
+  line-height: 40px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: #E8E8E8;
+  margin: 0;
+  padding-left: 15px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;  
+}
+
+.file .download-btn {
+  height: 100%;
+  padding: 15px;
+  display: none;
+}
+
+.file:hover .download-btn {
+  display: block;
+}
+
+
+.file-icon {
+  font-family: Arial, Tahoma, sans-serif;
+  font-weight: 300;
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  position: relative;
+  text-align: left;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+  padding: 10px;
+  border: 1px solid #E8E8E8;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.file .title::before, .file .download-btn::before {
+  display: block;
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-bottom-left-radius: 0px;
+  border-width: 15px;
+  border-style: solid;
+  border-color: rgba(255,255,255,.35) #FFF  #FFF  rgba(255,255,255,.35);
+  -webkit-box-shadow: -1px -1px 5px rgba(0,0,0,.25);
+  box-shadow: inset hoff voff blur color;
+}
+
+.file-icon::after {
+  display: block;
+  content: attr(data-type);
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  font-size: 16px;
+  color: #fff;
+  text-transform: lowercase;
+  width: 100%;
+  padding: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.file-icon img {
+  width: 100%;
+}
+
+.download-btn a {
+  display: inline-block;
+  background: #aaa;
+  width: 35px;
+  height: 35px;
+  text-align: center;
+  margin-right: 5px;
+}
+
+.download-btn a:hover {
+  background: #222;
+}
+.pdf{
+    width:40px;
+    height: 40px;
+    bottom:50%;
+}
+ 
 </style>
 
 <div id="page_content">
@@ -142,30 +247,66 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                                 $udetail = '';
                                 $uIds = '';
                                 $faxInfo = $collection->find(array('fax_id' => $allOut_faxs['_id']));                                    
-                                foreach ($faxInfo as $fax_Info) {               
-                                    $CoutUserDetail = $collection_user->find(array('_id' => new MongoId($fax_Info['to_id'])))->count();
-                                    $outUserDetail = $collection_user->findOne(array('_id' => new MongoId($fax_Info['to_id'])));     
-                                    // In Contacts
-                                    $UserDetailCount = $db->nf_user_contacts->find(array('_id' => new MongoId($fax_Info['to_id'])))->count();          
-                                    $contUserDetail = $db->nf_user_contacts->findOne(array('_id' => new MongoId($fax_Info['to_id'])));          
-                                    if($CoutUserDetail > 0)  
+                                foreach ($faxInfo as $fax_Info) {        
+                                    if(strlen($fax_Info['to_id']) == "24")
                                     {
-                                        $udetailemail .= $outUserDetail['first_name']." ".$outUserDetail['last_name']." (".$outUserDetail['email_id']."), ";
-                                        $udetail .= $outUserDetail['first_name']." ".$outUserDetail['last_name'].",";
-                                        $uIds .= $outUserDetail['_id'].",";
+                                        $CoutUserDetail = $collection_user->find(array('_id' => new MongoId($fax_Info['to_id'])))->count();
+                                        $outUserDetail = $collection_user->findOne(array('_id' => new MongoId($fax_Info['to_id'])));     
+                                        // In Contacts
+                                        $UserDetailCount = $db->nf_user_contacts->find(array('_id' => new MongoId($fax_Info['to_id'])))->count();          
+                                        $contUserDetail = $db->nf_user_contacts->findOne(array('_id' => new MongoId($fax_Info['to_id'])));          
+                                        if($CoutUserDetail > 0)  
+                                        {
+                                            $udetailemail .= $outUserDetail['first_name']." ".$outUserDetail['last_name']." (".$outUserDetail['email_id']."), ";
+                                            $udetail .= $outUserDetail['first_name']." ".$outUserDetail['last_name'].",";
+                                            $uIds .= $outUserDetail['_id'].",";
+                                        }
+                                        else if($UserDetailCount > 0)
+                                        {   
+                                            $udetailemail .= $contUserDetail['contact_name']." (".$contUserDetail['email']."), ";
+                                            $udetail .= $contUserDetail['contact_name'].",";
+                                            $uIds .= $contUserDetail['_id'].",";
+                                        }
                                     }
-                                    else if($UserDetailCount > 0)
-                                    {   
-                                        $udetailemail .= $contUserDetail['contact_name']." (".$contUserDetail['email']."), ";
-                                        $udetail .= $contUserDetail['contact_name'].",";
-                                        $uIds .= $contUserDetail['_id'].",";
+                                    else
+                                    {
+                                        $udetailemail .=$fax_Info['to_id'].",";
+                                        $udetail .= $fax_Info['to_id'].",";
+                                        $uIds .= $fax_Info['to_id'].",";
                                     }
                                 }
                             ?>    
                             <li>                                
-                                <div class="md-card-list-item-menu margn">                                                                        
-                                    <a href="#mailbox_new_message" data-uk-modal="{center:true}" onClick="fwdmsg('<?php echo substr($udetailemail,0,-2);?>','<?php echo substr($uIds,0,-1);?>','<?php echo $allOut_faxs['message_subject'];?>','<?php echo $allOut_faxs['message_body'];?>')"><i class="fa fa-paper-plane"></i></a>                                    
-                                    <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location='outbox.php?action=delete&faxsId=<?php echo $allOut_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>                                                                             
+                                <div class="md-card-list-item-menu margn" id="<?php echo $allOut_faxs['_id'];?>">     
+                                    <a href="#mailbox_new_message" data-uk-modal="{center:true}" onClick="fwdmsg('<?php echo substr($udetailemail,0,-2);?>','<?php echo substr($uIds,0,-1);?>','<?php echo $allOut_faxs['message_subject'];?>','<?php echo $allOut_faxs['message_body'];?>')" title="Resend"><i class="fa fa-paper-plane"></i></a>      
+                                    <a href="#" id="tagging" title="tags"><i class="fa fa-tags"></i></a>                                                        
+                                        <div class="dropdown">
+                                            <div class="arrow-up"></div>
+                                            <ul>
+                                                <?php 
+                                                $collection_tag = $db->nf_company_tags; 
+                                                $alltags = $collection_tag->find(array("user_id" => $_SESSION['user_id']))->sort(array("created_date" => -1));
+                                                $Cntsalltags = $collection_tag->find(array("user_id" => $_SESSION['user_id']))->sort(array("created_date" => -1))->count();
+                                                if($Cntsalltags > 0)
+                                                {
+                                                    foreach ($alltags as $all_tags) {?>
+                                                    <li>
+                                                        <?php if($allOut_faxs['outbox_fax_tag'] == $all_tags['_id']){?>
+                                                            <a title="tag" onClick="addingtags('<?php echo $allOut_faxs['_id'];?>','<?php echo $all_tags['_id'];?>','aa12')"><?php echo $all_tags['tag_name'];?></a>           
+                                                            <span onClick="addingtags('<?php echo $allOut_faxs['_id'];?>','','emptytt')" style="float:right;cursor:pointer;color:red;">
+                                                                <i class="fa fa-times"></i>
+                                                            </span>
+                                                        <?php } else { ?>
+                                                            <a title="click to add this tag" onClick="addingtags('<?php echo $allOut_faxs['_id'];?>','<?php echo $all_tags['_id'];?>','<?php echo $all_tags['tag_name'];?>')"><?php echo $all_tags['tag_name'];?></a>          
+                                                        <?php } ?>
+                                                    </li>
+                                                <?php }
+                                                } else {?>      
+                                                    <li style="text-align:center;">No tags were added <br> to add <a href="tag.php">Click Here</a></li>
+                                                <?php } ?>
+                                            </ul>
+                                        </div> 
+                                    <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location='outbox.php?action=delete&faxsId=<?php echo $allOut_faxs['_id'];?>'; return false;}" title="delete"><i class="fa fa-trash"></i></a>       
                                 </div>
                                 <span class="md-card-list-item-date"><?php echo date('j M',strtotime($allOut_faxs['created_date'])); ?></span>
                                 <div class="md-card-list-item-select">
@@ -247,9 +388,28 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                                         }*/
 
                                         if($allOut_faxs['saved_pdf_file'] != "")
-                                        {?>                                                 
-                                            <a href="#image_<?php echo $allOut_faxs['_id'];?>_popup<?php echo $img;?>" data-uk-modal="{center:true}">
-                                                <!-- <img title="click to view attachment" src="upload_dir/files/<?php echo $allOut_faxs['file_name'];?>" id="img_atch" width="100" height="50"> -->
+                                        {?>  
+                                         <div class="file">
+                                                <div class="file-icon" data-type="filename.mp3">
+                                                  <img src="http://placehold.it/150x120" alt="">
+                                                </div>
+                                                <p class="title">File name.pdf</p>
+                                                
+                                                <div class="download-btn">
+                                                  <p>File name.pdf</p>
+                                                  
+                                                  <!-- <a href="#"> ^ </a>
+                                                  <a href="#"> ^ </a> -->
+                                                  <img class="pdf" src="assets/img/pdf.png" alt="pdf">
+                                                </div>
+                                              </div>
+
+
+
+
+
+                                            <!-- <a href="#image_<?php echo $allOut_faxs['_id'];?>_popup<?php echo $img;?>" data-uk-modal="{center:true}">
+                                                <img title="click to view attachment" src="upload_dir/files/<?php echo $allOut_faxs['file_name'];?>" id="img_atch" width="100" height="50">
                                                 <img title="click to view attachment" src="assets/img/attachmentpin.png" id="img_atch" width="50" height="25">
                                             </a>                                                                
                                             <div class="uk-modal" id="image_<?php echo $allOut_faxs['_id'];?>_popup">
@@ -258,7 +418,7 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                                                     <iframe src="upload_dir/savedpdfs/<?php echo $allOut_faxs['saved_pdf_file'];?>" style="width:100%; height:100%;"></iframe>
                                                     <a id="addButton" class="green-button" href="add_note.html">Add a note</a>    
                                                 </div>
-                                            </div>
+                                            </div> -->
                                             <!-- <a href="upload_dir/savedpdfs/<?php echo $allOut_faxs['saved_pdf_file'];?>">View the attachment</a> -->      
                                         <?php } ?>
                                     </div>                                    
@@ -289,33 +449,70 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                                     // getting User and Contact Details
                                     $udetailemail1 = '';
                                     $udetail1 = '';
-                                    $uIds1 = '';
+                                    $uIds1 = '';                                    
                                     $faxInfo1 = $collection->find(array('fax_id' => $yesterdOut_faxs['_id']));  
                                     foreach ($faxInfo1 as $fax1_Info) {               
-                                        $CoutUserDetail1 = $collection_user->find(array('_id' => new MongoId($fax1_Info['to_id'])))->count();
-                                        $outUserDetail1 = $collection_user->findOne(array('_id' => new MongoId($fax1_Info['to_id'])));     
-                                        // In Contacts
-                                        $UserDetailCount1 = $db->nf_user_contacts->find(array('_id' => new MongoId($fax1_Info['to_id'])))->count();
-                                        $contUserDetail1 = $db->nf_user_contacts->findOne(array('_id' => new MongoId($fax1_Info['to_id'])));
-                                        if($CoutUserDetail1 > 0)  
+                                        if(strlen($fax1_Info['to_id']) == "24")
                                         {
-                                            //$udetail1 .= $outUserDetail1['first_name'].$outUserDetail1['last_name'].",";
-                                            $udetailemail1 .= $outUserDetail1['first_name']." ".$outUserDetail1['last_name']." (".$outUserDetail1['email_id']."), ";
-                                            $udetail1 .= $outUserDetail1['first_name']." ".$outUserDetail1['last_name'].",";
-                                            $uIds1 .= $outUserDetail1['_id'].",";
+                                            $CoutUserDetail1 = $collection_user->find(array('_id' => new MongoId($fax1_Info['to_id'])))->count();
+                                            $outUserDetail1 = $collection_user->findOne(array('_id' => new MongoId($fax1_Info['to_id'])));     
+                                            // In Contacts
+                                            $UserDetailCount1 = $db->nf_user_contacts->find(array('_id' => new MongoId($fax1_Info['to_id'])))->count();
+                                            $contUserDetail1 = $db->nf_user_contacts->findOne(array('_id' => new MongoId($fax1_Info['to_id'])));
+                                            if($CoutUserDetail1 > 0)  
+                                            {
+                                                //$udetail1 .= $outUserDetail1['first_name'].$outUserDetail1['last_name'].",";
+                                                $udetailemail1 .= $outUserDetail1['first_name']." ".$outUserDetail1['last_name']." (".$outUserDetail1['email_id']."), ";
+                                                $udetail1 .= $outUserDetail1['first_name']." ".$outUserDetail1['last_name'].",";
+                                                $uIds1 .= $outUserDetail1['_id'].",";
+                                            }
+                                            else if($UserDetailCount1 > 0)
+                                            {
+                                                $udetailemail1 .= $contUserDetail1['contact_name']." (".$contUserDetail1['email']."), ";
+                                                $udetail1 .= $contUserDetail1['contact_name'].",";
+                                                $uIds1 .= $contUserDetail1['_id'].",";
+                                            }
+
                                         }
-                                        else if($UserDetailCount1 > 0)
+                                        else
                                         {
-                                            $udetailemail1 .= $contUserDetail1['contact_name']." (".$contUserDetail1['email']."), ";
-                                            $udetail1 .= $contUserDetail1['contact_name'].",";
-                                            $uIds1 .= $contUserDetail1['_id'].",";
+                                            $udetailemail .=$fax1_Info['to_id'].",";
+                                            $udetail .= $fax1_Info['to_id'].",";
+                                            $uIds .= $fax1_Info['to_id'].",";
                                         }
                                     }
                             ?>
                             <li>                                
-                                <div class="md-card-list-item-menu margn">                                                                        
-                                    <a href="#mailbox_new_message" data-uk-modal="{center:true}" onClick="fwdmsg('<?php echo substr($udetailemail1,0,-2);?>','<?php echo substr($uIds1,0,-1);?>','<?php echo $yesterdOut_faxs['message_subject'];?>','<?php echo $yesterdOut_faxs['message_body'];?>')"><i class="fa fa-paper-plane"></i></a>                                    
-                                    <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location='outbox.php?action=delete&faxsId=<?php echo $yesterdOut_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>                                                                             
+                                <div class="md-card-list-item-menu margn" id="<?php echo $yesterdOut_faxs['_id'];?>">                                                                        
+                                    <a href="#mailbox_new_message" data-uk-modal="{center:true}" onClick="fwdmsg('<?php echo substr($udetailemail1,0,-2);?>','<?php echo substr($uIds1,0,-1);?>','<?php echo $yesterdOut_faxs['message_subject'];?>','<?php echo $yesterdOut_faxs['message_body'];?>')" title="Resend"><i class="fa fa-paper-plane"></i></a>
+                                    <a href="#" id="tagging" title="tags"><i class="fa fa-tags"></i></a>                                                        
+                                        <div class="dropdown">
+                                            <div class="arrow-up"></div>
+                                            <ul>
+                                                <?php 
+                                                $collection_tag = $db->nf_company_tags; 
+                                                $alltags = $collection_tag->find(array("user_id" => $_SESSION['user_id']))->sort(array("created_date" => -1));
+                                                $Cntsalltags = $collection_tag->find(array("user_id" => $_SESSION['user_id']))->sort(array("created_date" => -1))->count();
+                                                if($Cntsalltags > 0)
+                                                {
+                                                    foreach ($alltags as $all_tags) {?>
+                                                    <li>
+                                                        <?php if($yesterdOut_faxs['outbox_fax_tag'] == $all_tags['_id']){?>
+                                                            <a title="tag" onClick="addingtags('<?php echo $yesterdOut_faxs['_id'];?>','<?php echo $all_tags['_id'];?>','aa12')"><?php echo $all_tags['tag_name'];?></a>           
+                                                            <span onClick="addingtags('<?php echo $yesterdOut_faxs['_id'];?>','','emptytt')" style="float:right;cursor:pointer;color:red;">
+                                                                <i class="fa fa-times"></i>
+                                                            </span>
+                                                        <?php } else { ?>
+                                                            <a title="click to add this tag" onClick="addingtags('<?php echo $yesterdOut_faxs['_id'];?>','<?php echo $all_tags['_id'];?>','<?php echo $all_tags['tag_name'];?>')"><?php echo $all_tags['tag_name'];?></a>          
+                                                        <?php } ?>
+                                                    </li>
+                                                <?php }
+                                                } else {?>      
+                                                    <li style="text-align:center;">No tags were added <br> to add <a href="tag.php">Click Here</a></li>
+                                                <?php } ?>
+                                            </ul>
+                                        </div>                                     
+                                    <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location='outbox.php?action=delete&faxsId=<?php echo $yesterdOut_faxs['_id'];?>'; return false;}" title="delete"><i class="fa fa-trash"></i></a>                                                                             
                                 </div>
                                 <span class="md-card-list-item-date"><?php echo date('j M',strtotime($yesterdOut_faxs['created_date'])); ?></span>
                                 <div class="md-card-list-item-select">
@@ -419,31 +616,68 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                                 $udetail2 = '';
                                 $uIds2 = '';
                                 $faxInfo2 = $collection->find(array('fax_id' => $lastMnth_faxs['_id']));    
-                                foreach ($faxInfo2 as $fax2_Info) {               
-                                    $CoutUserDetail2 = $collection_user->find(array('_id' => new MongoId($fax2_Info['to_id'])))->count();
-                                    $outUserDetail2 = $collection_user->findOne(array('_id' => new MongoId($fax2_Info['to_id'])));     
-                                    // In Contacts
-                                    $UserDetailCount2 = $db->nf_user_contacts->find(array('_id' => new MongoId($fax2_Info['to_id'])))->count();
-                                    $contUserDetail2 = $db->nf_user_contacts->findOne(array('_id' => new MongoId($fax2_Info['to_id'])));
-                                    if($CoutUserDetail2 > 0)  
-                                    {
-                                        //$udetail1 .= $outUserDetail1['first_name'].$outUserDetail1['last_name'].",";
-                                        $udetailemail2 .= $outUserDetail2['first_name']." ".$outUserDetail2['last_name']." (".$outUserDetail2['email_id']."), ";
-                                        $udetail2 .= $outUserDetail2['first_name']." ".$outUserDetail2['last_name'].",";
-                                        $uIds2 .= $outUserDetail2['_id'].",";
+                                foreach ($faxInfo2 as $fax2_Info) {   
+                                    if(strlen($fax2_Info['to_id']) == "24")
+                                    {            
+                                        $CoutUserDetail2 = $collection_user->find(array('_id' => new MongoId($fax2_Info['to_id'])))->count();
+                                        $outUserDetail2 = $collection_user->findOne(array('_id' => new MongoId($fax2_Info['to_id'])));     
+                                        // In Contacts
+                                        $UserDetailCount2 = $db->nf_user_contacts->find(array('_id' => new MongoId($fax2_Info['to_id'])))->count();
+                                        $contUserDetail2 = $db->nf_user_contacts->findOne(array('_id' => new MongoId($fax2_Info['to_id'])));
+                                        if($CoutUserDetail2 > 0)  
+                                        {
+                                            //$udetail1 .= $outUserDetail1['first_name'].$outUserDetail1['last_name'].",";
+                                            $udetailemail2 .= $outUserDetail2['first_name']." ".$outUserDetail2['last_name']." (".$outUserDetail2['email_id']."), ";
+                                            $udetail2 .= $outUserDetail2['first_name']." ".$outUserDetail2['last_name'].",";
+                                            $uIds2 .= $outUserDetail2['_id'].",";
+                                        }
+                                        else if($UserDetailCount2 > 0)
+                                        {
+                                            $udetailemail2 .= $contUserDetail2['contact_name']." (".$contUserDetail2['email']."), ";
+                                            $udetail2 .= $contUserDetail2['contact_name'].",";
+                                            $uIds2 .= $contUserDetail2['_id'].",";
+                                        }
+
                                     }
-                                    else if($UserDetailCount2 > 0)
+                                    else
                                     {
-                                        $udetailemail2 .= $contUserDetail2['contact_name']." (".$contUserDetail2['email']."), ";
-                                        $udetail2 .= $contUserDetail2['contact_name'].",";
-                                        $uIds2 .= $contUserDetail2['_id'].",";
+                                        $udetailemail .=$fax2_Info['to_id'].",";
+                                        $udetail .= $fax2_Info['to_id'].",";
+                                        $uIds .= $fax2_Info['to_id'].",";
                                     }
                                 }
                             ?>
                             <li>                                
-                                <div class="md-card-list-item-menu margn">                                                                        
-                                    <a href="#mailbox_new_message" data-uk-modal="{center:true}" onClick="fwdmsg('<?php echo substr($udetailemail2,0,-2);?>','<?php echo substr($uIds2,0,-1);?>','<?php echo $lastMnth_faxs['message_subject'];?>','<?php echo $lastMnth_faxs['message_body'];?>')"><i class="fa fa-paper-plane"></i></a>                                    
-                                    <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location='outbox.php?action=delete&faxsId=<?php echo $lastMnth_faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>                                                                             
+                                <div class="md-card-list-item-menu margn" id="<?php echo $lastMnth_faxs['_id'];?>">
+                                    <a href="#mailbox_new_message" data-uk-modal="{center:true}" onClick="fwdmsg('<?php echo substr($udetailemail2,0,-2);?>','<?php echo substr($uIds2,0,-1);?>','<?php echo $lastMnth_faxs['message_subject'];?>','<?php echo $lastMnth_faxs['message_body'];?>')" title="Resend"><i class="fa fa-paper-plane"></i></a>
+                                    <a href="#" id="tagging" title="tags"><i class="fa fa-tags"></i></a>                                                        
+                                        <div class="dropdown">
+                                            <div class="arrow-up"></div>
+                                            <ul>
+                                                <?php 
+                                                $collection_tag = $db->nf_company_tags; 
+                                                $alltags = $collection_tag->find(array("user_id" => $_SESSION['user_id']))->sort(array("created_date" => -1));
+                                                $Cntsalltags = $collection_tag->find(array("user_id" => $_SESSION['user_id']))->sort(array("created_date" => -1))->count();
+                                                if($Cntsalltags > 0)
+                                                {
+                                                    foreach ($alltags as $all_tags) {?>
+                                                    <li>
+                                                        <?php if($lastMnth_faxs['outbox_fax_tag'] == $all_tags['_id']){?>
+                                                            <a title="tag" onClick="addingtags('<?php echo $lastMnth_faxs['_id'];?>','<?php echo $all_tags['_id'];?>','aa12')"><?php echo $all_tags['tag_name'];?></a>           
+                                                            <span onClick="addingtags('<?php echo $lastMnth_faxs['_id'];?>','','emptytt')" style="float:right;cursor:pointer;color:red;">
+                                                                <i class="fa fa-times"></i>
+                                                            </span>
+                                                        <?php } else { ?>
+                                                            <a title="click to add this tag" onClick="addingtags('<?php echo $lastMnth_faxs['_id'];?>','<?php echo $all_tags['_id'];?>','<?php echo $all_tags['tag_name'];?>')"><?php echo $all_tags['tag_name'];?></a>          
+                                                        <?php } ?>
+                                                    </li>
+                                                <?php }
+                                                } else {?>      
+                                                    <li style="text-align:center;">No tags were added <br> to add <a href="tag.php">Click Here</a></li>
+                                                <?php } ?>
+                                            </ul>
+                                        </div>                                    
+                                    <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location='outbox.php?action=delete&faxsId=<?php echo $lastMnth_faxs['_id'];?>'; return false;}" title="delete"><i class="fa fa-trash"></i></a>                                                                             
                                 </div>
                                 <span class="md-card-list-item-date"><?php echo date('j M',strtotime($lastMnth_faxs['created_date'])); ?></span>
                                 <div class="md-card-list-item-select">
@@ -550,31 +784,67 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                                 $udetail3 = '';
                                 $uIds3 = '';
                                 $faxInfo3 = $collection->find(array('fax_id' => $CntOldmonth_Faxs['_id']));    
-                                foreach ($faxInfo3 as $fax3_Info) {               
-                                    $CoutUserDetail3 = $collection_user->find(array('_id' => new MongoId($fax3_Info['to_id'])))->count();
-                                    $outUserDetail3 = $collection_user->findOne(array('_id' => new MongoId($fax3_Info['to_id'])));     
-                                    // In Contacts
-                                    $UserDetailCount3 = $db->nf_user_contacts->find(array('_id' => new MongoId($fax3_Info['to_id'])))->count();
-                                    $contUserDetail3 = $db->nf_user_contacts->findOne(array('_id' => new MongoId($fax3_Info['to_id'])));
-                                    if($CoutUserDetail3 > 0)  
-                                    {
-                                        //$udetail1 .= $outUserDetail1['first_name'].$outUserDetail1['last_name'].",";
-                                        $udetailemail3 .= $outUserDetail3['first_name']." ".$outUserDetail3['last_name']." (".$outUserDetail3['email_id']."), ";
-                                        $udetail3 .= $outUserDetail3['first_name']." ".$outUserDetail3['last_name'].",";
-                                        $uIds3 .= $outUserDetail3['_id'].",";
+                                foreach ($faxInfo3 as $fax3_Info) {  
+                                    if(strlen($fax3_Info['to_id']) == "24")
+                                    {              
+                                        $CoutUserDetail3 = $collection_user->find(array('_id' => new MongoId($fax3_Info['to_id'])))->count();
+                                        $outUserDetail3 = $collection_user->findOne(array('_id' => new MongoId($fax3_Info['to_id'])));     
+                                        // In Contacts
+                                        $UserDetailCount3 = $db->nf_user_contacts->find(array('_id' => new MongoId($fax3_Info['to_id'])))->count();
+                                        $contUserDetail3 = $db->nf_user_contacts->findOne(array('_id' => new MongoId($fax3_Info['to_id'])));
+                                        if($CoutUserDetail3 > 0)  
+                                        {
+                                            //$udetail1 .= $outUserDetail1['first_name'].$outUserDetail1['last_name'].",";
+                                            $udetailemail3 .= $outUserDetail3['first_name']." ".$outUserDetail3['last_name']." (".$outUserDetail3['email_id']."), ";
+                                            $udetail3 .= $outUserDetail3['first_name']." ".$outUserDetail3['last_name'].",";
+                                            $uIds3 .= $outUserDetail3['_id'].",";
+                                        }
+                                        else if($UserDetailCount3 > 0)
+                                        {
+                                            $udetailemail3 .= $contUserDetail3['contact_name']." (".$contUserDetail3['email']."), ";
+                                            $udetail3 .= $contUserDetail3['contact_name'].",";
+                                            $uIds3 .= $contUserDetail3['_id'].",";
+                                        }
                                     }
-                                    else if($UserDetailCount3 > 0)
+                                    else
                                     {
-                                        $udetailemail3 .= $contUserDetail3['contact_name']." (".$contUserDetail3['email']."), ";
-                                        $udetail3 .= $contUserDetail3['contact_name'].",";
-                                        $uIds3 .= $contUserDetail3['_id'].",";
+                                        $udetailemail .=$fax3_Info['to_id'].",";
+                                        $udetail .= $fax3_Info['to_id'].",";
+                                        $uIds .= $fax3_Info['to_id'].",";
                                     }
                                 }      
                             ?>
                             <li>                                
-                                <div class="md-card-list-item-menu margn">                                                                        
-                                    <a href="#mailbox_new_message" data-uk-modal="{center:true}" onClick="fwdmsg('<?php echo substr($udetailemail3,0,-2);?>','<?php echo substr($uIds3,0,-1);?>''<?php echo $CntOldmonth_Faxs['message_subject'];?>','<?php echo $CntOldmonth_Faxs['message_body'];?>')"><i class="fa fa-paper-plane"></i></a>                                    
-                                    <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location='outbox.php?action=delete&faxsId=<?php echo $CntOldmonth_Faxs['_id'];?>'; return false;}"><i class="fa fa-trash"></i></a>                                                                             
+                                <div class="md-card-list-item-menu margn" id="<?php echo $CntOldmonth_Faxs['_id'];?>">                                                                        
+                                    <a href="#mailbox_new_message" data-uk-modal="{center:true}" onClick="fwdmsg('<?php echo substr($udetailemail3,0,-2);?>','<?php echo substr($uIds3,0,-1);?>''<?php echo $CntOldmonth_Faxs['message_subject'];?>','<?php echo $CntOldmonth_Faxs['message_body'];?>')" title="Resend"><i class="fa fa-paper-plane"></i></a>
+                                    <a href="#" id="tagging" title="tags"><i class="fa fa-tags"></i></a>                                                        
+                                        <div class="dropdown">
+                                            <div class="arrow-up"></div>
+                                            <ul>
+                                                <?php 
+                                                $collection_tag = $db->nf_company_tags; 
+                                                $alltags = $collection_tag->find(array("user_id" => $_SESSION['user_id']))->sort(array("created_date" => -1));
+                                                $Cntsalltags = $collection_tag->find(array("user_id" => $_SESSION['user_id']))->sort(array("created_date" => -1))->count();
+                                                if($Cntsalltags > 0)
+                                                {
+                                                    foreach ($alltags as $all_tags) {?>
+                                                    <li>
+                                                        <?php if($CntOldmonth_Faxs['outbox_fax_tag'] == $all_tags['_id']){?>
+                                                            <a title="tag" onClick="addingtags('<?php echo $CntOldmonth_Faxs['_id'];?>','<?php echo $all_tags['_id'];?>','aa12')"><?php echo $all_tags['tag_name'];?></a>           
+                                                            <span onClick="addingtags('<?php echo $CntOldmonth_Faxs['_id'];?>','','emptytt')" style="float:right;cursor:pointer;color:red;">
+                                                                <i class="fa fa-times"></i>
+                                                            </span>
+                                                        <?php } else { ?>
+                                                            <a title="click to add this tag" onClick="addingtags('<?php echo $CntOldmonth_Faxs['_id'];?>','<?php echo $all_tags['_id'];?>','<?php echo $all_tags['tag_name'];?>')"><?php echo $all_tags['tag_name'];?></a>          
+                                                        <?php } ?>
+                                                    </li>
+                                                <?php }
+                                                } else {?>      
+                                                    <li style="text-align:center;">No tags were added <br> to add <a href="tag.php">Click Here</a></li>
+                                                <?php } ?>
+                                            </ul>
+                                        </div>                                     
+                                    <a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location='outbox.php?action=delete&faxsId=<?php echo $CntOldmonth_Faxs['_id'];?>'; return false;}" title="delete"><i class="fa fa-trash"></i></a>                                                                             
                                 </div>
                                 <span class="md-card-list-item-date"><?php echo date('j M',strtotime($CntOldmonth_Faxs['created_date'])); ?></span>
                                 <div class="md-card-list-item-select">
@@ -919,8 +1189,8 @@ a#tagging:hover + .dropdown , .dropdown:hover {
         function AddFileUpload(){ 
                if(counterInt < 10){
                     var div = document.createElement('DIV');
-                    div.innerHTML = '<input  id="file' + counterInt + '" name = "file[' + counterInt +
-                    ']" type="file" /> <i class="md-icon material-icons">&#xE226;</i>'  +
+                    div.innerHTML = '<i class="md-icon material-icons">&#xE226;</i>&nbsp;<input  id="file' + counterInt + '" name = "file[' + counterInt +
+                    ']" type="file" /> '  +
                     '<input  class="uk-form-file md-btn" id="Button' + counterInt + '" type="button" ' +
                     'value="Remove" onclick = "RemoveFileUpload(this)" /> ';
                     document.getElementById("FileUploadContainer").appendChild(div);
@@ -1067,6 +1337,41 @@ a#tagging:hover + .dropdown , .dropdown:hover {
             // var txt = document.createTextNode(fax_body);
             // obj.appendChild(txt);
             $('.md-input-wrapper').addClass('md-input-filled');         
+        }
+
+        // Adding Tags to Outbox faxs
+        function addingtags(tfaxid,tagId,tgName)
+        {
+            if(tgName == "aa12")
+            {
+                alert('Already added to your tags list');
+            }
+            else
+            {   
+                $.ajax({
+                    url:"auto_complete.php",
+                    type:"GET",
+                    data: {"tagfaxs": tfaxid,"tagsId":tagId,"section":"Outbox_tagsAdd"},
+                    success:function(html){         
+                        if(tgName == "emptytt")
+                        {
+                            alert('Fax Removed from tag');                  
+                        }
+                        else
+                        {
+                            alert('Successfully Added to "'+tgName+'" tag');                    
+                        }
+                    }
+                });   
+                //window.location.reload();                             
+                $('#'+tfaxid).load(location.href + " #"+tfaxid);                
+                setInterval(function()
+                {
+                    $('#'+tfaxid).removeClass('md-card-list-item-menu margn');
+                    $('#'+tfaxid).removeClass('margn');                     
+                }, 100);
+                
+            }
         }
 
         // Emptying the fields in compose form
