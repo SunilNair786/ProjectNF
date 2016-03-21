@@ -6,6 +6,22 @@
 <?php
 if($_POST['submit'] == "Save")
 {
+    $iij = 1;
+    foreach ($_POST['GroupName'] as $value)
+    {
+        if($iij < count($_POST['GroupName']))
+        {
+            $eed = ",";
+        }
+        else
+        {
+            $eed = "";
+        }
+        $grp_Val_id .= $value.$eed;
+        $iij++;
+    }
+    $_POST['GroupName'] = $grp_Val_id;
+    
     $cntVal = $userContObj->insertContact($_POST);   
     header('location:contact.php'); 
     exit;
@@ -14,6 +30,21 @@ if($_POST['submit'] == "Save")
 // Update Contact
 if($_POST['submit'] == "Update")
 {
+    $iij = 1;
+    foreach ($_POST['GroupName'] as $value)
+    {
+        if($iij < count($_POST['GroupName']))
+        {
+            $eed = ",";
+        }
+        else
+        {
+            $eed = "";
+        }
+        $grp_Val_id .= $value.$eed;
+        $iij++;
+    }
+    $_POST['GroupName'] = $grp_Val_id;    
     $updateCon = $userContObj->updateContact($_POST);    
     header('location:contact.php'); 
     exit;
@@ -87,7 +118,7 @@ if(isset($_GET['searchParam'])){
 						$collection = $db->nf_user_groups; 
 						$allContactLists1 = $collection->findOne(array('_id' => new MongoId($contactList['group_id'])));
 				?>	
-					<div data-uk-filter="<?php echo $allContactLists1['group_name']; ?>,<?php echo $contactList["contact_name"];?>">
+					<div data-uk-filter="<?php echo $allContactLists1['group_name'];?>,sdsdsd,<?php echo $contactList["contact_name"];?>">
 							<div class="md-card md-card-hover">
 								<div class="md-card-head">
 									<div class="md-card-head-menu" data-uk-dropdown="{pos:'bottom-right'}">
@@ -141,10 +172,17 @@ if(isset($_GET['searchParam'])){
 						
 						// for Group Name
 						$collection = $db->nf_user_groups; 
-						$allContactLists1 = $collection->findOne(array('_id' => new MongoId($contactList['group_id'])));
+						//$allContactLists1 = $collection->findOne(array('_id' => new MongoId($contactList['group_id'])));
+                        $all_grp_vals = explode(",",$contactList['group_id']);
+                        $contactNames ="";
+                        for($ci = "0";$ci < count($all_grp_vals); $ci++)
+                        {
+                            $allContactLists1 = $collection->findOne(array('_id' => new MongoId($all_grp_vals[$ci])));
+                            $contactNames .= $allContactLists1['group_name'].',';
+                        }                           
 				?>
 
-						<div data-uk-filter="<?php echo $allContactLists1['group_name']; ?>,<?php echo $contactList["contact_name"];?>" aria-hidden="false">
+						<div data-uk-filter="<?php echo $contactNames; ?><?php echo $contactList["contact_name"];?>" aria-hidden="false">
 							<div class="md-card md-card-hover">
 								<div class="md-card-head">
 									<div class="md-card-head-menu" data-uk-dropdown="{pos:'bottom-right'}">
@@ -162,7 +200,8 @@ if(isset($_GET['searchParam'])){
 									<h3 class="md-card-head-text uk-text-center">
 										<?php echo $contactList["contact_name"];?>
 										<span class="uk-text-truncate">
-											<?php echo $allContactLists1['group_name']; ?>                                                  
+											<?php //echo $allContactLists1['group_name']; ?>         
+                                            <?php echo substr($contactNames,0,-1); ?>
 										</span>
 									</h3>
 								</div>
@@ -182,8 +221,8 @@ if(isset($_GET['searchParam'])){
 										</li>
 										<li>
 											<div class="md-list-content">
-												<span class="md-list-heading">Phone</span>
-												<span class="uk-text-small uk-text-muted"><?php echo $contactList["phone"];?></span>
+												<span class="md-list-heading">Fax</span>
+												<span class="uk-text-small uk-text-muted"><?php echo $contactList["fax"];?></span>
 											</div>
 										</li>
 									</ul>
@@ -284,6 +323,7 @@ if(isset($_GET['searchParam'])){
 
 
     <?php 
+    // Edit contact Section
     $Cinc1 = 1;
     $collection = $db->nf_user_contacts; 
     $allContactList1 = $collection->find()->sort(array("created_date" => -1));?>
@@ -311,13 +351,22 @@ if(isset($_GET['searchParam'])){
                 </div>
                 <div class="uk-margin-medium-bottom">
                     <label for="Group_name">Group Name</label>
-                    <select name="GroupName" id="GroupName<?php echo $Cinc1; ?>" class="md-input" required>
-                        <option value=""></option>
+                    <select name="GroupName[]" id="GroupName<?php echo $Cinc1; ?>[]" class="md-input" required multiple>
                         <?php
                         $collection = $db->nf_user_groups; 
                         $allGrpList = $collection->find()->sort(array("created_date" => -1));
-                        foreach($allGrpList as $all_GrpList){ ?>
-                            <option value="<?php echo $all_GrpList['_id']; ?>"><?php echo $all_GrpList['group_name']; ?></option>
+                        foreach($allGrpList as $all_GrpList){ 
+                            $con_ids = $contactList1['group_id'];
+                            $grp_list = $all_GrpList['_id'];
+                            $exist = strpos("$con_ids","$grp_list");          
+                            if ($exist === false) {                            
+                                $ss = "";
+                            }
+                            else
+                            {
+                                $ss = " selected";
+                            }?>
+                            <option value="<?php echo $all_GrpList['_id']; ?>"<?php echo $ss;?>><?php echo $all_GrpList['group_name']; ?></option>
                         <?php } ?>
                     </select>
                     <script type="text/javascript">                        

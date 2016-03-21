@@ -1,0 +1,189 @@
+{ 
+    "_id" : ObjectId("56dea588b0e30c841e00002d"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "group_name" : "testing", 
+    "user_ids" : "568cc704b0e30c081300002a,56840b13b0e30c801500002c,56d59943b0e30cf01c000029,56cdafb1b0e30cec05000029", 
+    "status" : "A", 
+    "created_date" : "2016-03-08 11:12:24", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56dea5ccb0e30c2c0400002a"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "group_name" : "developers", 
+    "user_ids" : "56d59996b0e30cf81c000079,56d6c310b0e30c540200002b,56d59943b0e30cf01c000029", 
+    "status" : "A", 
+    "created_date" : "2016-03-08 11:13:32", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56dea6ecb0e30c2c0400002b"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "group_name" : "gg", 
+    "user_ids" : "568cc704b0e30c081300002a,56814e79b0e30c8c1100002c", 
+    "status" : "A", 
+    "created_date" : "2016-03-08 11:18:20", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56dea998b0e30c9808000031"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "group_name" : "raj", 
+    "user_ids" : "56d59996b0e30cf81c000079,56cdafb1b0e30cec05000029,56d59996b0e30cf81c000079,56840536b0e30c2c1100002b,56814e79b0e30c8c1100002c,56d59996b0e30cf81c000079", 
+    "status" : "A", 
+    "created_date" : "2016-03-08 11:29:44", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56deaaedb0e30cac2400002c"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "group_name" : "fdafaf", 
+    "user_ids" : "56840536b0e30c2c1100002b,56840afeb0e30c801500002b,56d59996b0e30cf81c000079,56cdafb1b0e30cec05000029", 
+    "status" : "A", 
+    "created_date" : "2016-03-08 11:35:25", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56deab01b0e30cac2400002d"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "group_name" : "masss", 
+    "user_ids" : "56de9c3cb0e30c841e00002c,56814e79b0e30c8c1100002c,56840bc4b0e30c801500002d", 
+    "status" : "A", 
+    "created_date" : "2016-03-08 11:35:45", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56deab45b0e30c9808000032"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "group_name" : "hfdhfdh", 
+    "user_ids" : "568cc704b0e30c081300002a,56840afeb0e30c801500002b,56840b13b0e30c801500002c", 
+    "status" : "A", 
+    "created_date" : "2016-03-08 11:36:53", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56deab57b0e30c2c0400002c"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "group_name" : "addeeeee", 
+    "user_ids" : "56840afeb0e30c801500002b,56d59996b0e30cf81c000079,56de9c3cb0e30c841e00002c", 
+    "status" : "A", 
+    "created_date" : "2016-03-08 11:37:11", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56deab6bb0e30cac24000030"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "group_name" : "adeefdss", 
+    "user_ids" : "56de9c3cb0e30c841e00002c,56d59996b0e30cf81c000079,56840b13b0e30c801500002c,56cdafb1b0e30cec05000029,56840afeb0e30c801500002b", 
+    "status" : "A", 
+    "created_date" : "2016-03-08 11:37:31", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56deab80b0e30cac24000031"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "group_name" : "afgsd", 
+    "user_ids" : "56840b13b0e30c801500002c,56840536b0e30c2c1100002b,56814e79b0e30c8c1100002c,56cdafb1b0e30cec05000029,56d6c310b0e30c540200002b", 
+    "status" : "A", 
+    "created_date" : "2016-03-08 11:37:52", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56deab95b0e30c2c0400002d"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "group_name" : "adfdgfgg", 
+    "user_ids" : "56840536b0e30c2c1100002b,56814e79b0e30c8c1100002c,568cc704b0e30c081300002a,56d59996b0e30cf81c000079,56d6c310b0e30c540200002b,56de9c3cb0e30c841e00002c", 
+    "status" : "A", 
+    "created_date" : "2016-03-08 11:38:13", 
+    "modified_date" : "2016-03-08 12:08:59"
+}
+{ 
+    "_id" : ObjectId("56decf99b0e30c941a00002a"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "group_name" : "masjsh", 
+    "user_ids" : "56d59996b0e30cf81c000079,56d6c310b0e30c540200002b,56d6c310b0e30c540200002b", 
+    "status" : "A", 
+    "created_date" : "2016-03-08 14:11:53", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56decfadb0e30c941a00002b"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "group_name" : "sardar", 
+    "user_ids" : "56d59996b0e30cf81c000079,56d6c310b0e30c540200002b,56840afeb0e30c801500002b", 
+    "status" : "A", 
+    "created_date" : "2016-03-08 14:12:13", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56decfbcb0e30c841e00002e"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "group_name" : "the", 
+    "user_ids" : "56840b13b0e30c801500002c,56840b13b0e30c801500002c,56840536b0e30c2c1100002b,56d6c310b0e30c540200002b", 
+    "status" : "A", 
+    "created_date" : "2016-03-08 14:12:28", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56decfcab0e30c841e00002f"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "group_name" : "dfg", 
+    "user_ids" : "56840afeb0e30c801500002b,568cc704b0e30c081300002a,56de9ccfb0e30c2c04000029", 
+    "status" : "A", 
+    "created_date" : "2016-03-08 14:12:42", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56decfdeb0e30c841e000030"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "group_name" : "ssss", 
+    "user_ids" : "56840afeb0e30c801500002b,56d59996b0e30cf81c000079,56d6c310b0e30c540200002b,56840bc4b0e30c801500002d", 
+    "status" : "A", 
+    "created_date" : "2016-03-08 14:13:02", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56decfeeb0e30c841e000031"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "group_name" : "gggggg", 
+    "user_ids" : "56d6c310b0e30c540200002b,56840bc4b0e30c801500002d,56d59996b0e30cf81c000079", 
+    "status" : "A", 
+    "created_date" : "2016-03-08 14:13:18", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56dee895b0e30c841e000038"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "group_name" : "group", 
+    "user_ids" : "56840afeb0e30c801500002b,56814e79b0e30c8c1100002c", 
+    "status" : "A", 
+    "created_date" : "2016-03-08 15:58:29", 
+    "modified_date" : "2016-03-09 08:11:16"
+}
+{ 
+    "_id" : ObjectId("56dfeb05b0e30cf40800002d"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "group_name" : "groupwws", 
+    "user_ids" : "56814e79b0e30c8c1100002c", 
+    "status" : "A", 
+    "created_date" : "2016-03-09 10:21:09", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56e0268fb0e30cb423000036"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "group_name" : "raaja", 
+    "user_ids" : "56840536b0e30c2c1100002b,56840536b0e30c2c1100002b,56840536b0e30c2c1100002b", 
+    "status" : "A", 
+    "created_date" : "2016-03-09 14:35:11", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56e11781b0e30ccc1c000029"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "group_name" : "new test", 
+    "user_ids" : "56840536b0e30c2c1100002b,56814e79b0e30c8c1100002c,56840bc4b0e30c801500002d", 
+    "status" : "A", 
+    "created_date" : "2016-03-10 07:43:13", 
+    "modified_date" : ""
+}

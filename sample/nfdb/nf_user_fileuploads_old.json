@@ -1,0 +1,259 @@
+{ 
+    "_id" : ObjectId("567be2c1b0e30cf81900002b"), 
+    "user_id" : ObjectId("56782965b0e30c440f000029"), 
+    "file_name" : "56782965b0e30c440f000029_1450959553_0_dbdesign.png", 
+    "file_size" : NumberInt(149093), 
+    "created_date" : "2015-12-24 13:19:13"
+}
+{ 
+    "_id" : ObjectId("567bec01b0e30c4012000029"), 
+    "user_id" : ObjectId("56782965b0e30c440f000029"), 
+    "file_name" : "56782965b0e30c440f000029_1450961921_0_dbdesign.png", 
+    "file_size" : NumberInt(149093), 
+    "created_date" : "2015-12-24 13:58:41"
+}
+{ 
+    "_id" : ObjectId("567bec12b0e30c2801000029"), 
+    "user_id" : ObjectId("56782965b0e30c440f000029"), 
+    "file_name" : "56782965b0e30c440f000029_1450961938_0_dbdesign.png", 
+    "file_size" : NumberInt(149093), 
+    "created_date" : "2015-12-24 13:58:58"
+}
+{ 
+    "_id" : ObjectId("567bee3db0e30c401200002a"), 
+    "user_id" : ObjectId("56782965b0e30c440f000029"), 
+    "file_name" : "56782965b0e30c440f000029_1450962493_0_dbdesign.png", 
+    "file_size" : NumberInt(149093), 
+    "created_date" : "2015-12-24 14:08:13"
+}
+{ 
+    "_id" : ObjectId("567bf12eb0e30c0c1f000029"), 
+    "user_id" : ObjectId("56782965b0e30c440f000029"), 
+    "file_name" : "56782965b0e30c440f000029_1450963246_0_dbdesign.png", 
+    "file_size" : NumberInt(149093), 
+    "created_date" : "2015-12-24 14:20:46"
+}
+{ 
+    "_id" : ObjectId("567cd0e5b0e30c600e000029"), 
+    "user_id" : ObjectId("56782965b0e30c440f000029"), 
+    "file_name" : "56782965b0e30c440f000029_1451020517_0_dbdesign.png", 
+    "file_size" : NumberInt(149093), 
+    "created_date" : "2015-12-25 06:15:17"
+}
+{ 
+    "_id" : ObjectId("567cd136b0e30c040f000029"), 
+    "user_id" : ObjectId("56782965b0e30c440f000029"), 
+    "file_name" : "56782965b0e30c440f000029_1451020598_0_dbdesign.png", 
+    "file_size" : NumberInt(149093), 
+    "created_date" : "2015-12-25 06:16:38"
+}
+{ 
+    "_id" : ObjectId("56850b49b0e30c0c08000029"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "file_name" : "56810e1bb0e30ca411000029_1451559753_0_MongoDB_Schema.png", 
+    "file_size" : NumberInt(114853), 
+    "created_date" : "2015-12-31 12:02:33"
+}
+{ 
+    "_id" : ObjectId("56850c21b0e30c8812000029"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "file_name" : "56810e1bb0e30ca411000029_1451559969_0_MongoDB_Schema.png", 
+    "file_size" : NumberInt(114853), 
+    "created_date" : "2015-12-31 12:06:09"
+}
+{ 
+    "_id" : ObjectId("56850c65b0e30c0c0800002b"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "file_name" : "56810e1bb0e30ca411000029_1451560037_0_test.png", 
+    "file_size" : NumberInt(130858), 
+    "created_date" : "2015-12-31 12:07:17"
+}
+{ 
+    "_id" : ObjectId("56850cacb0e30c0c0800002e"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "file_name" : "56810e1bb0e30ca411000029_1451560108_0_test.png", 
+    "file_size" : NumberInt(130858), 
+    "created_date" : "2015-12-31 12:08:28"
+}
+{ 
+    "_id" : ObjectId("56851135b0e30cac17000029"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "file_name" : "56810e1bb0e30ca411000029_1451561269_0_MongoDB_Schema.png", 
+    "file_size" : NumberInt(114853), 
+    "created_date" : "2015-12-31 12:27:49"
+}
+{ 
+    "_id" : ObjectId("56851135b0e30cac1700002a"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "file_name" : "56810e1bb0e30ca411000029_1451561269_1_test.png", 
+    "file_size" : NumberInt(130858), 
+    "created_date" : "2015-12-31 12:27:49"
+}
+{ 
+    "_id" : ObjectId("568518a1b0e30cc81100002c"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "file_name" : "56810e1bb0e30ca411000029_1451563169_0_MongoDB_Schema.png", 
+    "file_size" : NumberInt(114853), 
+    "created_date" : "2015-12-31 12:59:29"
+}
+{ 
+    "_id" : ObjectId("568518a1b0e30cc81100002d"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "file_name" : "56810e1bb0e30ca411000029_1451563169_1_test.png", 
+    "file_size" : NumberInt(130858), 
+    "created_date" : "2015-12-31 12:59:29"
+}
+{ 
+    "_id" : ObjectId("56851931b0e30c881200002c"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "file_name" : "56810e1bb0e30ca411000029_1451563313_0_MongoDB_Schema.png", 
+    "file_size" : NumberInt(114853), 
+    "created_date" : "2015-12-31 13:01:53"
+}
+{ 
+    "_id" : ObjectId("56851efcb0e30cc81100002f"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "file_name" : "56810e1bb0e30ca411000029_1451564796_0_MongoDB_Schema.png", 
+    "file_size" : NumberInt(114853), 
+    "created_date" : "2015-12-31 13:26:36"
+}
+{ 
+    "_id" : ObjectId("56851efcb0e30cc811000030"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "file_name" : "56810e1bb0e30ca411000029_1451564796_1_test.png", 
+    "file_size" : NumberInt(130858), 
+    "created_date" : "2015-12-31 13:26:36"
+}
+{ 
+    "_id" : ObjectId("56854b6cb0e30ce816000030"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "file_name" : "56810e1bb0e30ca411000029_1451576172_0_test.png", 
+    "file_size" : NumberInt(130858), 
+    "created_date" : "2015-12-31 16:36:12"
+}
+{ 
+    "_id" : ObjectId("56854b6cb0e30ce816000031"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "file_name" : "56810e1bb0e30ca411000029_1451576172_1_MongoDB_Schema.png", 
+    "file_size" : NumberInt(114853), 
+    "created_date" : "2015-12-31 16:36:12"
+}
+{ 
+    "_id" : ObjectId("56854b6cb0e30ce816000032"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "file_name" : "56810e1bb0e30ca411000029_1451576172_2_pdf_sites.txt", 
+    "file_size" : NumberInt(74), 
+    "created_date" : "2015-12-31 16:36:12"
+}
+{ 
+    "_id" : ObjectId("56854bebb0e30ce816000033"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "file_name" : "56810e1bb0e30ca411000029_1451576299_0_test.png", 
+    "file_size" : NumberInt(130858), 
+    "created_date" : "2015-12-31 16:38:19"
+}
+{ 
+    "_id" : ObjectId("56854bebb0e30ce816000034"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "file_name" : "56810e1bb0e30ca411000029_1451576299_1_MongoDB_Schema.png", 
+    "file_size" : NumberInt(114853), 
+    "created_date" : "2015-12-31 16:38:19"
+}
+{ 
+    "_id" : ObjectId("56854bebb0e30ce816000035"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "file_name" : "56810e1bb0e30ca411000029_1451576299_2_pdf_sites.txt", 
+    "file_size" : NumberInt(74), 
+    "created_date" : "2015-12-31 16:38:19"
+}
+{ 
+    "_id" : ObjectId("56854bfab0e30ce816000036"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "file_name" : "56810e1bb0e30ca411000029_1451576314_0_test.png", 
+    "file_size" : NumberInt(130858), 
+    "created_date" : "2015-12-31 16:38:34"
+}
+{ 
+    "_id" : ObjectId("56854bfab0e30ce816000037"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "file_name" : "56810e1bb0e30ca411000029_1451576314_1_MongoDB_Schema.png", 
+    "file_size" : NumberInt(114853), 
+    "created_date" : "2015-12-31 16:38:34"
+}
+{ 
+    "_id" : ObjectId("56854bfab0e30ce816000038"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "file_name" : "56810e1bb0e30ca411000029_1451576314_2_pdf_sites.txt", 
+    "file_size" : NumberInt(74), 
+    "created_date" : "2015-12-31 16:38:34"
+}
+{ 
+    "_id" : ObjectId("56854c33b0e30ce816000039"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "file_name" : "56810e1bb0e30ca411000029_1451576371_0_test.png", 
+    "file_size" : NumberInt(130858), 
+    "created_date" : "2015-12-31 16:39:31"
+}
+{ 
+    "_id" : ObjectId("56854c33b0e30ce81600003a"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "file_name" : "56810e1bb0e30ca411000029_1451576371_1_MongoDB_Schema.png", 
+    "file_size" : NumberInt(114853), 
+    "created_date" : "2015-12-31 16:39:31"
+}
+{ 
+    "_id" : ObjectId("56854ca7b0e30ce81600003b"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "file_name" : "56810e1bb0e30ca411000029_1451576487_0_test.png", 
+    "file_size" : NumberInt(130858), 
+    "created_date" : "2015-12-31 16:41:27"
+}
+{ 
+    "_id" : ObjectId("56854ca7b0e30ce81600003c"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "file_name" : "56810e1bb0e30ca411000029_1451576487_1_MongoDB_Schema.png", 
+    "file_size" : NumberInt(114853), 
+    "created_date" : "2015-12-31 16:41:27"
+}
+{ 
+    "_id" : ObjectId("56854ca7b0e30ce81600003d"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "file_name" : "56810e1bb0e30ca411000029_1451576487_2_testdoc.docx", 
+    "file_size" : NumberInt(10988), 
+    "created_date" : "2015-12-31 16:41:27"
+}
+{ 
+    "_id" : ObjectId("56855f18b0e30c0006000029"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "file_name" : "56810e1bb0e30ca411000029_1451581208_0_test.png", 
+    "file_size" : NumberInt(130858), 
+    "created_date" : "2015-12-31 18:00:08"
+}
+{ 
+    "_id" : ObjectId("56855f18b0e30c000600002a"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "file_name" : "56810e1bb0e30ca411000029_1451581208_1_MongoDB_Schema.png", 
+    "file_size" : NumberInt(114853), 
+    "created_date" : "2015-12-31 18:00:08"
+}
+{ 
+    "_id" : ObjectId("56856ee4b0e30c8812000035"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "file_name" : "56810e1bb0e30ca411000029_1451585252_0_test.png", 
+    "file_size" : NumberInt(130858), 
+    "created_date" : "2015-12-31 19:07:32"
+}
+{ 
+    "_id" : ObjectId("56962523b0e30ce81600002b"), 
+    "user_id" : ObjectId("56856e5cb0e30cac1700002e"), 
+    "file_name" : "56856e5cb0e30cac1700002e_1452680483_0_", 
+    "file_size" : null, 
+    "created_date" : "2016-01-13 11:21:23"
+}
+{ 
+    "_id" : ObjectId("56962523b0e30ce81600002c"), 
+    "user_id" : ObjectId("56856e5cb0e30cac1700002e"), 
+    "file_name" : "56856e5cb0e30cac1700002e_1452680483_1_afghanistan_daily_life_119474771_wide-83bd660cd8b977a58b8b6be5ae934f1e8b31cd2b.jpg", 
+    "file_size" : NumberInt(2091674), 
+    "created_date" : "2016-01-13 11:21:23"
+}

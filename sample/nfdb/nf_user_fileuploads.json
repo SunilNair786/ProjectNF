@@ -1,0 +1,385 @@
+{ 
+    "_id" : ObjectId("56a87b55b0e30c8014000030"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1453882197_0_MongoDB_Schema.png", 
+    "file_size" : NumberInt(114853), 
+    "created_date" : "2016-01-27 09:09:57"
+}
+{ 
+    "_id" : ObjectId("56a8c330b0e30c1416000029"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1453900592_0_icon-no.gif", 
+    "file_size" : NumberInt(176), 
+    "created_date" : "2016-01-27 14:16:32"
+}
+{ 
+    "_id" : ObjectId("56a8c330b0e30c141600002a"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1453900592_1_afghanistan_daily_life_119474771_wide-83bd660cd8b977a58b8b6be5ae934f1e8b31cd2b.jpg", 
+    "file_size" : NumberInt(2091674), 
+    "created_date" : "2016-01-27 14:16:32"
+}
+{ 
+    "_id" : ObjectId("56b82aa2b0e30cc419000029"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1454910114_0_Untitled.png", 
+    "file_size" : NumberInt(67464), 
+    "created_date" : "2016-02-08 06:41:54"
+}
+{ 
+    "_id" : ObjectId("56b82aa2b0e30cc41900002a"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1454910114_1_example_014.pdf", 
+    "file_size" : NumberInt(41010), 
+    "created_date" : "2016-02-08 06:41:54"
+}
+{ 
+    "_id" : ObjectId("56b82aa2b0e30cc41900002b"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1454910114_2_Trash-50.png", 
+    "file_size" : NumberInt(651), 
+    "created_date" : "2016-02-08 06:41:54"
+}
+{ 
+    "_id" : ObjectId("56b82adab0e30c641d000029"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1454910170_0_Untitled.png", 
+    "file_size" : NumberInt(67464), 
+    "created_date" : "2016-02-08 06:42:50"
+}
+{ 
+    "_id" : ObjectId("56b82adab0e30c641d00002a"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1454910170_1_sample (1).doc", 
+    "file_size" : NumberInt(32768), 
+    "created_date" : "2016-02-08 06:42:50"
+}
+{ 
+    "_id" : ObjectId("56cd5a79b0e30c4406000029"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1456298617_0_566px-Fenugreek-methi-seeds.jpg", 
+    "file_size" : NumberInt(82682), 
+    "created_date" : "2016-02-24 08:23:37"
+}
+{ 
+    "_id" : ObjectId("56cd5a79b0e30c440600002a"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1456298617_1_samplepdfs-TEST2.pdf", 
+    "file_size" : NumberInt(375380), 
+    "created_date" : "2016-02-24 08:23:37"
+}
+{ 
+    "_id" : ObjectId("56cd5a79b0e30c440600002b"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1456298617_2_image__651-e1423056358296.jpg", 
+    "file_size" : NumberInt(3645), 
+    "created_date" : "2016-02-24 08:23:37"
+}
+{ 
+    "_id" : ObjectId("56cd62adb0e30ca007000029"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1456300717_0_attachmentpnn.png", 
+    "file_size" : NumberInt(6605), 
+    "created_date" : "2016-02-24 08:58:37"
+}
+{ 
+    "_id" : ObjectId("56cd62adb0e30ca00700002a"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1456300717_1_example_058.pdf", 
+    "file_size" : NumberInt(80437), 
+    "created_date" : "2016-02-24 08:58:37"
+}
+{ 
+    "_id" : ObjectId("56cd62adb0e30ca00700002b"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1456300717_2_lambda.jpg", 
+    "file_size" : NumberInt(56138), 
+    "created_date" : "2016-02-24 08:58:37"
+}
+{ 
+    "_id" : ObjectId("56cd6495b0e30c5c0600002b"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1456301205_0_sample.pdf", 
+    "file_size" : NumberInt(319070), 
+    "created_date" : "2016-02-24 09:06:45"
+}
+{ 
+    "_id" : ObjectId("56cd6495b0e30c5c0600002c"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1456301205_1_small_group.jpg", 
+    "file_size" : NumberInt(10304), 
+    "created_date" : "2016-02-24 09:06:45"
+}
+{ 
+    "_id" : ObjectId("56ceaddcb0e30cd41c000031"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1456385500_0_New Text Document.txt", 
+    "file_size" : NumberInt(122), 
+    "created_date" : "2016-02-25 08:31:40"
+}
+{ 
+    "_id" : ObjectId("56ceaf10b0e30cf816000051"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1456385808_0_566px-Fenugreek-methi-seeds.jpg", 
+    "file_size" : NumberInt(82682), 
+    "created_date" : "2016-02-25 08:36:48"
+}
+{ 
+    "_id" : ObjectId("56ceaf10b0e30cf816000052"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1456385808_1_example_001.pdf", 
+    "file_size" : NumberInt(176294), 
+    "created_date" : "2016-02-25 08:36:48"
+}
+{ 
+    "_id" : ObjectId("56ceaf10b0e30cf816000053"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1456385808_2_", 
+    "file_size" : null, 
+    "created_date" : "2016-02-25 08:36:48"
+}
+{ 
+    "_id" : ObjectId("56ceaf10b0e30cf816000054"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1456385808_3_attachmentpnn.png", 
+    "file_size" : NumberInt(6605), 
+    "created_date" : "2016-02-25 08:36:48"
+}
+{ 
+    "_id" : ObjectId("56ceaf37b0e30cf816000059"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1456385847_0_DetailedNotificationAAIJEATC2016.docx", 
+    "file_size" : NumberInt(75944), 
+    "created_date" : "2016-02-25 08:37:27"
+}
+{ 
+    "_id" : ObjectId("56ceaf58b0e30cf81600005c"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1456385880_0_DetailedNotificationAAIJEATC2016.docx", 
+    "file_size" : NumberInt(75944), 
+    "created_date" : "2016-02-25 08:38:00"
+}
+{ 
+    "_id" : ObjectId("56ceafa1b0e30c9c2e00002b"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1456385953_0_Nextfax_Project_09122015_V01.docx", 
+    "file_size" : NumberInt(484696), 
+    "created_date" : "2016-02-25 08:39:13"
+}
+{ 
+    "_id" : ObjectId("56ceafe2b0e30ce01d000029"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1456386018_0_Nextfax_Project_09122015_V01.docx", 
+    "file_size" : NumberInt(484696), 
+    "created_date" : "2016-02-25 08:40:18"
+}
+{ 
+    "_id" : ObjectId("56ceafe2b0e30ce01d00002a"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1456386018_1_566px-Fenugreek-methi-seeds.jpg", 
+    "file_size" : NumberInt(82682), 
+    "created_date" : "2016-02-25 08:40:18"
+}
+{ 
+    "_id" : ObjectId("56ceafe3b0e30ce01d00002b"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1456386018_2_attachmentpnn.png", 
+    "file_size" : NumberInt(6605), 
+    "created_date" : "2016-02-25 08:40:19"
+}
+{ 
+    "_id" : ObjectId("56ceafe3b0e30ce01d00002c"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1456386018_3_example_014.pdf", 
+    "file_size" : NumberInt(41010), 
+    "created_date" : "2016-02-25 08:40:19"
+}
+{ 
+    "_id" : ObjectId("56ceb097b0e30cd827000029"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1456386199_0_DetailedNotificationAAIJEATC2016.docx", 
+    "file_size" : NumberInt(75944), 
+    "created_date" : "2016-02-25 08:43:19"
+}
+{ 
+    "_id" : ObjectId("56ceb0d5b0e30cd82700002c"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1456386261_0_DetailedNotificationAAIJEATC2016.docx", 
+    "file_size" : NumberInt(75944), 
+    "created_date" : "2016-02-25 08:44:21"
+}
+{ 
+    "_id" : ObjectId("56ceb416b0e30c9c1400003d"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1456387094_0_3020_network_driver_9v44d_wn_2.1.2013.0423_a00.log", 
+    "file_size" : NumberInt(4644), 
+    "created_date" : "2016-02-25 08:58:14"
+}
+{ 
+    "_id" : ObjectId("56ceb416b0e30c9c1400003e"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1456387094_1_chipset_driver_2tdf7_wn_9.4.0.1017_a01.log", 
+    "file_size" : NumberInt(967420), 
+    "created_date" : "2016-02-25 08:58:14"
+}
+{ 
+    "_id" : ObjectId("56ceb416b0e30c9c1400003f"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1456387094_2_chipset_driver_3664n_wn_9.4.0.1027_a03.log", 
+    "file_size" : NumberInt(977392), 
+    "created_date" : "2016-02-25 08:58:14"
+}
+{ 
+    "_id" : ObjectId("56ceb416b0e30c9c14000040"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1456387094_3_New Text Document.txt", 
+    "file_size" : NumberInt(122), 
+    "created_date" : "2016-02-25 08:58:14"
+}
+{ 
+    "_id" : ObjectId("56ceb416b0e30c9c14000041"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1456387094_4_New Text Document.txt", 
+    "file_size" : NumberInt(122), 
+    "created_date" : "2016-02-25 08:58:14"
+}
+{ 
+    "_id" : ObjectId("56ceb416b0e30c9c14000042"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1456387094_5_New Text Document.txt", 
+    "file_size" : NumberInt(122), 
+    "created_date" : "2016-02-25 08:58:14"
+}
+{ 
+    "_id" : ObjectId("56cff360b0e30c7014000029"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1456468832_0_", 
+    "file_size" : NumberInt(0), 
+    "created_date" : "2016-02-26 07:40:32"
+}
+{ 
+    "_id" : ObjectId("56d04621b0e30c701400003c"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1456490017_0_attachmentpnn.png", 
+    "file_size" : NumberInt(6605), 
+    "created_date" : "2016-02-26 13:33:37"
+}
+{ 
+    "_id" : ObjectId("56d04666b0e30c701400003f"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1456490086_0_New Text Document.txt", 
+    "file_size" : NumberInt(122), 
+    "created_date" : "2016-02-26 13:34:46"
+}
+{ 
+    "_id" : ObjectId("56d544feb0e30c001d00003d"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "file_name" : "56810e1bb0e30ca411000029_1456817406_0_6-acumulo-de-funcao-2.jpg", 
+    "file_size" : NumberInt(64888), 
+    "created_date" : "2016-03-01 08:30:06"
+}
+{ 
+    "_id" : ObjectId("56d7d752b0e30c801d000029"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1456985938_0_cityview.jpg", 
+    "file_size" : NumberInt(309256), 
+    "created_date" : "2016-03-03 07:18:58"
+}
+{ 
+    "_id" : ObjectId("56d7d752b0e30c801d00002a"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1456985938_1_example_058.pdf", 
+    "file_size" : NumberInt(80437), 
+    "created_date" : "2016-03-03 07:18:58"
+}
+{ 
+    "_id" : ObjectId("56d80806b0e30c841d000036"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1456998406_0_attachmentpnn.png", 
+    "file_size" : NumberInt(6605), 
+    "created_date" : "2016-03-03 10:46:46"
+}
+{ 
+    "_id" : ObjectId("56d80806b0e30c841d000037"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1456998406_1_", 
+    "file_size" : null, 
+    "created_date" : "2016-03-03 10:46:46"
+}
+{ 
+    "_id" : ObjectId("56dd19d4b0e30cbc0c000029"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1457330644_0_New Text Document.txt", 
+    "file_size" : NumberInt(122), 
+    "created_date" : "2016-03-07 07:04:04"
+}
+{ 
+    "_id" : ObjectId("56dd6581b0e30c3016000029"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1457350017_0_1449741184_chinese-new-year.jpg", 
+    "file_size" : NumberInt(271647), 
+    "created_date" : "2016-03-07 12:26:57"
+}
+{ 
+    "_id" : ObjectId("56de8264b0e30c3024000029"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1457422948_0_New Text Document.txt", 
+    "file_size" : NumberInt(122), 
+    "created_date" : "2016-03-08 08:42:28"
+}
+{ 
+    "_id" : ObjectId("56de88deb0e30cac24000029"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1457424606_0_lambdalogo.png", 
+    "file_size" : NumberInt(7174), 
+    "created_date" : "2016-03-08 09:10:06"
+}
+{ 
+    "_id" : ObjectId("56deadbdb0e30cf82000002a"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1457434045_0_logo-black222.psd", 
+    "file_size" : NumberInt(621284), 
+    "created_date" : "2016-03-08 11:47:25"
+}
+{ 
+    "_id" : ObjectId("56deadecb0e30cf82000002d"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1457434092_0_logo-black222.psd", 
+    "file_size" : NumberInt(621284), 
+    "created_date" : "2016-03-08 11:48:12"
+}
+{ 
+    "_id" : ObjectId("56e11712b0e30cd01c000029"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1457592082_0_566px-Fenugreek-methi-seeds.jpg", 
+    "file_size" : NumberInt(82682), 
+    "created_date" : "2016-03-10 07:41:22"
+}
+{ 
+    "_id" : ObjectId("56e11712b0e30cd01c00002a"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1457592082_1_1449741184_chinese-new-year.jpg", 
+    "file_size" : NumberInt(271647), 
+    "created_date" : "2016-03-10 07:41:22"
+}
+{ 
+    "_id" : ObjectId("56e11712b0e30cd01c00002b"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1457592082_2_example_001.pdf", 
+    "file_size" : NumberInt(176294), 
+    "created_date" : "2016-03-10 07:41:22"
+}
+{ 
+    "_id" : ObjectId("56e11712b0e30cd01c00002c"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1457592082_3_Nextfax_Project_09122015_V01.docx", 
+    "file_size" : NumberInt(484696), 
+    "created_date" : "2016-03-10 07:41:22"
+}
+{ 
+    "_id" : ObjectId("56e117c1b0e30ccc1c00002a"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "file_name" : "5683c824b0e30c4c1400002a_1457592257_0_cityview.jpg", 
+    "file_size" : NumberInt(309256), 
+    "created_date" : "2016-03-10 07:44:17"
+}

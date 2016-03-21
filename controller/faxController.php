@@ -79,6 +79,13 @@ class faxController{
 		return $tags_dupl;
 	}
 
+	// checking Groups for duplication
+	public function checkgroupsNam($Cpost)
+	{
+		$grpss_dupl = $this->faxObj->check_groups_duplicate($Cpost);
+		return $grpss_dupl;
+	}
+
 	// checking Contact Names
 	public function checkEmail($Cpost)
 	{

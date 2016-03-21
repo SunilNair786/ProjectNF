@@ -1,0 +1,136 @@
+{ 
+    "_id" : ObjectId("567a8e08b0e30c4014000029"), 
+    "user_id" : ObjectId("567988c1b0e30c9402000029"), 
+    "company_id" : "1", 
+    "tag_name" : "test", 
+    "created_date" : "2015-12-23 13:05:28", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("567a8e13b0e30c401400002a"), 
+    "user_id" : ObjectId("567988c1b0e30c9402000029"), 
+    "company_id" : "1", 
+    "tag_name" : "TestAdmin1", 
+    "created_date" : "2015-12-23 13:05:39", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56810f60b0e30c9411000029"), 
+    "user_id" : ObjectId("567988c1b0e30c9402000029"), 
+    "company_id" : "1", 
+    "tag_name" : "First Tag", 
+    "created_date" : "2015-12-28 11:30:56", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56810f69b0e30c941100002a"), 
+    "user_id" : ObjectId("567988c1b0e30c9402000029"), 
+    "company_id" : "1", 
+    "tag_name" : "Second Tag", 
+    "created_date" : "2015-12-28 11:31:05", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56810f6fb0e30c941100002b"), 
+    "user_id" : ObjectId("567988c1b0e30c9402000029"), 
+    "company_id" : "1", 
+    "tag_name" : "Third Tag", 
+    "created_date" : "2015-12-28 11:31:11", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56810f7ab0e30c941100002c"), 
+    "user_id" : ObjectId("567988c1b0e30c9402000029"), 
+    "company_id" : "1", 
+    "tag_name" : "Fourth Tag", 
+    "created_date" : "2015-12-28 11:31:22", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56810f83b0e30c941100002d"), 
+    "user_id" : ObjectId("567988c1b0e30c9402000029"), 
+    "company_id" : "1", 
+    "tag_name" : "Fifth TAg", 
+    "created_date" : "2015-12-28 11:31:31", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56810f89b0e30c941100002e"), 
+    "user_id" : ObjectId("567988c1b0e30c9402000029"), 
+    "company_id" : "1", 
+    "tag_name" : "Sixth Tag", 
+    "created_date" : "2015-12-28 11:31:37", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56810f8fb0e30c941100002f"), 
+    "user_id" : ObjectId("567988c1b0e30c9402000029"), 
+    "company_id" : "1", 
+    "tag_name" : "Seventh Tag", 
+    "created_date" : "2015-12-28 11:31:43", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56810f96b0e30c9411000030"), 
+    "user_id" : ObjectId("567988c1b0e30c9402000029"), 
+    "company_id" : "1", 
+    "tag_name" : "Eigth Tag", 
+    "created_date" : "2015-12-28 11:31:50", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56810f9db0e30c9411000031"), 
+    "user_id" : ObjectId("567988c1b0e30c9402000029"), 
+    "company_id" : "1", 
+    "tag_name" : "Nineth Tag", 
+    "created_date" : "2015-12-28 11:31:57", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56810fa3b0e30c9411000032"), 
+    "user_id" : ObjectId("567988c1b0e30c9402000029"), 
+    "company_id" : "1", 
+    "tag_name" : "Tenth Tag", 
+    "created_date" : "2015-12-28 11:32:03", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56810fa9b0e30c9411000033"), 
+    "user_id" : ObjectId("567988c1b0e30c9402000029"), 
+    "company_id" : "1", 
+    "tag_name" : "Tag Eleven", 
+    "created_date" : "2015-12-28 11:32:09", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56810fb0b0e30c9411000034"), 
+    "user_id" : ObjectId("567988c1b0e30c9402000029"), 
+    "company_id" : "1", 
+    "tag_name" : "Tag Tweleve", 
+    "created_date" : "2015-12-28 11:32:16", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56810fb7b0e30c9411000035"), 
+    "user_id" : ObjectId("567988c1b0e30c9402000029"), 
+    "company_id" : "1", 
+    "tag_name" : "Tag Thirteen", 
+    "created_date" : "2015-12-28 11:32:23", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("568cc734b0e30c3c10000029"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "company_id" : "1", 
+    "tag_name" : "moon", 
+    "created_date" : "2016-01-06 08:50:12", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("568cc740b0e30c3c1000002a"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "company_id" : "1", 
+    "tag_name" : "sun", 
+    "created_date" : "2016-01-06 08:50:24", 
+    "modified_date" : ""
+}

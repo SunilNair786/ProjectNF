@@ -54,7 +54,7 @@
 			
 			$collection = $this->db->nf_fax;
 
-			$files_values = array("_id"=>$mPost['_id'],"from_id"=>$_SESSION['user_id'] ,"message_subject" => $mPost['message_subject'],"message_body" => $mPost['message_body'],"file_name"=>'',"file_size"=>'','file_attach_id'=>$mPost['attachment_id'],"status" => "A","created_date" =>$this->cfObj->createDate(),"modified_date" => "","outbox" => "Y");
+			$files_values = array("_id"=>$mPost['_id'],"from_id"=>$_SESSION['user_id'] ,"message_subject" => $mPost['message_subject'],"message_body" => $mPost['message_body'],"file_name"=>'',"file_size"=>'','file_attach_id'=>$mPost['attachment_id'],"status" => "A","created_date" =>$this->cfObj->createDate(),"modified_date" => "","outbox" => "Y","from_grp"=>$mPost['hidd_grpIds']);			
 
 			$collection->insert($files_values);
 
@@ -77,7 +77,20 @@
 		{				
 			$collection = $this->db->nf_company_tags;
 
-			$cTags = $collection->find(array("tag_name" => $mPost['tagNam']))->count(); 
+			//$cTags = $collection->find(array("tag_name" => $mPost['tagNam']))->count(); 
+			$securevalue = $mPost['tagNam'];
+			$cTags = $collection->find(array("tag_name" => new MongoRegex('/^' .  $securevalue . '$/i'),'user_id'=>$_SESSION['user_id']))->count(); 
+			
+			return $cTags;
+		}
+
+		// checking tags duplicated		
+		public function check_groups_duplicate($mPost)
+		{				
+			$collection = $this->db->nf_user_groups;
+
+			$grppsvalue = $mPost['groupNam'];
+			$cTags = $collection->find(array("group_name" => new MongoRegex('/^' .  $grppsvalue . '$/i'),'user_id'=>$_SESSION['user_id']))->count(); 			
 
 			return $cTags;
 		}

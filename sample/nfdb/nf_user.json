@@ -1,0 +1,79 @@
+{ 
+    "_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "first_name" : "lambda", 
+    "last_name" : "admin", 
+    "email_id" : "admin@admin.com", 
+    "password" : "21232f297a57a5a743894a0e4a801fc3", 
+    "description" : "Admin Profile", 
+    "profile_pic" : "", 
+    "mobile" : "564635453", 
+    "fax" : "", 
+    "user_type" : "AU", 
+    "created_date" : "2015-12-28 11:25:31", 
+    "modified_date" : "", 
+    "status" : "A"
+}
+{ 
+    "_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "company_id" : "1", 
+    "first_name" : "Hema", 
+    "last_name" : "Sundar", 
+    "email_id" : "hemasundar@nextfax.com", 
+    "password" : "b59b119b153826a62f5c0be365ed716f", 
+    "description" : "Hema Sundar Profile", 
+    "phone" : "1234569878", 
+    "fax" : "145236987", 
+    "user_type" : "EU", 
+    "status" : "A", 
+    "created_date" : "2015-12-30 13:03:48", 
+    "modified_date" : "2016-03-04 08:27:23"
+}
+{ 
+    "_id" : ObjectId("56852955b0e30c8812000034"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "company_id" : "1", 
+    "first_name" : "ramu", 
+    "last_name" : "akkireddy", 
+    "email_id" : "raamu@admin.com", 
+    "password" : "827ccb0eea8a706c4c34a16891f84e7b", 
+    "description" : "test", 
+    "phone" : "7396913631", 
+    "fax" : "87454546464", 
+    "user_type" : "EU", 
+    "status" : "A", 
+    "created_date" : "2015-12-31 14:10:45", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56856e5cb0e30cac1700002e"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "company_id" : "1", 
+    "first_name" : "sunil", 
+    "last_name" : "kumar", 
+    "email_id" : "sunil@gmail.com", 
+    "password" : "b0b86080c976aa7651bffe0801644d74", 
+    "description" : "Sunil Profile", 
+    "phone" : "232322232", 
+    "fax" : "23233232323", 
+    "user_type" : "EU", 
+    "status" : "A", 
+    "created_date" : "2015-12-31 19:05:16", 
+    "modified_date" : "2016-01-08 06:38:43"
+}
+{ 
+    "_id" : ObjectId("568f4b86b0e30c201f000029"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "company_id" : "1", 
+    "first_name" : "test", 
+    "last_name" : "tester ", 
+    "email_id" : "test@admin.com", 
+    "password" : "098f6bcd4621d373cade4e832627b4f6", 
+    "description" : "test ", 
+    "phone" : "123456789", 
+    "fax" : "9874536321", 
+    "user_type" : "EU", 
+    "status" : "A", 
+    "created_date" : "2016-01-08 06:39:18", 
+    "modified_date" : ""
+}

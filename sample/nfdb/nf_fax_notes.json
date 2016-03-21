@@ -1,0 +1,24 @@
+{ 
+    "_id" : ObjectId("56bc7838bc7be6c14fbbd59f"), 
+    "text" : "This is the first note! Add yours from the button above..", 
+    "name" : "Martin", 
+    "color" : "yellow", 
+    "xyz" : "124x65x54", 
+    "dt" : "2010-01-17 06:30:14"
+}
+{ 
+    "_id" : ObjectId("56bc78fcbc7be6c14fbbd5a0"), 
+    "text" : "The position of the notes is saved with AJAX.", 
+    "name" : "Martin", 
+    "color" : "blue", 
+    "xyz" : "233x328x48", 
+    "dt" : "2010-01-17 06:30:14"
+}
+{ 
+    "_id" : ObjectId("56bc7907bc7be6c14fbbd5a1"), 
+    "text" : "This is the first note! Add yours from the button above..", 
+    "name" : "Martin", 
+    "color" : "green", 
+    "xyz" : "704x13x51", 
+    "dt" : "2016-02-11 15:28:58"
+}

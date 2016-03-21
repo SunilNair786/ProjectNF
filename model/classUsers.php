@@ -64,10 +64,15 @@ class users{
 	// Insert Groups
 	public function insertGrpRecord($post)
 	{		
+		$post['_id'] = new MongoId(); 
+
 		$collection = $this->db->nf_user_groups;
 
-		$group_values = array("user_id" => $_SESSION['user_id'] ,"group_name" => $_POST['grpName'],"user_ids" => $post['hidd_values'],"status" => "A","created_date" => $this->cfObj->createDate(),"modified_date" => "");
+		$group_values = array("_id"=>$post['_id'],"user_id" => $_SESSION['user_id'] ,"group_name" => $_POST['grpName'],"user_ids" => $post['hidd_values'],"status" => "A","created_date" => $this->cfObj->createDate(),"modified_date" => "");
+
 		$collection->insert($group_values);			
+
+		return 	$post['_id'];
 	}
 	// Update Group
 	public function updateGrpRecord($post)

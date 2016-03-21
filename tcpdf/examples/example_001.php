@@ -16,8 +16,15 @@ $faxObj =  new faxModel();
 $mC = new MongoClient();
 $db = $mC->nextfax;
 
-if(isset($_REQUEST['submit'])){      	
-    $toIds = $_POST['mail_new_to'];  //exit;
+if(isset($_REQUEST['submit'])){       
+    if($_POST['mail_new_to'] != ""){
+        echo $toIds = $_POST['mail_new_to'];  //exit;
+    }
+    else
+    {
+        echo $toIds = $_POST['mail_new_to2'];  //exit;
+    }
+    
     if(isset($toIds)){
         if(strpos($toIds, ',')){    
             $finalUserIds =  array();

@@ -51,6 +51,35 @@ if($_SESSION['user_id']=="")
         <script type="text/javascript" src="bower_components/matchMedia/matchMedia.js"></script>
         <script type="text/javascript" src="bower_components/matchMedia/matchMedia.addListener.js"></script>
     <![endif]-->
+    <style>
+        #page_content_inner {
+            padding: 24px 0 23px 200px !important;
+            }
+
+       /*@media (max-width: 1340px) {
+           #page_content_inner {
+               padding: 24px 0 23px 24px  !important;
+           }
+       }  */
+
+         @media (min-width: 1341px) {
+            #page_content_inner {
+                padding: 24px 0 23px 100px !important;
+            } 
+        }
+
+        @media (max-width: 1400px) {
+            #header_main .header_main_search_form {
+                width:  50% !important;
+            }
+        }
+
+        #header_main .header_main_search_form {
+            /*margin: 10px !important;
+            float: right !important;*/
+        }
+
+    </style>
 
 </head>
 <body class=" sidebar_main_open sidebar_main_swipe">
@@ -119,12 +148,7 @@ if($_SESSION['user_id']=="")
                         </div>
                     </div> -->
                 
-                <div class="header_main_search_form" style="opacity: 1; display: block; transform: translateY(0px);">            
-            <form class="uk-form">
-                <input type="text" class="header_main_search_input" placeholder="Search" name="name_2" id="name_2" value="<?php echo $_GET['name_2'];?>" required>
-                <button class="header_main_search_btn uk-button-link"><i class="md-icon material-icons"></i></button>
-            </form>
-        </div>
+                
 
                 
                 <div class="uk-navbar-flip">
@@ -241,6 +265,7 @@ if($_SESSION['user_id']=="")
                             <a href="#" class="user_action_image"><img class="md-user-image" src="assets/img/avatars/avatar_11_tn.png" alt=""/></a>
                             <div class="uk-dropdown uk-dropdown-small">
                                 <ul class="uk-nav js-uk-prevent">
+                                    <li><b style="margin-left:5px;"><?php echo $_SESSION['firstName'].$_SESSION['lastName'];?></b></li>
                                     <li><a href="userprofile.php?user_id=<?php echo$_SESSION['user_id']; ?>">My profile</a></li>
                                     <li><a href="page_settings.html">Settings</a></li>
                                     <li><a href="logout.php">Logout</a></li>
@@ -248,6 +273,12 @@ if($_SESSION['user_id']=="")
                             </div>
                         </li>
                     </ul>
+                </div>
+                <div class="header_main_search_form" style="opacity: 1; display: block; transform: translateY(0px);">            
+                    <form class="uk-form">
+                        <input type="text" class="header_main_search_input" placeholder="Search" name="name_2" id="name_2" value="<?php echo $_GET['name_2'];?>" required>
+                        <button class="header_main_search_btn uk-button-link"><i class="md-icon material-icons"></i></button>
+                    </form>
                 </div>
             </nav>
         </div>

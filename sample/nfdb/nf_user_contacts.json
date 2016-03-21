@@ -1,0 +1,143 @@
+{ 
+    "_id" : ObjectId("56814e79b0e30c8c1100002c"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "group_id" : "567989a2b0e30cf808000029", 
+    "contact_name" : "Ram", 
+    "email" : "ramkumar@lambdainnov.com", 
+    "phone" : "1236547895", 
+    "fax" : "14523698752", 
+    "contact_info" : "Ramkumar", 
+    "status" : "A", 
+    "created_date" : "2015-12-28 16:00:09", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56840536b0e30c2c1100002b"), 
+    "user_id" : ObjectId("5682d568b0e30c2414000029"), 
+    "group_id" : "56798979b0e30c9c15000029", 
+    "contact_name" : "dsfhdgf", 
+    "email" : "sunilnair@nextfax.com", 
+    "phone" : "4342423", 
+    "fax" : "4525435", 
+    "contact_info" : "testing", 
+    "status" : "A", 
+    "created_date" : "2015-12-30 17:24:22", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56840afeb0e30c801500002b"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "group_id" : "567989a2b0e30cf808000029", 
+    "contact_name" : "Sunil", 
+    "email" : "Kumar", 
+    "phone" : "123654789", 
+    "fax" : "344334", 
+    "contact_info" : "Sunil Profile", 
+    "status" : "A", 
+    "created_date" : "2015-12-30 17:49:02", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56840b13b0e30c801500002c"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "group_id" : "567989a2b0e30cf808000029", 
+    "contact_name" : "Pradeep", 
+    "email" : "Kumar", 
+    "phone" : "412563258", 
+    "fax" : "34443434", 
+    "contact_info" : "Sunil Kumar", 
+    "status" : "A", 
+    "created_date" : "2015-12-30 17:49:23", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56840bc4b0e30c801500002d"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "group_id" : "56798979b0e30c9c15000029", 
+    "contact_name" : "Rajani", 
+    "email" : "rajani@info.com", 
+    "phone" : "1236547", 
+    "fax" : "7458222", 
+    "contact_info" : "Rajani Info", 
+    "status" : "A", 
+    "created_date" : "2015-12-30 17:52:20", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("568cc704b0e30c081300002a"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "group_id" : "567989a2b0e30cf808000029", 
+    "contact_name" : "shujaat", 
+    "email" : "shujaat@lam.com", 
+    "phone" : "3543546", 
+    "fax" : "32432432", 
+    "contact_info" : "34324", 
+    "status" : "A", 
+    "created_date" : "2016-01-06 08:49:24", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56cdafb1b0e30cec05000029"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "group_id" : "568cc7d8b0e30c081300002b", 
+    "contact_name" : "Ramu", 
+    "email" : "ramu@lambdainnov.com", 
+    "phone" : "654465341353654", 
+    "fax" : "656542125", 
+    "contact_info" : "ijygtjyhgjgj", 
+    "status" : "A", 
+    "created_date" : "2016-02-24 14:27:13", 
+    "modified_date" : "2016-02-24 14:27:23"
+}
+{ 
+    "_id" : ObjectId("56d59996b0e30cf81c000079"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "group_id" : "56dd29aeb0e30c6005000029", 
+    "contact_name" : "raja hindustani", 
+    "email" : "rajahindustani@testing.com", 
+    "phone" : "6546546546541", 
+    "fax" : "369258147123456789", 
+    "contact_info" : "hi \r\nhow  \r\nr \r\nu\r\n i \r\nkahd\r\na \r\njkadj ", 
+    "status" : "A", 
+    "created_date" : "2016-03-01 14:31:02", 
+    "modified_date" : "2016-03-08 09:32:34"
+}
+{ 
+    "_id" : ObjectId("56d6c310b0e30c540200002b"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "group_id" : "56dd29aeb0e30c6005000029", 
+    "contact_name" : "lattef", 
+    "email" : "lateef@gmail.com", 
+    "phone" : "79070979797", 
+    "fax" : "989898", 
+    "contact_info" : "989", 
+    "status" : "A", 
+    "created_date" : "2016-03-02 11:40:16", 
+    "modified_date" : "2016-03-08 10:26:33"
+}
+{ 
+    "_id" : ObjectId("56de9c3cb0e30c841e00002c"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "group_id" : "56dd29aeb0e30c6005000029", 
+    "contact_name" : "rama", 
+    "email" : "rama@yah.com", 
+    "phone" : "98668937100", 
+    "fax" : "657865", 
+    "contact_info" : "djfvuwefu", 
+    "status" : "A", 
+    "created_date" : "2016-03-08 10:32:44", 
+    "modified_date" : "2016-03-08 10:33:30"
+}
+{ 
+    "_id" : ObjectId("56de9ccfb0e30c2c04000029"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "group_id" : "56dea588b0e30c841e00002d", 
+    "contact_name" : "devi", 
+    "email" : "devi@test.com", 
+    "phone" : "9567046797989698", 
+    "fax" : "8596736", 
+    "contact_info" : "9yu04", 
+    "status" : "A", 
+    "created_date" : "2016-03-08 10:35:11", 
+    "modified_date" : "2016-03-09 14:51:03"
+}

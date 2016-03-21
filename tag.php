@@ -6,7 +6,7 @@
 <?php
 // add Tag
 if($_POST['tag_submit'] == "Save")
-{	
+{		
 	$tagIns = $userContObj->TagInsert($_POST);   
 	header('location:tag.php'); 
 	exit;
@@ -33,14 +33,17 @@ if($_POST['tag_submit'] == "Update")
 					<h3 class="heading_a">Advanced Selects  
 						<!-- <button type="button" class="md-btn md-btn-success pull-right" onclick="UIkit.modal.prompt('Tag:', '', function(val){ UIkit.modal.alert('Your Tag is '+(val || 'Mr noname')+'!'); });">
 							Create a Tag
-						</button> -->									
-						<a class="md-btn md-btn-success pull-right" href="#New_tag" data-uk-modal="{center:true}">
+						</button> -->												
+						<a class="md-btn md-btn-success pull-right" href="#New_tag" data-uk-modal="{center:true}" style="float:right;">
 							Create a Tag
-						</a>						
+						</a>									    
+						<i id="buttonStart" title="edit" class="fa fa-pencil" style="float:right; padding:10px; margin-right:15px; cursor:pointer;"></i>
+						
+						
 					</h3>
 					<div class="uk-grid" data-uk-grid-margin>
 						<div class="uk-width-large-1">
-							<select id="selec_adv_1" name="selec_adv_1" multiple>
+							<!-- <select id="selec_adv_1" name="selec_adv_1" multiple>
 								<option value="all" selected>All</option>
 								<?php 
 	                            $collection = $db->nf_company_tags; 
@@ -48,12 +51,50 @@ if($_POST['tag_submit'] == "Update")
 	                            foreach($alltags as $all_tags){?>
 	                            	<option value="<?php echo $all_tags['_id']; ?>" selected><?php echo $all_tags['tag_name']; ?></option>
 	                            <?php } ?>
-							</select>						
+							</select>	 -->	
+
+							<div class="tagsshake neews" id="editing" style="display:none;">
+								<?php 
+								$hidTinc = 1;
+		                        $collection = $db->nf_company_tags; 
+		                        $alltags = $collection->find(array("user_id" => $_SESSION['user_id']));                            
+			                    foreach($alltags as $all_tags){?>
+									<div class="saaas" id="<?php echo $all_tags['_id'];?>">
+										<a href="#edit_tag_<?php echo $hidTinc;?>" data-uk-modal="{center:true}">
+											<span <?php if($_GET['tagged']==$all_tags['_id']){?>style="color:#1A60CC"<?php } ?>>
+												<?php echo $all_tags['tag_name']; ?>
+											</span>
+										</a>
+										<i class="closebtn" onclick="deleteTag1('<?php echo $all_tags['_id'];?>')"></i>
+									</div>								
+								<?php $hidTinc++; } ?>
+								<div class="clearfix"></div>
+							</div>
+
+							<div class="tagsshake" id="redirect">
+								<?php 
+		                        $collection = $db->nf_company_tags; 
+		                        $alltags = $collection->find(array("user_id" => $_SESSION['user_id']));                            
+		                        foreach($alltags as $all_tags){?>
+									<div>
+										<a href="?tagged=<?php echo $all_tags['_id']; ?>">
+											<span <?php if($_GET['tagged']==$all_tags['_id']){?>style="color:#1A60CC"<?php } ?>>
+												<?php echo $all_tags['tag_name']; ?>
+											</span>
+										</a>
+									</div>	
+								<?php } ?>		
+								<div class="clearfix"></div>
+							</div>
+							<!-- tags end -->
 						</div>
 					</div>
+					
+					
+					<div class="clearfix"></div>
 				</div>
 			</div>
-
+			
 		<?php 
 			
 			$collection_fax = $db->nf_fax_users; 
@@ -71,15 +112,14 @@ if($_POST['tag_submit'] == "Update")
 				$searchTag = "{".$ne.":".""."}";
 			}
 			
-			$alltagfaxs = $collection_fax->find(array('to_id' => "$sessId",'fax_tag' => $searchTag,'is_delete'=> 0))->sort(array("created_date" => -1));					
-			$allTodayCnt = $collection_fax->find(array('to_id' => "$sessId",'fax_tag' => $searchTag,'is_delete'=>0))->count();		
+			$alltagfaxs = $collection_fax->find(array('to_id' => "$sessId",'fax_tag' => new MongoRegex("/".$searchTag."/i"),'is_delete'=> 0))->sort(array("created_date" => -1));					
+			$allTodayCnt = $collection_fax->find(array('to_id' => "$sessId",'fax_tag' => new MongoRegex("/".$searchTag."/i"),'is_delete'=>0))->count();		
 		?>
             <div class="md-card-list">
                 <!-- <div class="md-card-list-header heading_list">Today</div> -->           
                 <div class="md-card-list-header-combined heading_list"><!-- md-card-list-header  -->
                 	All Messages
 	                <?php if($_GET['tagged'] != ""){?>
-
 						<a class="pull-right" href="tag.php">
 							<i class="fa fa-times"></i> Clear
 						</a>
@@ -188,7 +228,13 @@ if($_POST['tag_submit'] == "Update")
 					{?>
 						<li>							
 							<div class="md-card-list-item-subject" <?php echo $divSujClk; ?>>								
-								<span style="text-align:center;font-weight:bold;">No mails Tagged</span>
+								<span style="text-align:center;font-weight:bold;">No Faxs Tagged</span>
+								<div class="md-card-list">                
+			                        <center>
+			                            <img src="assets/img/fax.png" alt="No Faxs Found" height="150" width="200">
+			                            <br>Oops..! No faxs Found here....
+			                        </center>
+			                    </div>
 							</div>	     									
 						</li>
 					<?php } else { ?>
@@ -204,28 +250,29 @@ if($_POST['tag_submit'] == "Update")
 
     	</div>
     	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script>
-	$(document).ready(function(){
-		$('input#tag_name').on('keyup',function(){
-			var charCount = $(this).val().length;			
-			if(charCount >= 21)
-			{
-				$(this).val($(this).val().substring(0, charCount-1));
-			}
-			$(".result").text(charCount + " of 20 characters");						
-		});
 
-		// Editing Tags		
-		$('input#edit_tag_name').on('keyup',function(){
-			var charCount = $(this).val().length;			
-			if(charCount >= 21)
-			{
-				$(this).val($(this).val().substring(0, charCount-1));
-			}
-			$(".result").text(charCount + " of 20 characters");						
-		});
-	});
-</script>
+		<script>
+			$(document).ready(function(){
+				$('input#tag_name').on('keyup',function(){
+					var charCount = $(this).val().length;			
+					if(charCount >= 21)
+					{
+						$(this).val($(this).val().substring(0, charCount-1));
+					}
+					$(".result").text(charCount + " of 20 characters");						
+				});
+
+				// Editing Tags		
+				$('input[name=edit_tag_name]').on('keyup',function(){
+					var charCount = $(this).val().length;			
+					if(charCount >= 21)
+					{
+						$(this).val($(this).val().substring(0, charCount-1));
+					}
+					$(".result").text(charCount + " of 20 characters");						
+				});
+			});
+		</script>
             
 
 		<!-- Creating tag -->
@@ -238,7 +285,7 @@ if($_POST['tag_submit'] == "Update")
 	                </div>
 	                <div class="uk-margin-medium-bottom">
 	                    <!-- <label for="tag_name">Tag Name</label> -->
-	                    <input type="text" class="md-input" name="tag_name" id="tag_name" placeholder="Enter your text.." required /><br><br>	     
+	                    <input type="text" class="md-input" name="tag_name" id="tag_name" placeholder="Enter your text.." autofocus required /><br><br>	     
 	                    <input type="hidden" name="tag_submit" value="Save">
 						<div class="result" style="float:right">0 of 20 characters</div>
 	                </div>
@@ -267,7 +314,7 @@ if($_POST['tag_submit'] == "Update")
 		                </div>
 		                <div class="uk-margin-medium-bottom">
 		                    <!-- <label for="tag_name">Tag Name</label> -->
-		                    <input type="text" class="md-input" name="edit_tag_name" id="edit_tag_name_<?php echo $Tinc;?>" value="<?php echo $edit_tags_indv['tag_name']; ?>" required />
+		                    <input type="text" class="md-input" name="edit_tag_name" id="edit_tag_name_<?php echo $Tinc;?>" value="<?php echo $edit_tags_indv['tag_name']; ?>" autofocus required />
 		                    <div class="result" style="float:right"><?php echo strlen($edit_tags_indv['tag_name']);?> of 20 characters</div>
 		                    <input type="hidden" name="tag_submit" value="Update">
 		                </div>
@@ -319,6 +366,40 @@ if($_POST['tag_submit'] == "Update")
 	<script src="assets/js/altair_admin_common.min.js"></script>
 	<!--  mailbox functions -->
     <script src="assets/js/pages/page_mailbox.min.js"></script>
+
+    <script src="assets/js/wiggleicon/jquery.classywiggle.min.js"></script>
+
+    <script>
+	$(document).ready(function() {		
+	    var interval = null;
+	    $('#buttonStart').click(function() {
+	    	$('#redirect').toggle();	    	
+	    	var isVisible = $("#editing").toggle().is(":visible");
+	    	if (isVisible) {
+	        	$('.saaas').ClassyWiggle('start');
+	        }
+	        else
+	        {
+	        	$('div#wigglewrapper .saa').ClassyWiggle('stop');
+	        	clearInterval(interval);
+	        }
+	    });
+	});
+
+	function deleteTag1(tagId)
+	{		
+		$.ajax({
+            url:"auto_complete.php",
+            type:"GET",
+            data: {"tagId": tagId,"tag_sec":"TagsDelete"},
+            success:function(html){    
+            	alert('Successfully Deleted');   
+            	$('#'+tagId).hide();
+            }
+        });
+	}
+	</script>
+
 
 	<script>
 		$(function() {
@@ -674,47 +755,65 @@ if($_POST['tag_submit'] == "Update")
 		// Duplicate Tags
 		function checkDuplicate() 
 		{				
-			var taVal = document.getElementById('tag_name').value;			
-			$.ajax({
+			var taVal = document.getElementById('tag_name').value;						
+			if(taVal.length <= 20)
+			{
+				$.ajax({
 				url:"auto_complete.php",
-                type:"POST",
-                data: {"tagNam" : taVal,"Section" : "tagsDup"},
-                success:function(html){                	
-                	if(html > 0)
-                	{
-                		alert("Tag already Existed please change Tag Name");
-                		document.getElementById('tag_name').focus();                   		
-                		return true;                		
-                	}
-                	else
-                	{
-                		document.forms['newTag'].submit();
-                	}
-                }
-			});		
+				type:"POST",
+				data: {"tagNam" : taVal,"Section" : "tagsDup"},
+				success:function(html){                	
+					if(html > 0)
+					{
+						alert("Tag already Existed please change Tag Name");
+						document.getElementById('tag_name').focus();                   		
+						//return true;                		
+					}
+					else
+					{
+					document.forms['newTag'].submit();
+					}
+				}
+				});		
+				//return false;
+			}
+			else
+			{
+				alert('Please Enter Only 20 Characters');
+				document.getElementById('tag_name').focus();    
+			}
 			return false;		
 		}
 
 		function checkDuplicateEdit(proctyp)
 		{
-			var taVal = document.getElementById('edit_tag_name_'+proctyp).value;					
-			$.ajax({
-				url:"auto_complete.php",
-                type:"POST",
-                data: {"tagNam" : taVal,"Section" : "tagsDup"},
-                success:function(html){                	
-                	if(html > 0)
-                	{
-                		alert("Tag already Existed please change Tag Name");
-                		document.getElementById('edit_tag_name_'+proctyp).focus();                   		
-                		return true;                		
-                	}
-                	else
-                	{
-                		document.forms['editTag'+proctyp].submit();
-                	}
-                }
-			});		
+			var taVal = document.getElementById('edit_tag_name_'+proctyp).value;	
+			if(taVal.length <= 20)
+			{				
+				$.ajax({
+					url:"auto_complete.php",
+	                type:"POST",
+	                data: {"tagNam" : taVal,"Section" : "tagsDup"},
+	                success:function(html){                	
+	                	if(html > 0)
+	                	{
+	                		alert("Tag already Existed please change Tag Name");
+	                		document.getElementById('edit_tag_name_'+proctyp).focus();                   		
+	                		return true;                		
+	                	}
+	                	else
+	                	{
+	                		document.forms['editTag'+proctyp].submit();
+	                	}
+	                }
+				});		
+				return true;
+			}
+			else
+			{
+				alert('Please Enter Only 20 Characters');
+				document.getElementById('edit_tag_name_'+proctyp).focus();    
+			}
 			return false;
 		}
 

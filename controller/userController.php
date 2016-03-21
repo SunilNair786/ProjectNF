@@ -20,6 +20,7 @@ class userController
 			$_SESSION['lastName'] = $resDetail['last_name'];
 			$_SESSION['userEmail'] = $resDetail['email_id'];
 			$_SESSION['userType'] = $resDetail['user_type'];
+			$_SESSION['fax'] = $resDetail['fax'];
 		}
 
 		return $cVal;

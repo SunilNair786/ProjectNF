@@ -15,7 +15,7 @@ $faxObjCon = new faxController();
 // }
 
 
-if(isset($_GET['tagId'])){
+if(isset($_GET['tagId']) && $_GET['tag_sec']=="TagsDelete"){
 	$userContObj->deleteTag($_GET['tagId'],$_SESSION['user_id']);	
 }
 
@@ -60,6 +60,12 @@ if($_GET['section']=="Outbox_tagsAdd" && isset($_GET['tagfaxs']))
 if($_POST['Section'] == "tagsDup" && $_POST['tagNam'] != "")
 {
 	echo $rees = $faxObjCon->checktags($_POST);
+}
+
+// checking for duplicate groups
+if($_POST['Section'] == "groupsDup" && $_POST['groupNam'] != "")
+{
+	echo $grpstot = $faxObjCon->checkgroupsNam($_POST);
 }
 
 // Inbox Delete

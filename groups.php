@@ -4,9 +4,27 @@
 <?php include_once('includes/sidemenu.php'); ?>
 <!-- main sidebar end -->
 <?php
-if($_POST['submit'] == "Save")
+if($_POST['grp_submit'] == "Save")
 {
-    $cntVal = $userContObj->insertgroup($_POST);    
+	$cont_vals =explode(",",$_POST['hidd_values']);
+	$cntVal = $userContObj->insertgroup($_POST); 
+
+	for($ci = "0";$ci < count($cont_vals); $ci++)
+	{
+		$collection_cont = $db->nf_user_contacts;
+		$grp_cont = $collection_cont->findOne(array('_id' => new MongoId($cont_vals[$ci]))); 
+		$cont_ids = $grp_cont['_id'];
+		if($grp_cont['group_id'] == "")
+		{			
+			$Update_cont_grp = array("group_id" => $cntVal);
+		}
+		else
+		{			
+			$all_valus = $grp_cont['group_id'].','.$cntVal;
+			$Update_cont_grp = array("group_id" => $all_valus);
+		}
+		$updateRes = $collection_cont->update(array('_id' => new MongoId($cont_ids)), array('$set' => $Update_cont_grp));
+	}
     header("location:groups.php"); 
     exit;
 }
@@ -14,7 +32,30 @@ if($_POST['submit'] == "Save")
 // edit Process
 if($_POST['submit'] == "Update")
 {
-    $editGrps = $userContObj->updategroup($_POST);    
+	$cont_vals = explode(",",$_POST['hidd_values']);
+	$editGrps = $userContObj->updategroup($_POST);    	
+
+	for($ci = "0";$ci < count($cont_vals); $ci++)
+	{
+		$collection_cont = $db->nf_user_contacts;
+		$grp_cont = $collection_cont->findOne(array('_id' => new MongoId($cont_vals[$ci]))); 
+		$cont_ids = $grp_cont['_id'];
+		$grp_cont_ids = $grp_cont['group_id'];
+		$edt_grp_id = $_POST['grpId'];
+		$exists = strpos($grp_cont_ids, $edt_grp_id);
+		if ($exists === false) {
+			if($grp_cont['group_id'] == "")
+			{
+				$Update_cont_grp = array("group_id" => $edt_grp_id);
+			}
+			else
+			{
+				$all_valus = $grp_cont['group_id'].','.$edt_grp_id;
+				$Update_cont_grp = array("group_id" => $all_valus);
+			}
+			$updateRes = $collection_cont->update(array('_id' => new MongoId($cont_ids)), array('$set' => $Update_cont_grp));
+		}		
+	}
     header("location:groups.php"); 
     exit;
 }
@@ -25,6 +66,8 @@ if($_REQUEST['action'] == "delete")
     header("location:groups.php"); 
     exit;
 }
+
+$sessId = $_SESSION['user_id'];
 ?>
 
 <style type="text/css">
@@ -116,10 +159,11 @@ if($_REQUEST['action'] == "delete")
 									                    <input type="hidden" name="hidd_grpName" id="hidd_grpName" value="<?php echo $indGroup['group_name']; ?>"/>
 									                </div>
 									                <div class="uk-margin-medium-bottom">
-									                    <label for="grpName">Contact Name</label>
-									                    <input type="text" class="md-input" name="contactName" id="contactName1" value="<?php echo $udetailemail; ?>" required/>		
-									                    <input type="hidden" name="hidd_labels" id="labels1" value="<?php echo $udetailemail;?>">   
-									                    <input type="hidden" name="hidd_values" id="values1" value="<?php echo $uIds; ?>"> 							                    
+									                    <label for="grpName">Contact Name</label>									                    
+									                    <input type="text" class="md-input" name="contactName" id="contactName_<?php echo $incc;?>" value="<?php echo $udetailemail; ?>" required/>				
+									                    <input type="hidden" name="hidd_labels" id="labels<?php echo $incc;?>" value="<?php echo $udetailemail;?>">   
+									                    <input type="hidden" name="hidd_values" id="values<?php echo $incc;?>" value="<?php echo $uIds; ?>"> 	
+									                    <?php $auto_edit_cont .= "#contactName_".$incc.',';?>		
 									                </div>
 
 									                <div class="uk-modal-footer">       
@@ -148,13 +192,13 @@ if($_REQUEST['action'] == "delete")
 	    <div class="uk-modal" id="Groups_new">
 	        <div class="uk-modal-dialog">
 	        <button class="uk-modal-close uk-close" type="button"></button>
-	            <form name="newGroup" method="post" onsubmit="return checkcontacts();">
+	            <form name="newGroup" id="newGroup"method="post" onsubmit="return checkcontacts();">
 	                <div class="uk-modal-header">
 	                    <h3 class="uk-modal-title">New Group</h3>
 	                </div>
 	                <div class="uk-margin-medium-bottom">
 	                    <label for="grpName">Group Name</label>
-	                    <input type="text" class="md-input" name="grpName" id="grpName" required/>
+	                    <input type="text" class="md-input" name="grpName" id="grpNameAdd" required/>
 	                </div>
 	                <div class="uk-margin-medium-bottom">
 	                    <label for="grpName">Contact Name</label>
@@ -162,44 +206,15 @@ if($_REQUEST['action'] == "delete")
 	                    <small>*Please Add people from your Contacts only.</small>
 	                    <input type="hidden" name="hidd_labels" id="labels">   
                     	<input type="hidden" name="hidd_values" id="values">    
+                    	<input type="hidden" name="grp_submit" value="Save">
 	                </div>
 	                <div class="uk-modal-footer">       
 	                	<input type="button" class="uk-modal-close md-btn md-btn-flat md-btn-flat-primary pull-right" value="Cancel" />             
-	                    <input type="submit" class="uk-float-right md-btn md-btn-flat md-btn-flat-primary" name="submit" value="Save" />
+	                    <input type="submit" class="uk-float-right md-btn md-btn-flat md-btn-flat-primary" name="grp_submit" value="Save" />
 	                </div>
 	            </form>
 	        </div>
-	    </div>
-	    <script type="text/javascript">
-	    function checkcontacts()
-	    {
-	    	var taVal = document.getElementById('contactName').value;	
-	    	var hidItems = document.getElementById('labels').value;	
-
-	    	if(hidItems == "")
-	    	{
-
-				$.ajax({
-					url:"auto_complete.php",
-	                type:"POST",
-	                data: {"ContName" : taVal,"Section" : "grpContactCheck"},
-	                success:function(html){                	
-	                	if(html > 0)
-	                	{
-	                		//document.forms['newGroup'].submit();
-	                	}
-	                	else
-	                	{
-	                		alert("Contact Name Does not exist");
-	                		document.getElementById('contactName').focus();                   		
-	                		return true;                		
-	                	}
-	                }
-				});		
-				return false;
-
-			}
-	    }</script>
+	    </div>	    
 	    <!-- End New Group -->
 	</div>
     
@@ -508,30 +523,32 @@ if($_REQUEST['action'] == "delete")
             function extractLast( term ) {
             return split( term ).pop();
             }
+
+            var usedItems = [];
                  
             var projects = [
             <?php             
                 $collection = $db->nf_user_contacts;
-                $autoComp = $collection->find();
+                $autoComp = $collection->find(array('user_id'=>$sessId));
                 foreach ($autoComp as $keys) {?>
-                    {
-                        value: "<?php echo $keys['_id'];?>",
-                        label: "<?php echo $keys['contact_name'];?> (<?php echo $keys['email'];?>)"
-                    },                
+                {
+                    value: "<?php echo $keys['_id'];?>",
+                    label: "<?php echo $keys['contact_name'];?> (<?php echo $keys['email'];?>)"
+                }, 
                 <?php } ?>
             // Showing Users
             <?php             
-                $collection = $db->nf_user;
+                /*$collection = $db->nf_user;
                 $usersAutoComp = $collection->find();
                 foreach ($usersAutoComp as $users_AutoComp) {?>
                     {
                         value: "<?php echo $users_AutoComp['_id'];?>",
                         label: "<?php echo $users_AutoComp['first_name'];?> <?php echo $users_AutoComp['last_name'];?> (<?php echo $users_AutoComp['email_id'];?>)"
                     },
-                <?php } ?>
+                <?php }*/ ?>
             ];
                  
-            $( "#contactName , #contactName1" )         
+            $( "<?php echo $auto_edit_cont;?>#contactName" )         
                 .bind( "keydown", function( event ) {
                     if ( event.keyCode === $.ui.keyCode.TAB &&
                         $( this ).autocomplete( "instance" ).menu.active ) {
@@ -541,9 +558,10 @@ if($_REQUEST['action'] == "delete")
             .autocomplete({
                 minLength: 0,
                 source: function( request, response ) {
+                	var newNonDuplicatetag = $.grep(projects, function(el){return $.inArray(el, usedItems) == -1});                 	
                 // delegate back to autocomplete, but extract the last term
                 response( $.ui.autocomplete.filter(
-                projects, extractLast( request.term ) ) );
+                newNonDuplicatetag, extractLast( request.term ) ) );//projects
                 },
 
                 //    source:projects,    
@@ -555,6 +573,8 @@ if($_REQUEST['action'] == "delete")
                 var terms = split( this.value );
                 // remove the current input
                 terms.pop();
+                //Avoid repeated value
+                usedItems.push(ui.item.label);
                 // add the selected item
                 terms.push( ui.item.label );
                 // add placeholder to get the comma-and-space at the end
@@ -567,34 +587,154 @@ if($_REQUEST['action'] == "delete")
                     var labels = $('#labels').val();
                     var values = $('#values').val();
 
-                    var labels1 = $('#labels1').val();
-                    var values1 = $('#values1').val();
+                    var str =$(this).attr('id');
+                    var ret = str.split("_");					
+					var str2 = ret[1];					
+
+                    var labels1 = $('#labels'+str2).val();
+                    var values1 = $('#values'+str2).val();
                     
                     if(labels == "")
                     {
                         $('#labels').val(selected_label);
                         $('#values').val(selected_value);
 
-                        $('#labels1').val(labels1+selected_label);
-                        $('#values1').val(values1+selected_value);
+                        $('#labels'+str2).val(labels1+selected_label);
+                        $('#values'+str2).val(values1+selected_value);
                     }
                     else    
                     {
                         $('#labels').val(labels+","+selected_label);
                         $('#values').val(values+","+selected_value);
 
-                        $('#labels1').val(labels1+","+selected_label);
-                        $('#values1').val(values1+","+selected_value);
+                        $('#labels'+str2).val(labels1+","+selected_label);
+                        $('#values'+str2).val(values1+","+selected_value);
                     }   
                     
                 return false;
                 }
             });
         });
+
+
+		// function validate() {
+		//     var contactN = checkcontacts(),
+		//         duplAdd = checkDuplicate();
+		    
+		//     return contactN && duplAdd;
+		// }
+
+		// Duplicate Group Names
+		function checkDuplicate() 
+		{				
+			var taVal = document.getElementById('tag_name').value;						
+			
+			$.ajax({
+			url:"auto_complete.php",
+			type:"POST",
+			data: {"tagNam" : taVal,"Section" : "tagsDup"},
+			success:function(html){                	
+					if(html > 0)
+					{
+						alert("Tag already Existed please change Tag Name");
+						document.getElementById('tag_name').focus();                   		
+						//return true;                		
+					}
+					else
+					{
+						document.forms['newTag'].submit();
+					}
+				}
+			});		
+			return false;		
+		}
+
+		function checkDuplicateEdit(proctyp)
+		{
+			var taVal = document.getElementById('edit_tag_name_'+proctyp).value;	
+			if(taVal.length <= 20)
+			{				
+				$.ajax({
+					url:"auto_complete.php",
+	                type:"POST",
+	                data: {"tagNam" : taVal,"Section" : "tagsDup"},
+	                success:function(html){                	
+	                	if(html > 0)
+	                	{
+	                		alert("Tag already Existed please change Tag Name");
+	                		document.getElementById('edit_tag_name_'+proctyp).focus();                   		
+	                		return true;                		
+	                	}
+	                	else
+	                	{
+	                		document.forms['editTag'+proctyp].submit();
+	                	}
+	                }
+				});		
+				return true;
+			}
+			else
+			{
+				alert('Please Enter Only 20 Characters');
+				document.getElementById('edit_tag_name_'+proctyp).focus();    
+			}
+			return false;
+		}
+
+		// Check Contact Names Exist		
+	    function checkcontacts()
+	    {
+	    	var taVal = document.getElementById('contactName').value;	
+	    	var hidItems = document.getElementById('labels').value;	
+
+	    	if(hidItems == "")
+	    	{
+				$.ajax({
+					url:"auto_complete.php",
+	                type:"POST",
+	                data: {"ContName" : taVal,"Section" : "grpContactCheck"},
+	                success:function(html){                	
+	                	if(html > 0)
+	                	{
+	                		//document.forms['newGroup'].submit();
+	                	}
+	                	else
+	                	{
+	                		alert("Contact Name Does not exist");
+	                		document.getElementById('contactName').focus();                   		
+	                		return true;                		
+	                	}
+	                }
+				});		
+				return false;
+			}
+
+			// check for duplicate group Name
+			var grpVal = document.getElementById('grpNameAdd').value;						
+			
+			$.ajax({
+			url:"auto_complete.php",
+			type:"POST",
+			data: {"groupNam" : grpVal,"Section" : "groupsDup"},
+			success:function(html){                	
+					if(html > 0)
+					{
+						alert("Group Name already Existed please change Group Name");
+						document.getElementById('grpNameAdd').focus();                   								
+					}
+					else
+					{
+						document.forms['newGroup'].submit();						
+						return false;	
+					}
+				}
+			});	
+			return false;				
+	    }
     </script> <!-- ionrangeslider -->
-    <?php /*<script src="bower_components/ion.rangeslider/js/ion.rangeSlider.min.js"></script>
+    <script src="bower_components/ion.rangeslider/js/ion.rangeSlider.min.js"></script>
     <!-- htmleditor (codeMirror) -->
-    <script src="assets/js/uikit_htmleditor_custom.min.js"></script>
+    <?php /*<script src="assets/js/uikit_htmleditor_custom.min.js"></script>
     <!-- inputmask-->
     <script src="bower_components/jquery.inputmask/dist/jquery.inputmask.bundle.js"></script>
     <!--  forms advanced functions -->

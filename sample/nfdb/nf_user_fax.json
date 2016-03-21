@@ -1,0 +1,132 @@
+{ 
+    "_id" : ObjectId("567d42d1b0e30c040f00002d"), 
+    "from_id" : ObjectId("56782965b0e30c440f000029"), 
+    "to_id" : "5679a5f2b0e30cf80800002c,5679af1cb0e30ccc0b00002a", 
+    "message_body" : "sfdfsdfsdf", 
+    "status" : "A", 
+    "read" : "0", 
+    "folder_id" : "", 
+    "favorites" : "N", 
+    "created_date" : "2015-12-25 14:21:21", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("567d56cdb0e30c1c17000029"), 
+    "from_id" : ObjectId("56782965b0e30c440f000029"), 
+    "to_id" : "56782965b0e30c440f000029,5679a5f2b0e30cf80800002c", 
+    "message_body" : "dsjdshdsd,", 
+    "status" : "A", 
+    "read" : "0", 
+    "folder_id" : "", 
+    "favorites" : "N", 
+    "created_date" : "2015-12-25 15:46:37", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56810f1ab0e30c981100002a"), 
+    "from_id" : ObjectId("56810edfb0e30ca41100002a"), 
+    "to_id" : "5679a62cb0e30cf80800002d,5679af1cb0e30ccc0b00002a", 
+    "message_body" : "second testing....", 
+    "status" : "A", 
+    "read" : "0", 
+    "folder_id" : "", 
+    "favorites" : "N", 
+    "created_date" : "2015-12-28 11:29:46", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56818544b0e30c901100002c"), 
+    "from_id" : ObjectId("56811e18b0e30c981100002b"), 
+    "to_id" : "56811e18b0e30c981100002b", 
+    "message_body" : "demo", 
+    "status" : "A", 
+    "read" : "0", 
+    "folder_id" : "", 
+    "favorites" : "N", 
+    "created_date" : "2015-12-28 19:53:56", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56818572b0e30c941100003e"), 
+    "from_id" : ObjectId("56810edfb0e30ca41100002a"), 
+    "to_id" : "56810edfb0e30ca41100002a,56811e18b0e30c981100002b", 
+    "message_body" : "yuygdjhajadjk", 
+    "status" : "A", 
+    "read" : "1", 
+    "folder_id" : "", 
+    "favorites" : "Y", 
+    "created_date" : "2015-12-28 19:54:42", 
+    "modified_date" : "2015-12-29 19:58:29"
+}
+{ 
+    "_id" : ObjectId("5681891db0e30c901100002d"), 
+    "from_id" : ObjectId("56810edfb0e30ca41100002a"), 
+    "to_id" : "56810edfb0e30ca41100002a,56814e79b0e30c8c1100002c", 
+    "message_body" : " dfjsghdjfhdf", 
+    "status" : "A", 
+    "read" : "1", 
+    "folder_id" : "", 
+    "favorites" : "N", 
+    "created_date" : "2015-12-27 20:10:21", 
+    "modified_date" : "2015-12-29 19:58:37"
+}
+{ 
+    "_id" : ObjectId("56827b0fb0e30c5803000029"), 
+    "from_id" : ObjectId("56810edfb0e30ca41100002a"), 
+    "to_id" : "56811e18b0e30c981100002b,56810edfb0e30ca41100002a", 
+    "message_body" : "tested on 29-12-2015", 
+    "status" : "A", 
+    "read" : "1", 
+    "folder_id" : "", 
+    "favorites" : "N", 
+    "created_date" : "2015-12-29 13:22:39", 
+    "modified_date" : "2015-12-30 11:55:50"
+}
+{ 
+    "_id" : ObjectId("56850b49b0e30c0c0800002a"), 
+    "from_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "to_id" : "56811e18b0e30c981100002b", 
+    "message_body" : "Hi", 
+    "status" : "A", 
+    "read" : "0", 
+    "folder_id" : "", 
+    "favorites" : "N", 
+    "created_date" : "2015-12-31 12:02:33", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56850c21b0e30c881200002b"), 
+    "from_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "to_id" : "56811e18b0e30c981100002b", 
+    "message_body" : "Hi", 
+    "status" : "A", 
+    "read" : "0", 
+    "folder_id" : "", 
+    "favorites" : "N", 
+    "created_date" : "2015-12-31 12:06:09", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56850c65b0e30c0c0800002d"), 
+    "from_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "to_id" : "56811e18b0e30c981100002b", 
+    "message_body" : "Test Message", 
+    "status" : "A", 
+    "read" : "0", 
+    "folder_id" : "", 
+    "favorites" : "N", 
+    "created_date" : "2015-12-31 12:07:17", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56850d2bb0e30cc81100002a"), 
+    "from_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "to_id" : "56814e79b0e30c8c1100002c", 
+    "message_body" : "Test1", 
+    "status" : "A", 
+    "read" : "0", 
+    "folder_id" : "", 
+    "favorites" : "N", 
+    "created_date" : "2015-12-31 12:10:35", 
+    "modified_date" : ""
+}

@@ -114,6 +114,7 @@ if(isset($_GET['action']) && ($_GET['action'] == "delete") && isset($_GET['faxsI
 a#tagging:hover + .dropdown , .dropdown:hover {
     display: block;
 }
+ 
 </style>
 <div id="page_content">
         <div id="page_content_inner">
@@ -198,8 +199,19 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                                             if($userFaxDetails['saved_pdf_file'] != "")
                                                 {?>                                                 
                                                 <a href="#image_<?php echo $userFaxDetails['_id'];?>_popup<?php echo $img;?>" data-uk-modal="{center:true}">
-                                                    <!-- <img title="click to view attachment" src="upload_dir/files/<?php echo $userFaxDetails['file_name'];?>" id="img_atch" width="100" height="50"> -->
-                                                    <img title="click to view attachment" src="assets/img/attachmentpin.png" id="img_atch" width="50" height="25">
+                                                    <!-- <img title="click to view attachment" src="upload_dir/files/<?php echo $userFaxDetails['file_name'];?>" id="img_atch" width="100" height="50"> 
+                                                    <img title="click to view attachment" src="assets/img/attachmentpin.png" id="img_atch" width="50" height="25">-->
+                                                    <div class="file">
+                                                        <div class="file-icon" data-type="filename.mp3">
+                                                          <img src="assets/img/fax.png" alt="">
+                                                        </div>
+                                                        <p class="title">File name.pdf</p>
+                                                        
+                                                        <div class="download-btn">
+                                                          <p>File name.pdf</p>                                                  
+                                                          <img class="pdf" src="assets/img/pdf.png" alt="pdf">
+                                                        </div>
+                                                    </div>
                                                 </a>        
                                                 <div class="uk-modal" id="image_<?php echo $userFaxDetails['_id'];?>_popup">
                                                     <div class="uk-modal-dialog" style="width:90%; height:90%;">        
@@ -330,8 +342,19 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                                         if($userFaxDetails['saved_pdf_file'] != "")
                                             {?>                                                 
                                             <a href="#image_<?php echo $userFaxDetails['_id'];?>_popup<?php echo $img;?>" data-uk-modal="{center:true}">
-                                                <!-- <img title="click to view attachment" src="upload_dir/files/<?php echo $userFaxDetails['file_name'];?>" id="img_atch" width="100" height="50"> -->
-                                                <img title="click to view attachment" src="assets/img/attachmentpin.png" id="img_atch" width="50" height="25">
+                                                <!-- <img title="click to view attachment" src="upload_dir/files/<?php echo $userFaxDetails['file_name'];?>" id="img_atch" width="100" height="50"> 
+                                                <img title="click to view attachment" src="assets/img/attachmentpin.png" id="img_atch" width="50" height="25">-->
+                                                <div class="file">
+                                                    <div class="file-icon" data-type="filename.mp3">
+                                                      <img src="assets/img/fax.png" alt="">
+                                                    </div>
+                                                    <p class="title">File name.pdf</p>
+                                                    
+                                                    <div class="download-btn">
+                                                      <p>File name.pdf</p>                                                  
+                                                      <img class="pdf" src="assets/img/pdf.png" alt="pdf">
+                                                    </div>
+                                                </div>
                                             </a>        
                                             <div class="uk-modal" id="image_<?php echo $userFaxDetails['_id'];?>_popup">
                                                 <div class="uk-modal-dialog" style="width:90%; height:90%;">        
@@ -466,8 +489,19 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                                         if($userFaxDetails['saved_pdf_file'] != "")
                                             {?>                                                 
                                             <a href="#image_<?php echo $userFaxDetails['_id'];?>_popup<?php echo $img;?>" data-uk-modal="{center:true}">
-                                                <!-- <img title="click to view attachment" src="upload_dir/files/<?php echo $userFaxDetails['file_name'];?>" id="img_atch" width="100" height="50"> -->
-                                                <img title="click to view attachment" src="assets/img/attachmentpin.png" id="img_atch" width="50" height="25">
+                                                <!-- <img title="click to view attachment" src="upload_dir/files/<?php echo $userFaxDetails['file_name'];?>" id="img_atch" width="100" height="50"> 
+                                                <img title="click to view attachment" src="assets/img/attachmentpin.png" id="img_atch" width="50" height="25">-->
+                                                <div class="file">
+                                                    <div class="file-icon" data-type="filename.mp3">
+                                                      <img src="assets/img/fax.png" alt="">
+                                                    </div>
+                                                    <p class="title">File name.pdf</p>
+                                                    
+                                                    <div class="download-btn">
+                                                      <p>File name.pdf</p>                                                  
+                                                      <img class="pdf" src="assets/img/pdf.png" alt="pdf">
+                                                    </div>
+                                                </div>
                                             </a>        
                                             <div class="uk-modal" id="image_<?php echo $userFaxDetails['_id'];?>_popup">
                                                 <div class="uk-modal-dialog" style="width:90%; height:90%;">        
@@ -603,8 +637,19 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                                             if($userFaxDetails['saved_pdf_file'] != "")
                                                 {?>                                                 
                                                 <a href="#image_<?php echo $userFaxDetails['_id'];?>_popup<?php echo $img;?>" data-uk-modal="{center:true}">
-                                                    <!-- <img title="click to view attachment" src="upload_dir/files/<?php echo $userFaxDetails['file_name'];?>" id="img_atch" width="100" height="50"> -->
-                                                    <img title="click to view attachment" src="assets/img/attachmentpin.png" id="img_atch" width="50" height="25">
+                                                    <!-- <img title="click to view attachment" src="upload_dir/files/<?php echo $userFaxDetails['file_name'];?>" id="img_atch" width="100" height="50"> 
+                                                    <img title="click to view attachment" src="assets/img/attachmentpin.png" id="img_atch" width="50" height="25">-->
+                                                    <div class="file">
+                                                        <div class="file-icon" data-type="filename.mp3">
+                                                          <img src="assets/img/fax.png" alt="">
+                                                        </div>
+                                                        <p class="title">File name.pdf</p>
+                                                        
+                                                        <div class="download-btn">
+                                                          <p>File name.pdf</p>                                                  
+                                                          <img class="pdf" src="assets/img/pdf.png" alt="pdf">
+                                                        </div>
+                                                    </div>
                                                 </a>        
                                                 <div class="uk-modal" id="image_<?php echo $userFaxDetails['_id'];?>_popup">
                                                     <div class="uk-modal-dialog" style="width:90%; height:90%;">        
@@ -658,6 +703,19 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                             </ul>
                         </div>
                 <?php   }   // if loop $allCnt ?>
+
+    <!-- No Faxs  -->
+
+                <?php if($allfaxCount == "0" && $allWeekCnt == "0" && $allMonthCnt == "0" && $allCnt == "0"){?>
+                    <div class="md-card-list">                
+                        <center>
+                            <img src="assets/img/fax.png" alt="No Faxs Found" height="150" width="200">
+                            <br>Oops..! No faxs Found here....
+                        </center>
+                    </div>
+                <?php } ?>
+
+    <!-- No faxs End -->
 
                 </div>
             </div>

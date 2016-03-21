@@ -1,0 +1,312 @@
+{ 
+    "_id" : ObjectId("569f5201b0e30c440f00002a"), 
+    "user_id" : ObjectId("567988c1b0e30c9402000029"), 
+    "company_id" : "1", 
+    "tag_name" : "test", 
+    "created_date" : "2016-01-20 10:23:13", 
+    "modified_date" : "2016-01-20 10:26:23"
+}
+{ 
+    "_id" : ObjectId("569f62acb0e30c1819000029"), 
+    "user_id" : ObjectId("567988c1b0e30c9402000029"), 
+    "company_id" : "1", 
+    "tag_name" : "TestAdmin1", 
+    "created_date" : "2016-01-20 11:34:20", 
+    "modified_date" : "2016-01-20 11:34:24"
+}
+{ 
+    "_id" : ObjectId("56a1cec5b0e30c9016000029"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "company_id" : "1", 
+    "tag_name" : "ramu test", 
+    "created_date" : "2016-01-22 07:40:05", 
+    "modified_date" : "2016-01-22 10:38:06"
+}
+{ 
+    "_id" : ObjectId("56a9e9b5b0e30c6000000029"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "company_id" : "1", 
+    "tag_name" : "lambda", 
+    "created_date" : "2016-01-28 11:13:09", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56d542f2b0e30c041d00005f"), 
+    "user_id" : ObjectId("56856e5cb0e30cac1700002e"), 
+    "company_id" : "1", 
+    "tag_name" : "asif", 
+    "created_date" : "2016-03-01 08:21:22", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56d56ff4b0e30ce81c000061"), 
+    "user_id" : ObjectId("56856e5cb0e30cac1700002e"), 
+    "company_id" : "1", 
+    "tag_name" : "lambda soft ware ", 
+    "created_date" : "2016-03-01 11:33:24", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56d6be32b0e30cac07000029"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "company_id" : "1", 
+    "tag_name" : "tesst", 
+    "created_date" : "2016-03-02 11:19:30", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56d7d801b0e30c841d000029"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "company_id" : "1", 
+    "tag_name" : "raja hindustani", 
+    "created_date" : "2016-03-03 07:21:53", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56d7d828b0e30c841d00002a"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "company_id" : "1", 
+    "tag_name" : "extra jabardasth", 
+    "created_date" : "2016-03-03 07:22:32", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56d7d82fb0e30c841d00002b"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "company_id" : "1", 
+    "tag_name" : "jabardasth", 
+    "created_date" : "2016-03-03 07:22:39", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56d7d83db0e30c841d00002c"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "company_id" : "1", 
+    "tag_name" : "khal nayak", 
+    "created_date" : "2016-03-03 07:22:53", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56d7d842b0e30c841d00002d"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "company_id" : "1", 
+    "tag_name" : "nayak", 
+    "created_date" : "2016-03-03 07:22:58", 
+    "modified_date" : "2016-03-03 08:45:37"
+}
+{ 
+    "_id" : ObjectId("56d7d849b0e30c841d00002e"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "company_id" : "1", 
+    "tag_name" : "bhai", 
+    "created_date" : "2016-03-03 07:23:05", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56d7d84fb0e30c841d00002f"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "company_id" : "1", 
+    "tag_name" : "raj", 
+    "created_date" : "2016-03-03 07:23:11", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56d7d856b0e30c841d000030"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "company_id" : "1", 
+    "tag_name" : "khal nayak", 
+    "created_date" : "2016-03-03 07:23:18", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56d7d86bb0e30c841d000031"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "company_id" : "1", 
+    "tag_name" : "gabbar sing", 
+    "created_date" : "2016-03-03 07:23:39", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56d7d875b0e30c841d000032"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "company_id" : "1", 
+    "tag_name" : "sholay", 
+    "created_date" : "2016-03-03 07:23:49", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56d7d87eb0e30c841d000033"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "company_id" : "1", 
+    "tag_name" : "sholay", 
+    "created_date" : "2016-03-03 07:23:58", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56d7d8b0b0e30c841d000034"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "company_id" : "1", 
+    "tag_name" : "sholay", 
+    "created_date" : "2016-03-03 07:24:48", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56d80c02b0e30c781d000029"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "company_id" : "1", 
+    "tag_name" : "shahenshah", 
+    "created_date" : "2016-03-03 11:03:46", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56d81d32b0e30c841d00003a"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "company_id" : "1", 
+    "tag_name" : "dtddft", 
+    "created_date" : "2016-03-03 12:17:06", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56d81d35b0e30c6c1d000029"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "company_id" : "1", 
+    "tag_name" : "xctdctydf", 
+    "created_date" : "2016-03-03 12:17:09", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56d81d39b0e30c6c1d00002a"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "company_id" : "1", 
+    "tag_name" : "fyh xdtdtdcty", 
+    "created_date" : "2016-03-03 12:17:13", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56d81d3db0e30c6c1d00002b"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "company_id" : "1", 
+    "tag_name" : "5757678", 
+    "created_date" : "2016-03-03 12:17:17", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56d81d41b0e30c6c1d00002c"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "company_id" : "1", 
+    "tag_name" : "ftg67f665rt6", 
+    "created_date" : "2016-03-03 12:17:21", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56d81d46b0e30c701d00002a"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "company_id" : "1", 
+    "tag_name" : "7t8t6yigvkvb", 
+    "created_date" : "2016-03-03 12:17:26", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56d81d4ab0e30c6c1d00002d"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "company_id" : "1", 
+    "tag_name" : "vgbhunink", 
+    "created_date" : "2016-03-03 12:17:30", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56d81d50b0e30c601d000029"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "company_id" : "1", 
+    "tag_name" : "vbghjvuhbcguvhu", 
+    "created_date" : "2016-03-03 12:17:36", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56d81d53b0e30c741d00002b"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "company_id" : "1", 
+    "tag_name" : "rcyfc7yugc8u vu", 
+    "created_date" : "2016-03-03 12:17:39", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56d81d56b0e30c741d00002c"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "company_id" : "1", 
+    "tag_name" : "vgiubuib hi", 
+    "created_date" : "2016-03-03 12:17:42", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56d81d5cb0e30c741d00002d"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "company_id" : "1", 
+    "tag_name" : "vgihvbh.lvhlktmyjdmk", 
+    "created_date" : "2016-03-03 12:17:48", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56d82098b0e30c601d00002a"), 
+    "user_id" : ObjectId("56810e1bb0e30ca411000029"), 
+    "company_id" : "1", 
+    "tag_name" : "fdsfsf", 
+    "created_date" : "2016-03-03 12:31:36", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56d95ffab0e30c741d000029"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "company_id" : "1", 
+    "tag_name" : "tag", 
+    "created_date" : "2016-03-04 11:14:18", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56de7d76b0e30c9808000029"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "company_id" : "1", 
+    "tag_name" : "lateef", 
+    "created_date" : "2016-03-08 08:21:26", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56de7d92b0e30c980800002a"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "company_id" : "1", 
+    "tag_name" : "Khalil", 
+    "created_date" : "2016-03-08 08:21:54", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56de7e19b0e30c0818000029"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "company_id" : "1", 
+    "tag_name" : "hhhh", 
+    "created_date" : "2016-03-08 08:24:09", 
+    "modified_date" : "2016-03-09 11:40:20"
+}
+{ 
+    "_id" : ObjectId("56de8c58b0e30c6c0800002e"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "company_id" : "1", 
+    "tag_name" : "ramadevi", 
+    "created_date" : "2016-03-08 09:24:56", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56de8c61b0e30c6c0800002f"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "company_id" : "1", 
+    "tag_name" : "rama", 
+    "created_date" : "2016-03-08 09:25:05", 
+    "modified_date" : ""
+}
+{ 
+    "_id" : ObjectId("56de8cf9b0e30c6c08000030"), 
+    "user_id" : ObjectId("5683c824b0e30c4c1400002a"), 
+    "company_id" : "1", 
+    "tag_name" : "ramadevi1", 
+    "created_date" : "2016-03-08 09:27:37", 
+    "modified_date" : ""
+}

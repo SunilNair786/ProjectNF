@@ -35,6 +35,7 @@
         <script type="text/javascript" src="bower_components/matchMedia/matchMedia.js"></script>
         <script type="text/javascript" src="bower_components/matchMedia/matchMedia.addListener.js"></script>
     <![endif]-->
+    
 
 
 </head>
@@ -51,7 +52,7 @@
 		
 <div class="uk-width-large-8-10 uk-container-center">
             <!-- statistics (small charts) -->
-            <div class="uk-grid uk-grid-width-large-1-4 uk-grid-width-medium-1-2 uk-grid-medium uk-sortable sortable-handler hierarchical_show" data-uk-sortable data-uk-grid-margin>
+            <div class="uk-grid uk-grid-width-large-1-2 uk-grid-width-medium-1-2 uk-grid-medium uk-sortable sortable-handler hierarchical_show" data-uk-sortable data-uk-grid-margin>
                 <div>
                     <div class="md-card">
                         <div class="md-card-content">

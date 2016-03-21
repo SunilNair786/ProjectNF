@@ -11,6 +11,10 @@
 	-webkit-animation-duration: 280ms;
 	animation-duration: 280ms
 }
+.tagsshake {margin:10px 0 0 ;}
+.tagsshake a{background:#eee;padding:6px 20px;border-radius:18px;color:#333;}
+.closebtn{background:url(../img/close.png) center top no-repeat;position:absolute;top:-6px;left:62px;width:16px;height:16px;}
+.tagsshake div{float:left;position:relative;margin:7px 2px;}
 
 
 .uk-alert {
@@ -4766,7 +4770,8 @@ textarea.md-input {
 	transition: all 150ms ease-out
 }
 .md-input-wrapper+* {
-	margin-top: 10px
+	/*margin-top: 10px*/
+	margin: 10px 0px 0px -37px;
 }
 .md-input-wrapper.md-input-wrapper-disabled>label {
 	color: rgba(0,0,0,.26)
@@ -11374,3 +11379,154 @@ box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);}
 .md-card-list ul li:hover .options {display:block;float:right;}
 
 
+/*pdf icon in fax for inbox,outbox,favorite*/
+.file {
+  width: 180px;
+  height: 130px;
+  background: #aaa;
+  position: relative;
+  overflow: hidden;
+}
+
+.file .title, .file .download-btn {
+  width: 100%;
+  height: 40px;
+  line-height: 40px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: #E8E8E8;
+  margin: 0;
+  padding-left: 15px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;  
+}
+
+.file .download-btn {
+  height: 100%;
+  padding: 6px;
+  display: none;
+  text-align: center;
+
+
+}
+
+.file:hover .download-btn {
+  display: block;
+}
+
+
+.file-icon {
+  font-family: Arial, Tahoma, sans-serif;
+  font-weight: 300;
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  position: relative;
+  text-align: left;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+  padding: 10px;
+  border: 1px solid #E8E8E8;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.file .title::before, .file .download-btn::before {
+  display: block;
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-bottom-left-radius: 0px;
+  border-width: 15px;
+  border-style: solid;
+  border-color: rgba(255,255,255,.35) #FFF  #FFF  rgba(255,255,255,.35);
+  -webkit-box-shadow: -1px -1px 5px rgba(0,0,0,.25);
+  box-shadow: inset hoff voff blur color;
+}
+
+.file-icon::after {
+  display: block;
+  content: attr(data-type);
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  font-size: 16px;
+  color: #fff;
+  text-transform: lowercase;
+  width: 100%;
+  padding: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.file-icon img {
+  width: 100%;
+  margin-top: -27px;  
+}
+
+.download-btn a {
+  display: inline-block;
+  background: #aaa;
+  width: 35px;
+  height: 35px;
+  text-align: center;
+  margin-right: 5px;
+}
+
+.download-btn a:hover {
+  background: #222;
+}
+.pdf{
+    width:40px;
+    height: 40px;
+    bottom:50%;
+}
+/*upload*/
+  
+
+.upload-file {
+  background-color: #f5f5f5;
+  border: 1px solid #dcdcdc;
+  font-weight: bold;
+  margin: 0 36px 9px;
+  overflow-y: hidden;
+  padding: 4px 4px 4px 8px;
+  max-width: 448px;
+  font-size: 13px;
+}
+
+.upload-file .title {
+  color: #15c;
+  text-decoration: none;
+  float: left;
+  padding: 0 8px 0 0;
+}
+
+.upload-file .size {
+  color: #777;
+  display: inline-block;
+  padding: 3px 0;
+}
+
+.upload-file .removeUploadFile {
+  padding: 3px;
+  float: right;
+  opacity: .5;
+  cursor: pointer;
+}
+
+.upload-file .removeUploadFile:hover {
+  padding: 3px;
+  float: right;
+  opacity: .8;
+  cursor: pointer;
+}
+
+ 
