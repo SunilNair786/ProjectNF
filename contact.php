@@ -75,7 +75,7 @@ if(isset($_GET['searchParam'])){
                                         <li class="uk-active" data-uk-filter=""><a href="contact.php">All</a></li>
                                         <?php 
                                         $collection = $db->nf_user_groups; 
-                                        $allgroups1 = $collection->find();
+                                        $allgroups1 = $collection->find(array('user_id' => $_SESSION['user_id']));
                                         foreach($allgroups1 as $allgroups12){?>
                                             <li data-uk-filter="<?php echo $allgroups12['group_name'];?>"><a href="contact.php"><?php echo $allgroups12['group_name']; ?></a></li>
                                         <?php } ?>                                        
@@ -109,16 +109,29 @@ if(isset($_GET['searchParam'])){
 			   
 				if(isset($_GET['searchParam']) && $searchUserCnt  == 0 ){
 					echo '<div class="alert alert-danger fade in ">
-				<a title="close" aria-label="close" data-dismiss="alert" class="close" href="#" ><i class="material-icons" style="color:#c00;font-size:18px; float:right;">&#xE5CD;</i></a>
-				<strong>Danger!</strong> No records found.
-			</div>';
+        				<a title="close" aria-label="close" data-dismiss="alert" class="close" href="#" ><i class="material-icons" style="color:#c00;font-size:18px; float:right;">&#xE5CD;</i></a>
+        				<strong>Danger!</strong> No records found.
+        			</div>';
 				}else if ($searchUserCnt  > 1 ){
 					
 					foreach($allContactList as $contactList){
-						$collection = $db->nf_user_groups; 
-						$allContactLists1 = $collection->findOne(array('_id' => new MongoId($contactList['group_id'])));
+                        $collection = $db->nf_user_groups; 
+                        //$allContactLists1 = $collection->findOne(array('_id' => new MongoId($contactList['group_id'])));
+                        if($contactList['group_id'] != "")
+                        {
+                            $all_grp_vals = explode(",",$contactList['group_id']);
+                            $contactNames1 ="";
+                            for($ci = "0";$ci < count($all_grp_vals); $ci++)
+                            {
+                                $allContactListing = $collection->findOne(array('_id' => new MongoId($all_grp_vals[$ci])));
+                                if($allContactListing['group_name'] != "")
+                                {                                 
+                                    $contactNames1 .= $allContactListing['group_name'].',';
+                                }
+                            }  
+                        } 
 				?>	
-					<div data-uk-filter="<?php echo $allContactLists1['group_name'];?>,sdsdsd,<?php echo $contactList["contact_name"];?>">
+					<div data-uk-filter="<?php echo $contactNames1;?>,sdsdsd,<?php echo $contactList["contact_name"];?>">
 							<div class="md-card md-card-hover">
 								<div class="md-card-head">
 									<div class="md-card-head-menu" data-uk-dropdown="{pos:'bottom-right'}">
@@ -136,7 +149,7 @@ if(isset($_GET['searchParam'])){
 									<h3 class="md-card-head-text uk-text-center">
 										<?php echo $contactList["contact_name"];?>
 										<span class="uk-text-truncate">
-											<?php echo $allContactLists1['group_name']; ?>                                                  
+											<?php echo substr($contactNames1,0,-1); ?>
 										</span>
 									</h3>
 								</div>
@@ -178,7 +191,10 @@ if(isset($_GET['searchParam'])){
                         for($ci = "0";$ci < count($all_grp_vals); $ci++)
                         {
                             $allContactLists1 = $collection->findOne(array('_id' => new MongoId($all_grp_vals[$ci])));
-                            $contactNames .= $allContactLists1['group_name'].',';
+                            if($allContactLists1['group_name'] != "")
+                            {
+                                $contactNames .= $allContactLists1['group_name'].',';
+                            }
                         }                           
 				?>
 

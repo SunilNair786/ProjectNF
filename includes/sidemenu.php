@@ -59,8 +59,15 @@ $cUrl = basename($_SERVER['REQUEST_URI']);
                     <span class="menu_title">Groups</span>
                 </a>
             </li>
+            <?php
+            $collection = $db->nf_company_tags; 
+            $Cntalltags = $collection->find(array("user_id" => $_SESSION['user_id']))->sort(array("created_date" => -1))->count();
+            $alltags = $collection->find(array("user_id" => $_SESSION['user_id']))->sort(array("created_date" => -1))->limit(1);
+            foreach ($alltags as $keys) {
+                $wws = $keys['_id'];
+            }?>
             <li title="Tags">
-                <a href="tag.php" <?php if($cUrl == "tag.php"){ ?> class="active"<?php } ?>>
+                <a href="tag.php<?php if($Cntalltags > 0){?>?tagged=<?php echo $wws; }?>" <?php if($cUrl == "tag.php"){ ?> class="active"<?php } ?>>
                     <span class="menu_icon"><!-- <i class="material-icons">&#xE158;</i> -->
                         <i class="fa fa-tags fa-2x" style="color:#db4437;"></i>
                     </span>

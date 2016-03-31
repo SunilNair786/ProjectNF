@@ -153,6 +153,7 @@ if($_SESSION['user_id']=="")
                 
                 <div class="uk-navbar-flip">
                     <ul class="uk-navbar-nav user_actions">
+                        <li><a><?php echo $_SESSION['firstName'];?></a></li>
                         <li><a href="#" id="full_screen_toggle" class="user_action_icon uk-visible-large"><i class="material-icons md-24 md-light">&#xE5D0;</i></a></li>
                          
                         <li data-uk-dropdown="{mode:'click',pos:'bottom-right'}">

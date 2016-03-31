@@ -1,10 +1,11 @@
 <?php
 ob_start();
 session_start();
-include("../../controller/faxController.php");
-include("../../model/commonFunctions.php");
-include('../../model/faxModel.class.php');
-include '../../model/PDFMerger.php';
+$siteurl=$_SERVER['DOCUMENT_ROOT']."/nf";
+include($siteurl."/controller/faxController.php");
+include($siteurl."/model/commonFunctions.php");
+include ($siteurl."/model/PDFMerger.php");
+include($siteurl.'/model/faxModel.class.php');
 
 $pdf1 = new PDFMerger;
 $cfObj = new commonFunctions();
@@ -16,7 +17,7 @@ $faxObj =  new faxModel();
 $mC = new MongoClient();
 $db = $mC->nextfax;
 
-if(isset($_REQUEST['submit'])){       
+if(isset($_REQUEST['faxdetail'])){       
     if($_POST['mail_new_to'] != ""){
         echo $toIds = $_POST['mail_new_to'];  //exit;
     }

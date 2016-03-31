@@ -3,7 +3,6 @@
 <!-- main sidebar -->
 <?php include_once('includes/sidemenu.php'); ?>
 <!-- main sidebar end -->
-
 <?php
 $faxObjCon = new faxController();
 if(isset($_REQUEST['submit'])){  
@@ -242,7 +241,33 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                                                     <span><?php echo ucfirst($rplyUserDetails1['first_name']).' '.ucfirst($rplyUserDetails1['last_name']); ?></span>                                    
                                                 </div>                                                                                                  
                                                 <div class="md-card-list-item-content">
-                                                    <?php echo html_entity_decode($reply1_faxs['message_body']); ?>                                             
+                                                    <?php echo html_entity_decode($reply1_faxs['message_body']); 
+                                                    if($reply1_faxs['saved_pdf_file'] != "")
+                                                        {?>                                                 
+                                                            <a href="#image_<?php echo $reply1_faxs['_id'];?>_popup<?php echo $img;?>" data-uk-modal="{center:true}">
+                                                                <!-- <img title="click to view attachment" src="upload_dir/files/<?php echo $userFaxDetails['file_name'];?>" id="img_atch" width="100" height="50"> 
+                                                                <img title="click to view attachment" src="assets/img/attachmentpin.png" id="img_atch" width="50" height="25">-->
+                                                                <div class="file">
+                                                                    <div class="file-icon" data-type="filename.mp3">
+                                                                      <img src="assets/img/fax.png" alt="fax.png">
+                                                                    </div>
+                                                                    <p class="title">File name.pdf</p>
+                                                                    
+                                                                    <div class="download-btn">
+                                                                      <p>File name.pdf</p>                                                  
+                                                                      <img class="pdf" src="assets/img/pdf.png" alt="pdf">
+                                                                    </div>
+                                                                </div>
+                                                            </a>        
+                                                            <div class="uk-modal" id="image_<?php echo $reply1_faxs['_id'];?>_popup">
+                                                                <div class="uk-modal-dialog" style="width:90%; height:90%;">        
+                                                                    <button class="uk-modal-close uk-close" type="button"></button>
+                                                                    <iframe src="upload_dir/savedpdfs/<?php echo $reply1_faxs['saved_pdf_file'];?>" style="width:100%; height:100%;"></iframe>
+                                                                    <a id="addButton" class="green-button" href="add_note.html">Add a note</a>    
+                                                                </div>
+                                                            </div>
+                                                            <!-- <a href="upload_dir/savedpdfs/<?php echo $userFaxDetails['saved_pdf_file'];?>">View the attachment</a> -->
+                                                        <?php } ?>                                            
                                                 </div>
                                                 <br><br><br>
                                             <?php } ?>                                              
@@ -729,7 +754,7 @@ a#tagging:hover + .dropdown , .dropdown:hover {
         </a>
     </div>
 
-    <div class="uk-modal" id="mailbox_new_message">
+    <?php /*<div class="uk-modal" id="mailbox_new_message">
         <div class="uk-modal-dialog">
             <button class="uk-modal-close uk-close" type="button"></button>
             <form name='composeFrm' id="composeFrm" action='favorite.php' enctype="multipart/form-data" method='post'>
@@ -774,6 +799,74 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                 </div>
             </form>
         </div>
+    </div>*/?>
+    <div class="uk-modal" id="mailbox_new_message">
+        <div class="uk-modal-dialog">
+            <button class="uk-modal-close uk-close" type="button" onclick="restComposeForm();"></button>
+            <form name='composeFrm' id="composeFrm" action='tcpdf/examples/example_001.php' enctype="multipart/form-data" method='post'>
+                <div class="uk-modal-header">
+                    <h3 class="uk-modal-title">Compose Message</h3>
+                </div>
+                <div class="uk-margin-medium-bottom">
+                    <small style="float:right;margin-top:-6px;">To add a 
+                        <span id="gg">Group</span><span id="uu" style="display:none;">User</span> <span id="grpshow" style="cursor:pointer;">click here</span>
+                    </small>                    
+                    <span id="usersmail">                       
+                        <label for="mail_new_to">To</label>
+                        <!-- <input type="text" class="md-input" name="mail_new_to" id="mail_new_to" required="required" placeholder="User Name" autofocus > -->
+                        <input type="text" class="md-input" name="mail_new_to" id="mail_to" required="required" placeholder="fax number" autofocus required >                           
+                    </span>
+                    <span id="groupsmail" style="display:none;">
+                        <label for="mail_new_to">To</label>
+                        <input type="text" class="md-input" name="mail_new_to2" id="mail_new_to2" placeholder="Group Name" >      
+                    </span>                 
+                    
+                    <input type="hidden" name="hidd_labels" id="labels">
+                    
+                    <input type="hidden" name="hidd_values" id="values">   
+
+                    <input type="hidden" name="hidd_grpIds" id="gropId">                        
+
+                </div>
+                
+                <div class="uk-margin-large-bottom">
+                    <label for="mail_new_message">Subject</label>
+                    <input name="message_subject" id="message_subject" class="md-input" required />
+                </div>
+                
+                <div class="uk-margin-large-bottom">
+                    <label for="mail_new_message">Message</label>
+                    <textarea name="message_body" id="message_body" cols="30" rows="6" class="md-input xxs" placeholder="Enter your Message" required></textarea>
+                    <!-- <div id = "FileUploadContainer">                   
+                    </div>
+                    <input id="Button1" type="button" value="Add File" onclick = "AddFileUpload()" class="uk-form-file md-btn" /> -->
+                <!-- New Code File Upload -->
+                    <span class="uploadBtn">
+                        <img src="assets/img/attach_file_48.png" height="25" width="26" style="cursor:pointer;position:absolute;margin:17px 40px 0px">
+                        <input name="file[]" type="file" multiple="multiple" class="maxsize-5120" id="our-test" accept="gif|jpg|jpeg|png|doc|docx|pdf|txt" style="opacity:0;margin-bottom:6px;"/>   
+                    </span>
+                <!-- End File Code -->
+                </div>
+                <style type="text/css">
+                    .xxs{border: none !important;}
+                    .xss:focus{border: none !important; background-color: #ccc;}
+                </style>
+                <?php /*<div id="mail_upload-drop" class="uk-file-upload">                                      
+                    <!-- <input id="attachfile" type="button" value="Add File" onclick = "AddFileUpload()" class="uk-form-file md-btn" /> -->                   
+                    <!--p class="uk-text-muted uk-text-small uk-margin-small-bottom">or</p>
+                    <a class="uk-form-file md-btn">choose file<input id="mail_upload-select" type="file"></a-->
+                </div>*/?>
+                <div id="mail_progressbar" class="uk-progress uk-hidden">
+                    <div class="uk-progress-bar" style="width:0">0%</div>
+                </div>
+                <div class="uk-modal-footer">
+                    <!--a href="#" class="md-icon-btn"><i class="md-icon material-icons">&#xE226;</i></a!-->
+                    <!-- <input type='submit' value='send' class="uk-float-right md-btn md-btn-flat md-btn-flat-primary" name='submit'  /> -->
+                    <input type="hidden" name="faxdetail" value="">
+                    <button type="button"  onclick="validateEmail();" class="uk-float-right md-btn md-btn-flat md-btn-flat-primary" >Send</button>
+                </div>
+            </form>
+        </div>
     </div>
     <!-- google web fonts -->
     <script>
@@ -803,10 +896,21 @@ a#tagging:hover + .dropdown , .dropdown:hover {
     <!-- altair common functions/helpers -->
     <script src="assets/js/altair_admin_common.min.js"></script>
 
-    <!-- page specific plugins -->
-
     <!--  mailbox functions -->
     <script src="assets/js/pages/page_mailbox.min.js"></script>
+
+    <!-- code for file upload -->
+    <script>
+        <?php $alluploadIds = $alltodayIds.$allyesterdIds.$allmonthIds.$allOldmonthIds;?>
+        $(function(){           
+            $('<?php echo $alluploadIds;?>#our-test').MultiFile({
+                onFileChange: function(){
+                    console.log(this, arguments);
+                }
+            });
+        });
+    </script>
+    <script src='assets/js/jquery.MultiFile.js' type="text/javascript" language="javascript"></script>
     
     <script>
         $(function() {
@@ -1056,6 +1160,15 @@ a#tagging:hover + .dropdown , .dropdown:hover {
                 });   
                 window.location.reload();
             }
+        }
+        // Emptying the fields in compose form
+        $('.uk-close').click(function(){
+            $('#composeFrm')[0].reset();        
+            $('.md-input-wrapper').removeClass('md-input-filled');      
+        });
+
+        function restComposeForm(){
+            $("#FileUploadContainer").html('');
         }
     </script>
 <style>

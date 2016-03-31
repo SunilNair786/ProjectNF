@@ -97,85 +97,102 @@ $sessId = $_SESSION['user_id'];
 									<?php 
 									$incc = 1;
 									$collection = $db->nf_user_groups; 
-									$allgroups = $collection->find()->sort(array("created_date" => -1));
+									$allgroups = $collection->find(array('user_id' => $_SESSION['user_id']))->sort(array("created_date" => -1));
+									$allgroupsCount = $collection->find(array('user_id' => $_SESSION['user_id']))->count();
 
-									foreach($allgroups as $indGroup)
+									if($allgroupsCount > 0)
 									{
-									?>
-									<li>
-		                            	<ul class="options">
-											<li><a href="#Edit_Grp<?php echo $incc;?>" data-uk-modal="{center:true}" title="Edit"><i class="fa fa-edit"></i> </a></li> 		
-											<li><a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'groups.php?action=delete&id=<?php echo $indGroup['_id'];?>'; return false;}" title="Delete"><i class="fa fa-trash"></i></a></li>				
-										</ul>
-										<span class="md-card-list-item-date"><?php $dates=strtotime($indGroup['created_date']); echo date("j M",$dates); ?></span>
-										<div class="md-card-list-item-select">
-											<input type="checkbox" name="groupCheck" data-md-icheck />
-										</div>		
-										<?php
-						                $userId_arr = explode(',',$indGroup['user_ids']);
-						                //print_r($userId_arr); exit;
-						                $udetailemail = '';
-						                $udetail = '';
-                    					$uIds = '';
-						                for($i = 0; $i < sizeof($userId_arr); $i++)
-						                {
-						                	$ws = $userId_arr[$i];
-						                	$collection_user = $db->nf_user;
-						                	$collection_contact_user = $db->nf_user_contacts;
-						                	$CoutUserDetail = $collection_user->find(array('_id' => new MongoId($userId_arr[$i])))->count();
-						                	$CoutContaUser = $collection_contact_user->find(array('_id' => new MongoId($userId_arr[$i])))->count();
-						                	if($CoutUserDetail > 0)
-						                	{
-						                		$UserDetail = $collection_user->findOne(array('_id' => new MongoId($userId_arr[$i])));
-						                		$udetailemail .= $UserDetail['first_name']." ".$UserDetail['last_name']." (".$UserDetail['email_id']."), ";
-		                                        $udetail .= $UserDetail['first_name']." ".$UserDetail['last_name'].",";
-		                                        $uIds .= $UserDetail['_id'].",";
-						                	}
-						                	else
-						                	{
-						                		$ContactUser = $collection_contact_user->findOne(array('_id' => new MongoId($userId_arr[$i])));						                		
-						                		$udetailemail .= $ContactUser['contact_name']." (".$ContactUser['email']."), ";
-		                                        $udetail .= $ContactUser['contact_name'].",";
-		                                        $uIds .= $ContactUser['_id'].",";
-						                	}
-						                }
-						                ?>
-										<div class="md-card-list-item-sender">
-											<span><?php echo $indGroup['group_name']; ?></span>
-										</div>										
-										<br><?php echo substr($udetail,0,-1); ?>
 
-										<div class="uk-modal" id="Edit_Grp<?php echo $incc;?>">
-									        <div class="uk-modal-dialog">
-									        <button class="uk-modal-close uk-close" type="button"></button>
-									            <form name="EditnewGroup" method="post">
-									                <div class="uk-modal-header">
-									                    <h3 class="uk-modal-title">Group</h3>
-									                </div>
-									                <div class="uk-margin-medium-bottom">
-									                    <label for="grpName">Group Name</label>
-									                    <input type="text" class="md-input" name="grpName" id="grpName" value="<?php echo $indGroup['group_name']; ?>" required/>
-									                    <input type="hidden" name="grpId" id="grpId" value="<?php echo $indGroup['_id']; ?>"/>
-									                    <input type="hidden" name="hidd_grpName" id="hidd_grpName" value="<?php echo $indGroup['group_name']; ?>"/>
-									                </div>
-									                <div class="uk-margin-medium-bottom">
-									                    <label for="grpName">Contact Name</label>									                    
-									                    <input type="text" class="md-input" name="contactName" id="contactName_<?php echo $incc;?>" value="<?php echo $udetailemail; ?>" required/>				
-									                    <input type="hidden" name="hidd_labels" id="labels<?php echo $incc;?>" value="<?php echo $udetailemail;?>">   
-									                    <input type="hidden" name="hidd_values" id="values<?php echo $incc;?>" value="<?php echo $uIds; ?>"> 	
-									                    <?php $auto_edit_cont .= "#contactName_".$incc.',';?>		
-									                </div>
+										foreach($allgroups as $indGroup)
+										{
+										?>
+										<li>
+			                            	<ul class="options">
+												<li><a href="#Edit_Grp<?php echo $incc;?>" data-uk-modal="{center:true}" title="Edit"><i class="fa fa-edit"></i> </a></li> 		
+												<li><a href="#" onClick="var q = confirm('Are you sure you want to delete selected record?'); if (q) { window.location = 'groups.php?action=delete&id=<?php echo $indGroup['_id'];?>'; return false;}" title="Delete"><i class="fa fa-trash"></i></a></li>				
+											</ul>
+											<span class="md-card-list-item-date"><?php $dates=strtotime($indGroup['created_date']); echo date("j M",$dates); ?></span>
+											<div class="md-card-list-item-select">
+												<input type="checkbox" name="groupCheck" data-md-icheck />
+											</div>		
+											<?php
+							                $userId_arr = explode(',',$indGroup['user_ids']);
+							                //print_r($userId_arr); exit;
+							                $udetailemail = '';
+							                $udetail = '';
+	                    					$uIds = '';
+							                for($i = 0; $i < sizeof($userId_arr); $i++)
+							                {
+							                	$ws = $userId_arr[$i];
+							                	$collection_user = $db->nf_user;
+							                	$collection_contact_user = $db->nf_user_contacts;
+							                	$CoutUserDetail = $collection_user->find(array('_id' => new MongoId($userId_arr[$i])))->count();
+							                	$CoutContaUser = $collection_contact_user->find(array('_id' => new MongoId($userId_arr[$i])))->count();
+							                	if($CoutUserDetail > 0)
+							                	{
+							                		$UserDetail = $collection_user->findOne(array('_id' => new MongoId($userId_arr[$i])));
+							                		$udetailemail .= $UserDetail['first_name']." ".$UserDetail['last_name']." (".$UserDetail['email_id']."), ";
+			                                        $udetail .= $UserDetail['first_name']." ".$UserDetail['last_name'].",";
+			                                        $uIds .= $UserDetail['_id'].",";
+							                	}
+							                	else
+							                	{
+							                		$ContactUser = $collection_contact_user->findOne(array('_id' => new MongoId($userId_arr[$i])));						                		
+							                		$udetailemail .= $ContactUser['contact_name']." (".$ContactUser['email']."), ";
+			                                        $udetail .= $ContactUser['contact_name'].",";
+			                                        $uIds .= $ContactUser['_id'].",";
+							                	}
+							                }
+							                ?>
+											<div class="md-card-list-item-sender">
+												<span><?php echo $indGroup['group_name']; ?></span>
+											</div>										
+											<br><?php echo substr($udetail,0,-1); ?>
 
-									                <div class="uk-modal-footer">       
-									                	<input type="button" class="uk-modal-close md-btn md-btn-flat md-btn-flat-primary pull-right" value="Cancel" />             
-									                    <input type="submit" class="uk-float-right md-btn md-btn-flat md-btn-flat-primary" name="submit" value="Update" />
-									                </div>
-									            </form>
-									        </div>
-									    </div>
-									</li>
-									<?php $incc++; } ?>
+											<div class="uk-modal" id="Edit_Grp<?php echo $incc;?>">
+										        <div class="uk-modal-dialog">
+										        <button class="uk-modal-close uk-close" type="button"></button>
+										            <form name="EditnewGroup" method="post">
+										                <div class="uk-modal-header">
+										                    <h3 class="uk-modal-title">Group</h3>
+										                </div>
+										                <div class="uk-margin-medium-bottom">
+										                    <label for="grpName">Group Name</label>
+										                    <input type="text" class="md-input" name="grpName" id="grpName" value="<?php echo $indGroup['group_name']; ?>"pattern="[a-zA-z0-9 ]{0,50}" required title="Please Enter AlphaNumeric Only"/>
+										                    <input type="hidden" name="grpId" id="grpId" value="<?php echo $indGroup['_id']; ?>"/>
+										                    <input type="hidden" name="hidd_grpName" id="hidd_grpName" value="<?php echo $indGroup['group_name']; ?>"/>
+										                </div>
+										                <div class="uk-margin-medium-bottom">
+										                    <label for="grpName">Contact Name</label>									                    
+										                    <input type="text" class="md-input" name="contactName" id="contactName_<?php echo $incc;?>" value="<?php echo $udetailemail; ?>" required/>				
+										                    <input type="hidden" name="hidd_labels" id="labels<?php echo $incc;?>" value="<?php echo $udetailemail;?>">   
+										                    <input type="hidden" name="hidd_values" id="values<?php echo $incc;?>" value="<?php echo $uIds; ?>"> 	
+										                    <?php $auto_edit_cont .= "#contactName_".$incc.',';?>		
+										                </div>
 
+										                <div class="uk-modal-footer">       
+										                	<input type="button" class="uk-modal-close md-btn md-btn-flat md-btn-flat-primary pull-right" value="Cancel" />             
+										                    <input type="submit" class="uk-float-right md-btn md-btn-flat md-btn-flat-primary" name="submit" value="Update" />
+										                </div>
+										            </form>
+										        </div>
+										    </div>
+										</li>
+										<?php $incc++; } 
+									}
+									//If Condition End
+									else
+									{?>
+										<li>
+											<div class="md-card-list">                
+						                    	<center>
+						                    		<img src="assets/img/group_icon.png" alt="No Faxs Found" height="150" width="200">
+						                    		<br><br>Oops..! No Groups Found here....
+						                    	</center>
+					                    	</div>
+										</li>
+									<?php }
+									// Else Condition End ?>
 								</ul>
 							</div>
 						</div>
@@ -198,7 +215,7 @@ $sessId = $_SESSION['user_id'];
 	                </div>
 	                <div class="uk-margin-medium-bottom">
 	                    <label for="grpName">Group Name</label>
-	                    <input type="text" class="md-input" name="grpName" id="grpNameAdd" required/>
+	                    <input type="text" class="md-input" name="grpName" id="grpNameAdd" pattern="[a-zA-z0-9 ]{0,50}" required title="Please Enter AlphaNumeric Only"/>
 	                </div>
 	                <div class="uk-margin-medium-bottom">
 	                    <label for="grpName">Contact Name</label>
@@ -533,7 +550,7 @@ $sessId = $_SESSION['user_id'];
                 foreach ($autoComp as $keys) {?>
                 {
                     value: "<?php echo $keys['_id'];?>",
-                    label: "<?php echo $keys['contact_name'];?> (<?php echo $keys['email'];?>)"
+                    label: "<?php echo $keys['contact_name'];?> (<?php echo $keys['fax'];?>)"
                 }, 
                 <?php } ?>
             // Showing Users
